@@ -59,7 +59,7 @@ const Login = () => {
         ) : (
           <SignUpForm setIsLoginForm={setIsLoginForm} />
         )}
-        <Text content="Or With" size="14px" align="center" m="5px 0 0 0" />
+        <Text content="Or With" size="15px" weight={500} align="center" m="5px 0 0 0" />
         <Button
           content="Google"
           backgroundColor="#FFFFFF"

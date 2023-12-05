@@ -32,6 +32,7 @@ const Button = (props) => {
         break;
     }
   };
+  
   return (
     <button
       type={type ? type : "button"}

@@ -10,3 +10,21 @@
   transition: 0.1s all ease !important;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px !important;
 }
+
+input:focus-visible {
+  outline: solid 1.5px #000000 !important;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  color: rgba(0, 0, 0, 0);
+  opacity: 1;
+  display: block;
+  background: url("../../assets/calendar.png") no-repeat;
+  background-size: cover;
+  border-width: thin;
+  margin-right: 10px;
+}
+
+input[type="date"] {
+  background-color: #ffffff !important;
+}

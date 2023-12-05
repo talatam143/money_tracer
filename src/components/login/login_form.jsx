@@ -31,6 +31,7 @@ const LoginForm = () => {
         icon="email"
         value={loginForm.email}
         onChange={handleFormChange}
+        required={true}
       />
       <InputField
         type="password"
@@ -40,10 +41,11 @@ const LoginForm = () => {
         icon="password"
         value={loginForm.password}
         onChange={handleFormChange}
+        required={true}
       />
 
       <div className="loginform-options-container">
-        <div>
+        <div style={{ display: "flex", alignItems: "center" }}>
           <input type="checkbox" id="remember" />
           <label htmlFor="remember">Remember me</label>
         </div>
@@ -57,7 +59,7 @@ const LoginForm = () => {
         color="#FFFFFF"
         border="none"
         borderRadius="8px"
-        height="45px"
+        height="42px"
         fontSize="18px"
         fontWeight="600"
         type="submit"
