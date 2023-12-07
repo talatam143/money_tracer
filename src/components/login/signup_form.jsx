@@ -50,6 +50,7 @@ const SignUpForm = () => {
     let value = e.target.value;
 
     function isFieldValid() {
+      if (value.length === 0) return false;
       if (name === "mobileNumber" && value.length !== 10) {
         return true;
       } else if (name === "mpin" && value.length !== 4) {
@@ -153,7 +154,7 @@ const SignUpForm = () => {
         color="#FFFFFF"
         border="none"
         borderRadius="8px"
-        height="42px"
+        height="40px"
         fontSize="18px"
         fontWeight="500"
         margin="10px 0 0 0"

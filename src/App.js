@@ -1,11 +1,20 @@
 import React from "react";
-import Home from "./components/home/home";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Login from "./components/login/login";
+import Dashboard from "./components/Dashboard/dashboard";
+import Transactions from "./components/Transactions/transactions";
+import Account from "./components/Account/account";
 
 const App = () => {
   return (
-    <>
-      <Home />
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/transactions" element={<Transactions />} />
+        <Route path="/account" element={<Account />} />
+        <Route path="/login" element={<Login />} />
+      </Routes>
+    </BrowserRouter>
   );
 };
 

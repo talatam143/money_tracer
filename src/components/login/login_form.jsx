@@ -59,7 +59,7 @@ const LoginForm = () => {
         color="#FFFFFF"
         border="none"
         borderRadius="8px"
-        height="42px"
+        height="40px"
         fontSize="18px"
         fontWeight="600"
         type="submit"
