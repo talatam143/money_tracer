@@ -3,6 +3,7 @@ import {
   MdAlternateEmail,
   MdOutlinePermPhoneMsg,
   MdPermIdentity,
+  MdPassword,
 } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 import {
@@ -27,6 +28,7 @@ const InputField = (props) => {
     required,
     error,
     errorText,
+    readOnly,
   } = props;
   const [inputType, setInputType] = useState(props.type);
 
@@ -37,6 +39,8 @@ const InputField = (props) => {
       setInputType("text");
     }
   };
+
+  const iconStyle = { fontSize: "25px" };
 
   const Icon = () => {
     const iconStyles = {
@@ -58,12 +62,12 @@ const InputField = (props) => {
         return <GrSecure style={iconStyles} />;
       case "date":
         return <IoCalendarOutline style={iconStyles} />;
+      case "otp":
+        return <MdPassword style={iconStyles} />;
       default:
         break;
     }
   };
-
-  const iconStyle = { fontSize: "25px" };
 
   return (
     <div style={{ position: "relative" }}>
@@ -83,6 +87,7 @@ const InputField = (props) => {
         type={inputType}
         placeholder={placeholder}
         name={name}
+        readOnly={readOnly ? readOnly : null}
         value={value}
         onChange={onChange}
         required={required ? true : null}
@@ -93,7 +98,7 @@ const InputField = (props) => {
           borderColor: error ? "#F44336" : "grey",
           borderRadius: "8px",
           boxSizing: "border-box",
-          paddingLeft: icon ? "35px" : null,
+          paddingLeft: icon ? "35px" : "10px",
           marginTop: "5px",
           paddingRight: type === "password" ? "40px" : null,
         }}

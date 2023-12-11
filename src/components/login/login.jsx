@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import LoginForm from "./login_form";
 import SignUpForm from "./signup_form";
@@ -6,9 +6,20 @@ import "./login_styles.css";
 import BrandLogo from "../../assets/brand_logo";
 import Text from "../elements/text";
 import Button from "../elements/button";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [isLoginForm, setIsLoginForm] = useState(true);
+  const naviagate = useNavigate();
+
+  useEffect(() => {
+    const userId = localStorage.getItem("userId");
+    if (userId) {
+      naviagate("/");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div className="login-container">
       <BrandLogo width="80" height="80" />
@@ -59,7 +70,13 @@ const Login = () => {
         ) : (
           <SignUpForm setIsLoginForm={setIsLoginForm} />
         )}
-        <Text content="Or With" size="15px" weight={500} align="center" m="5px 0 0 0" />
+        <Text
+          content="Or With"
+          size="15px"
+          weight={500}
+          align="center"
+          m="5px 0 0 0"
+        />
         <Button
           content="Google"
           backgroundColor="#FFFFFF"
