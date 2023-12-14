@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Login from "./components/login/login";
 import Dashboard from "./components/Dashboard/dashboard";
@@ -9,7 +9,7 @@ import { statesEnum } from "./utils/enums";
 import { LinearProgress, Snackbar } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
 import { resetSnackBar } from "./features/snackbar/snackbar";
-import Offline from "./components/global/offline";
+import Global from "./components/global/global";
 
 const App = () => {
   const fetchState = useSelector((state) => state.fetchState);
@@ -68,7 +68,10 @@ const App = () => {
           <Route path="/transactions" element={<Transactions />} />
           <Route path="/account" element={<Account />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/offline" element={<Offline />} />
+          <Route path="/offline" element={<Global type="offline" />} />
+          <Route path="/error" element={<Global type="error" />} />
+          <Route path="/not-found" element={<Global type="notFound" />} />
+          <Route path="*" element={<Navigate to="/not-found" replace />} />
         </Routes>
       </BrowserRouter>
     </>
