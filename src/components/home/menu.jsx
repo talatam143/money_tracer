@@ -19,12 +19,12 @@ const Menu = () => {
   const naviagate = useNavigate();
 
   useEffect(() => {
-    // const userId = localStorage.getItem("userId");
-    // if (userId) {
-    //   userAuthetication();
-    // } else {
-    //   naviagate("/login");
-    // }
+    const userId = localStorage.getItem("userId");
+    if (userId) {
+      userAuthetication();
+    } else {
+      naviagate("/login");
+    }
     let currentPath = menuItems.filter(
       (eachMenu) => eachMenu.path === location.pathname
     );

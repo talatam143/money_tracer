@@ -9,6 +9,8 @@ import Profilecard from "./profile_card";
 import PaymentInfoCard from "./paymentInfo_cards";
 import Button from "../elements/button";
 
+const accountPaymentCards = ["Banks", "UPI", "Credit Cards"];
+
 const Account = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -49,26 +51,15 @@ const Account = () => {
         <motion.div className="account-profile-container" variants={item}>
           <Profilecard />
         </motion.div>
-
         <div className="account-payment-container">
-          <motion.div
-            variants={item}
-            className="account-payement-sub-container"
-          >
-            <PaymentInfoCard />
-          </motion.div>
-          <motion.div
-            variants={item}
-            className="account-payement-sub-container"
-          >
-            <PaymentInfoCard />
-          </motion.div>
-          <motion.div
-            variants={item}
-            className="account-payement-sub-container"
-          >
-            <PaymentInfoCard />
-          </motion.div>
+          {accountPaymentCards.map((eachItem) => (
+            <motion.div
+              variants={item}
+              className="account-payement-sub-container"
+            >
+              <PaymentInfoCard type={eachItem} />
+            </motion.div>
+          ))}
         </div>
         <motion.div variants={item}>
           <Button
