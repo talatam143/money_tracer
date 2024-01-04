@@ -1,5 +1,6 @@
 import React from "react";
 import { FcGoogle } from "react-icons/fc";
+import { MdAddBox, MdDelete } from "react-icons/md";
 import "./elements.css";
 
 const Button = (props) => {
@@ -17,6 +18,7 @@ const Button = (props) => {
     fontWeight,
     type,
     icon,
+    iconPosition,
     handleClick,
     transition,
   } = props;
@@ -27,12 +29,16 @@ const Button = (props) => {
     switch (icon) {
       case "google":
         return <FcGoogle style={iconStyle} />;
+      case "add":
+        return <MdAddBox style={{ fontSize: height, marginLeft: "4px" }} />;
+      case "delete":
+        return <MdDelete style={{ color: "#D11A2A", fontSize: "20px" }} />;
 
       default:
         break;
     }
   };
-  
+
   return (
     <button
       type={type ? type : "button"}
@@ -53,8 +59,13 @@ const Button = (props) => {
         transition: transition ? "0.3s all ease" : null,
       }}
     >
-      {icon ? <Icon /> : null}
+      {iconPosition === "start" || !iconPosition ? (
+        icon ? (
+          <Icon />
+        ) : null
+      ) : null}
       {content}
+      {iconPosition === "end" ? icon ? <Icon /> : null : null}
     </button>
   );
 };

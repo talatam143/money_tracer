@@ -1,26 +1,33 @@
-import React from "react";
-import { useDispatch } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
 import { setUserLogout } from "../../features/auth/auth";
 import "./account_styles.css";
 import Menu from "../home/menu";
 import Profilecard from "./profile_card";
 import PaymentInfoCard from "./paymentInfo_cards";
 import Button from "../elements/button";
-
-const accountPaymentCards = ["Banks", "UPI", "Credit Cards"];
+import { userInfoService } from "../../services/user/user_info";
+import { setUserData } from "../../features/user_info/user_info";
+import UserDataDialog from "./user_data_dialog";
+import { userDataEnums } from "../../utils/enums";
+import { formatUserData } from "../../utils/format_user_data";
 
 const Account = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const containerAnimation = useAnimation();
+  const [showDetailsDialog, setShowDetailsDialog] = useState(false);
+  const [dialogDataType, setDialogDataType] = useState(userDataEnums[0]);
+  const userData = useSelector((state) => state.userData);
 
   const handleLogout = () => {
     dispatch(setUserLogout());
     navigate("/login");
   };
 
-  const container = {
+  const accountContainer = {
     hidden: { opacity: 1, scale: 0 },
     visible: {
       opacity: 1,
@@ -32,7 +39,49 @@ const Account = () => {
     },
   };
 
-  const item = {
+  const toggleDialog = async (method) => {
+    if (method) {
+      setDialogDataType(
+        userDataEnums.find((eachData) => eachData.name === method.name)
+      );
+    }
+    if (userData.isDataFetched) {
+      setShowDetailsDialog((prevState) => !prevState);
+      animateContainer();
+    } else if (!userData.isDataFetched && !showDetailsDialog) {
+      const { status, data } = await userInfoService(
+        {},
+        "get",
+        "/getuserdetails"
+      );
+      if (status === 200) {
+        let formattedData = formatUserData(data);
+        dispatch(setUserData(formattedData));
+        setShowDetailsDialog(true);
+        animateContainer();
+      }
+    }
+  };
+
+  const animateContainer = () => {
+    containerAnimation.start({
+      width: !showDetailsDialog ? "calc(100% - 40px)" : 0,
+      transition: { delay: !showDetailsDialog ? 0 : 0.36, duration: 0 },
+    });
+    containerAnimation.start({
+      height: !showDetailsDialog ? "calc(100% - 90px)" : 0,
+      top: !showDetailsDialog ? "20px" : "50%",
+      transition: {
+        duration: !showDetailsDialog ? 0.4 : 0.35,
+        type: !showDetailsDialog ? "spring" : "linear",
+        stiffness: 460,
+        damping: 30,
+        delay: !showDetailsDialog ? 0.1 : 0,
+      },
+    });
+  };
+
+  const accountItem = {
     hidden: { y: 20, opacity: 0 },
     visible: {
       y: 0,
@@ -44,24 +93,28 @@ const Account = () => {
     <>
       <motion.div
         className="account-container"
-        variants={container}
+        variants={accountContainer}
         initial="hidden"
         animate="visible"
       >
-        <motion.div className="account-profile-container" variants={item}>
+        <motion.div
+          className="account-profile-container"
+          variants={accountItem}
+        >
           <Profilecard />
         </motion.div>
         <div className="account-payment-container">
-          {accountPaymentCards.map((eachItem) => (
+          {userDataEnums.map((eachItem) => (
             <motion.div
-              variants={item}
+              variants={accountItem}
               className="account-payement-sub-container"
+              key={eachItem.name}
             >
-              <PaymentInfoCard type={eachItem} />
+              <PaymentInfoCard method={eachItem} toggleDialog={toggleDialog} />
             </motion.div>
           ))}
         </div>
-        <motion.div variants={item}>
+        <motion.div variants={accountItem}>
           <Button
             content="Logout"
             backgroundColor="#000000"
@@ -74,6 +127,16 @@ const Account = () => {
             margin="50px 0 0 0"
             handleClick={handleLogout}
           />
+        </motion.div>
+        <motion.div
+          className={
+            showDetailsDialog
+              ? "account-dialog-container show-opacity"
+              : "account-dialog-container hide-opacity"
+          }
+          animate={containerAnimation}
+        >
+          <UserDataDialog toggleDialog={toggleDialog} type={dialogDataType} />
         </motion.div>
       </motion.div>
       <Menu />

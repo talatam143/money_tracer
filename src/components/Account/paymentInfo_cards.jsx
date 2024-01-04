@@ -1,20 +1,24 @@
 import React from "react";
-import { AiOutlineExpandAlt, AiOutlineQrcode,AiTwotoneBank } from "react-icons/ai";
+import {
+  AiOutlineExpandAlt,
+  AiOutlineQrcode,
+  AiTwotoneBank,
+} from "react-icons/ai";
 import { BsCreditCard2Front } from "react-icons/bs";
 import { useSelector } from "react-redux";
 import { Skeleton } from "@mui/material";
 
 const PaymentInfoCard = (props) => {
-  const { type } = props;
+  const { method, toggleDialog } = props;
   const user = useSelector((state) => state.auth);
 
   const Icon = () => {
     const iconSize = {
       fontSize: "45px",
       marginTop: "10px",
-      marginLeft: type === "Credit Cards" ? "8px" : "3px",
+      marginLeft: method.name === "Credit Cards" ? "8px" : "3px",
     };
-    switch (type) {
+    switch (method.name) {
       case "Banks":
         return <AiTwotoneBank style={iconSize} />;
       case "UPI":
@@ -30,8 +34,11 @@ const PaymentInfoCard = (props) => {
   return user.isUserLoggedIn ? (
     <>
       <Icon />
-      <AiOutlineExpandAlt className="account-expand-icon" />
-      <p className="account-payment-header">{type}</p>
+      <AiOutlineExpandAlt
+        className="account-expand-icon"
+        onClick={() => toggleDialog(method)}
+      />
+      <p className="account-payment-header">{method.name}</p>
     </>
   ) : (
     <>
