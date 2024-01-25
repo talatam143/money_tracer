@@ -6,7 +6,22 @@ export const statesEnum = Object.freeze({
 });
 
 export const userDataEnums = Object.freeze([
-  { name: "Banks", reduxStoreVar: "bankData" },
-  { name: "UPI", reduxStoreVar: "upiData" },
-  { name: "Credit Cards", reduxStoreVar: "creditCardData" },
+  {
+    name: "Banks",
+    reduxStoreVar: "bankData",
+    dbVar: "bank_details",
+    rawvar: "bankRawData",
+  },
+  {
+    name: "UPI",
+    reduxStoreVar: "upiData",
+    dbVar: "upi_app",
+    rawvar: "upiRawData",
+  },
+  {
+    name: "Credit Cards",
+    reduxStoreVar: "creditCardData",
+    dbVar: "credit_cards",
+    rawvar: "creditCardsRawData",
+  },
 ]);

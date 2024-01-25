@@ -7,9 +7,9 @@ import {
 } from "../../features/fetch_state/fetch_state";
 import { showSnackBar } from "../../features/snackbar/snackbar";
 
-const serverUrl = `${process.env.REACT_APP_SERVER_URL}user`;
+const serverUrl = `${process.env.REACT_APP_SERVER_URL}transaction`;
 
-export const userInfoService = async (formData, method, path) => {
+export const transactionService = async (formData, method, path, queries) => {
   store.dispatch(setLoadingState());
   try {
     let config = {
@@ -17,6 +17,7 @@ export const userInfoService = async (formData, method, path) => {
       maxBodyLength: Infinity,
       url: `${serverUrl}${path}`,
       headers: {},
+      params: queries,
     };
     if (method === "get" || "delete") {
       const token = localStorage.getItem("userId");
@@ -30,7 +31,7 @@ export const userInfoService = async (formData, method, path) => {
 
     const response = await axios.request(config);
     store.dispatch(setSuccessState());
-    if (path !== "/getuserdetails") {
+    if (method === "delete") {
       store.dispatch(
         showSnackBar({
           message: response?.data?.data?.message,
@@ -42,7 +43,7 @@ export const userInfoService = async (formData, method, path) => {
   } catch (error) {
     if (
       error?.response?.status &&
-      [400, 401, 404, 422, 500].includes(error?.response?.status)
+      [400, 404, 500, 202].includes(error?.response?.status)
     ) {
       store.dispatch(setErrorState());
       store.dispatch(

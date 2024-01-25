@@ -10,6 +10,7 @@ import {
   IoEyeOutline,
   IoEyeOffOutline,
   IoCalendarOutline,
+  IoSearch,
 } from "react-icons/io5";
 import { GrSecure } from "react-icons/gr";
 import Text from "./text";
@@ -24,11 +25,14 @@ const InputField = (props) => {
     onChange,
     width,
     height,
+    margin,
     icon,
     required,
     error,
     errorText,
     readOnly,
+    containerWidth,
+    containerMargin,
   } = props;
   const [inputType, setInputType] = useState(props.type);
 
@@ -64,13 +68,21 @@ const InputField = (props) => {
         return <IoCalendarOutline style={iconStyles} />;
       case "otp":
         return <MdPassword style={iconStyles} />;
+      case "search":
+        return <IoSearch style={{ ...iconStyles, top: 5 }} />;
       default:
         break;
     }
   };
 
   return (
-    <div style={{ position: "relative" }}>
+    <div
+      style={{
+        position: "relative",
+        margin: containerMargin ?? null,
+        width: containerWidth ?? null,
+      }}
+    >
       {label ? (
         <>
           <label
@@ -99,7 +111,7 @@ const InputField = (props) => {
           borderRadius: "8px",
           boxSizing: "border-box",
           paddingLeft: icon ? "35px" : "10px",
-          marginTop: "5px",
+          margin: margin ? margin : "5px 0 0 0",
           paddingRight: type === "password" ? "40px" : null,
         }}
       />

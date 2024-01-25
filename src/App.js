@@ -51,6 +51,7 @@ const App = () => {
         open={snackBar.snackBarState}
         autoHideDuration={3000}
         onClose={handleClose}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
         <MuiAlert
           elevation={6}

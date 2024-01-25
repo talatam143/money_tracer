@@ -31,6 +31,15 @@ import UCOBank from "../assets/bank logos/UCO Bank.svg";
 import UnionBank from "../assets/bank logos/Union Bank.svg";
 import VijayaBank from "../assets/bank logos/Vijaya Bank.svg";
 
+import phonePayLogo from "../assets/upi logos/phone_pay.webp";
+import gpayLogo from "../assets/upi logos/gpay.webp";
+import amazonPayLogo from "../assets/upi logos/amazon_pay.png";
+import paytmLogo from "../assets/upi logos/paytm.webp";
+import credLogo from "../assets/upi logos/cred.webp";
+import axisPayLogo from "../assets/upi logos/axis_pay.webp";
+import freechargeLogo from "../assets/upi logos/freecharge.webp";
+import imobilePayLogo from "../assets/upi logos/imobile_pay.webp";
+
 export const bankRawData = [
   {
     title: "Bank of Baroda",
@@ -372,42 +381,46 @@ export const creditCardsRawData = [
 export const upiRawData = [
   {
     title: "PhonePe",
-    imageUrl:
-      "https://play-lh.googleusercontent.com/6iyA2zVz5PyyMjK5SIxdUhrb7oh9cYVXJ93q6DZkmx07Er1o90PXYeo6mzL4VC2Gj9s=w240-h480-rw",
+    imageUrl: phonePayLogo,
   },
   {
     title: "GPay",
-    imageUrl:
-      "https://play-lh.googleusercontent.com/HArtbyi53u0jnqhnnxkQnMx9dHOERNcprZyKnInd2nrfM7Wd9ivMNTiz7IJP6-mSpwk=w240-h480-rw",
+    imageUrl: gpayLogo,
   },
   {
     title: "Amazon Pay",
-    imageUrl:
-      "https://tradebrains.in/wp-content/uploads/2019/09/amazon-pay-upi-apps.png",
+    imageUrl: amazonPayLogo,
   },
   {
     title: "Paytm",
-    imageUrl:
-      "https://play-lh.googleusercontent.com/6_Qan3RBgpJUj0C2ct4l0rKKVdiJgF6vy0ctfWyQ7aN0lBjs78M-1cQUONQSVeo2jfs=w240-h480-rw",
+    imageUrl: paytmLogo,
   },
   {
     title: "Cred",
-    imageUrl:
-      "https://play-lh.googleusercontent.com/r2ZbsIr5sQ7Wtl1T6eevyWj4KS7QbezF7JYB9gxQnLWbf0K4kU7qaLNcJLLUh0WG-3pK=w240-h480-rw",
+    imageUrl: credLogo,
   },
   {
     title: "Axis Pay",
-    imageUrl:
-      "https://play-lh.googleusercontent.com/Fpvf0znc8XSggW5rzpNxXyONBDujMQAJMHYw0-eZdJKNjWhvkua2_ODulDPZTK4MmcU=w240-h480-rw",
+    imageUrl: axisPayLogo,
   },
   {
     title: "FreeCharge",
-    imageUrl:
-      "https://play-lh.googleusercontent.com/l_7fl4HP1a-lspMA3I3tkcQVvUqzoZZd4XNPo-WbHFChj7Z7--aklMLygX9x8et5Pg=w240-h480-rw",
+    imageUrl: freechargeLogo,
   },
   {
     title: "imobile Pay",
-    imageUrl:
-      "https://play-lh.googleusercontent.com/Hc8vNA4SOZwg5HMnBiwJLMT3tLYll54D994uZG7GeJYBtMEa2zHk8hNywTJZqpwWTg=w240-h480-rw",
+    imageUrl: imobilePayLogo,
   },
 ];
+
+export const allRawData = {
+  bankRawData: bankRawData.map((data) => {
+    return data.title;
+  }),
+  creditCardsRawData: creditCardsRawData.map((data) => {
+    return data.title;
+  }),
+  upiRawData: upiRawData.map((data) => {
+    return data.title;
+  }),
+};

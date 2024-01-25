@@ -1,25 +1,28 @@
-import React, { useState } from "react";
-import { motion, useAnimation } from "framer-motion";
+import React from "react";
+import { useDispatch } from "react-redux";
 import { userDataEnums } from "../../utils/enums";
 import Text from "../elements/text";
-import { AiFillCloseSquare } from "react-icons/ai";
-import { MdDelete, MdOutlineContactless } from "react-icons/md";
+import { MdOutlineContactless } from "react-icons/md";
 import { BsCreditCard2Front } from "react-icons/bs";
+import { userInfoService } from "../../services/user/user_info";
+import { formatUserData } from "../../utils/format_user_data";
+import { setUserData } from "../../features/user_info/user_info";
+import IconAnimation from "../elements/icon_animation";
 
 const UserDataCard = (props) => {
   const { type, item } = props;
-  const [deleteName, setDeleteName] = useState("");
-  const deleteButtonAnimation = useAnimation();
+  const dispatch = useDispatch();
 
-  const handleDeleteCard = (name) => {
-    setDeleteName(name);
-    deleteButtonAnimation.start({
-      width: "200px",
-      transition: {
-        duration: 0.4,
-        type: "linear",
-      },
-    });
+  const handleDeleteData = async () => {
+    const { status, data } = await userInfoService(
+      { data: [item.name], dbVar: type.dbVar },
+      "delete",
+      "/deleteuserdata"
+    );
+    if (status === 200) {
+      let formattedData = formatUserData(data);
+      dispatch(setUserData(formattedData));
+    }
   };
 
   switch (type.name) {
@@ -32,6 +35,12 @@ const UserDataCard = (props) => {
             className="user-info-bank-logo"
           />
           <Text content={item.name} m="8px 0 0 0" size="17px" weight="600" />
+          <div style={{ position: "absolute", bottom: "5px", right: "5px" }}>
+            <IconAnimation
+              handleClickFunc={handleDeleteData}
+              type="Delete"
+            />
+          </div>
         </div>
       );
     case userDataEnums[1].name:
@@ -43,6 +52,12 @@ const UserDataCard = (props) => {
             className="user-info-upi-logo"
           />
           <Text content={item.name} m="5px 0 0 0" size="17px" weight="600" />
+          <div style={{ position: "absolute", bottom: "5px", right: "5px" }}>
+            <IconAnimation
+              handleClickFunc={handleDeleteData}
+              type="Delete"
+            />
+          </div>
         </div>
       );
     case userDataEnums[2].name:
@@ -55,12 +70,15 @@ const UserDataCard = (props) => {
             </div>
             <MdOutlineContactless style={{ fontSize: "36px" }} />
           </div>
-          <div>
-            <div>
+          <div className="user-info-credit-card-number-container">
+            <div style={{ flexGrow: "1" }}>
               <Text content="xxxx xxxx xxxx 1234" m="0" size="16px" />
               <Text content="xx / xx" m="0" size="16px" />
             </div>
-            <MdDelete />
+            <IconAnimation
+              handleClickFunc={handleDeleteData}
+              type="Delete"
+            />
           </div>
         </div>
       );
