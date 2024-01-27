@@ -25,3 +25,8 @@ export const userDataEnums = Object.freeze([
     rawvar: "creditCardsRawData",
   },
 ]);
+
+export const queryDataEnums = Object.freeze({
+  sort: ["amount", "transactiondate"],
+  order: ["asec", "desc"],
+});

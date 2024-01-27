@@ -1,13 +1,67 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import InputField from "../elements/input_field";
 import TransactionsFilterIcon from "../../assets/transactions_filter";
+import { transactionService } from "../../services/transactions/transactions";
+import { useDispatch } from "react-redux";
+import { updateTransactionsData } from "../../features/transactions/transactions";
+import { queryDataEnums } from "../../utils/enums";
 
-const TransactionFilter = () => {
+const TransactionFilter = (props) => {
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [sortOptions, setSortOptions] = useState("");
+
+  useEffect(() => {
+    async function fetchData() {
+      const queryParams = new URLSearchParams(location.search);
+      const queries = {};
+      queryParams.forEach((value, key) => {
+        queries[key] = value;
+      });
+      // let queryKeys = Object.keys(queries);
+      // if (queryKeys?.length > 0) {
+      //   if (
+      //     queryKeys.includes("sort") &&
+      //     queryDataEnums.sort.includes(queries.sort)
+      //   ) {
+      //     setSortOptions(
+      //       `${queries["sort"]}-${
+      //         queryDataEnums.order.includes(queries.order)
+      //           ? queries.order
+      //           : "asec"
+      //       }`
+      //     );
+      //   } else {
+      //     console.log("resetted");
+      //     setSortOptions("reset");
+      //   }
+      // }
+
+      const { status, data } = await transactionService(
+        {},
+        "get",
+        "?skip=0",
+        queries
+      );
+      if (status === 200) {
+        dispatch(
+          updateTransactionsData({
+            transactionsCount: data?.transactionsCount,
+            transactions: data.transactions,
+          })
+        );
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      }
+    }
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.search]);
 
   const handleSortOption = (e) => {
     const urlParams = new URLSearchParams(location.search);

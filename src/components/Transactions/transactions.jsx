@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Skeleton } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import Menu from "../home/menu";
 import { statesEnum } from "../../utils/enums";
 import "./transactions_styles.css";
@@ -10,13 +11,15 @@ import TransactionFilter from "./transactions_filter";
 import { transactionService } from "../../services/transactions/transactions";
 import {
   setTransactionsData,
-  updateTransacions,
+  updateTransactionsData,
 } from "../../features/transactions/transactions";
 import { MemoizedNoTransactions } from "./transactions_constant_components";
 
 const Transactions = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
   const transactionsObserver = useRef();
+  const transactionsContainer = useRef(null);
   const fetchState = useSelector((state) => state.fetchState);
   const { transactions, transactionsCount, isDataFetched } = useSelector(
     (state) => state.transactionData
@@ -25,10 +28,17 @@ const Transactions = () => {
 
   useEffect(() => {
     async function fetchData() {
+      const queryParams = new URLSearchParams(location.search);
+      const queries = {};
+      queryParams.forEach((value, key) => {
+        queries[key] = value;
+      });
+
       const { status, data } = await transactionService(
         {},
         "get",
-        `?skip=${transactions?.length || 0}`
+        `?skip=${transactions?.length || 0}`,
+        queries
       );
       if (status === 200) {
         dispatch(
@@ -58,10 +68,17 @@ const Transactions = () => {
             transactions.length < transactionsCount
           ) {
             let pageNumber = transactions.length;
+            const queryParams = new URLSearchParams(location.search);
+            const queries = {};
+            queryParams.forEach((value, key) => {
+              queries[key] = value;
+            });
+
             const { status, data } = await transactionService(
               {},
               "get",
-              `?skip=${pageNumber}`
+              `?skip=${pageNumber}`,
+              queries
             );
             if (status === 200) {
               dispatch(
@@ -76,7 +93,7 @@ const Transactions = () => {
       );
       if (node) transactionsObserver.current.observe(node);
     },
-    [dispatch, fetchState.state, transactions, transactionsCount]
+    [dispatch, fetchState, location, transactions, transactionsCount]
   );
 
   const updateDeleteTransactions = (id) => {
@@ -87,7 +104,7 @@ const Transactions = () => {
         ...transactions.slice(removedIndex + 1),
       ];
       dispatch(
-        updateTransacions({
+        updateTransactionsData({
           transactionsCount: transactionsCount - 1,
           transactions: updatedTransactions,
         })
@@ -98,7 +115,10 @@ const Transactions = () => {
   return (
     <>
       {transactions.length > 0 ? (
-        <div className="transactions-list-container">
+        <div
+          className="transactions-list-container"
+          ref={transactionsContainer}
+        >
           <TransactionFilter />
           {transactions.map((eachTransaction, index) => (
             <TransactionItem
