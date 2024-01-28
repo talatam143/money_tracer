@@ -147,8 +147,8 @@ const TransactionItem = (props) => {
                 <Text
                   content={transactionItem.amount}
                   m="0"
-                  weight="500"
-                  size="17px"
+                  weight="600"
+                  size="20px"
                   color="#E0E0E0"
                 />
               </div>
@@ -158,7 +158,7 @@ const TransactionItem = (props) => {
                   content={transactionDate}
                   m="0 0 0 5px"
                   weight="500"
-                  size="17px"
+                  size="20px"
                   color="#E0E0E0"
                 />
               </div>
@@ -208,6 +208,35 @@ const TransactionItem = (props) => {
                 ) : null}
 
                 {transactionItem.bank && transactionItem.payment_method ? (
+                  <hr className="open-transaction-payments-container-hr" />
+                ) : null}
+                {["Credit Card", "UPI"].includes(
+                  transactionItem.payment_method
+                ) ? (
+                  <div style={{ textAlign: "center" }}>
+                    <Text
+                      content={transactionItem.payment_method}
+                      m="0"
+                      weight="600"
+                      size="17px"
+                      color="#FFFFFF"
+                    />
+                    <Text
+                      content={
+                        transactionItem.payment_method === "UPI"
+                          ? transactionItem.upi
+                          : transactionItem.credit_card
+                      }
+                      m="5px 0 0 0"
+                      weight="500"
+                      size="15px"
+                      color="#E0E0E0"
+                    />
+                  </div>
+                ) : null}
+                {["Credit Card", "UPI"].includes(
+                  transactionItem.payment_method
+                ) ? (
                   <hr className="open-transaction-payments-container-hr" />
                 ) : null}
                 {transactionItem.bank ? (

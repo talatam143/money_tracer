@@ -1,14 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion, useAnimation } from "framer-motion";
 import { MdDeleteForever } from "react-icons/md";
 import { IoClose } from "react-icons/io5";
 import { GrEdit } from "react-icons/gr";
+import { MdSaveAs } from "react-icons/md";
 import Button from "./button";
 
 const IconAnimation = (props) => {
   const { handleClickFunc, type, theme } = props;
+  const [iconColor, setIconCOlor] = useState({ dark: "", light: "" });
   const animateHandlContainer = useAnimation();
   const animateHandleIcon = useAnimation();
+
+  useEffect(() => {
+    switch (type) {
+      case "Delete":
+        setIconCOlor({ dark: "#f44336", light: "#f8b3ab" });
+        break;
+      case "Edit":
+        setIconCOlor({ dark: "#1e88e5", light: "#e3f2fd" });
+        break;
+      case "Draft":
+        setIconCOlor({ dark: "#FFC107", light: "#FFF8E1" });
+        break;
+      default:
+        break;
+    }
+  }, [type]);
 
   const showHandlePrompt = () => {
     animateHandlContainer.start({
@@ -47,6 +65,35 @@ const IconAnimation = (props) => {
     });
   };
 
+  const Icon = () => {
+    switch (type) {
+      case "Delete":
+        return (
+          <MdDeleteForever
+            onClick={showHandlePrompt}
+            className="open-transaction-animate-icon delet-icon"
+          />
+        );
+
+      case "Edit":
+        return (
+          <GrEdit
+            onClick={showHandlePrompt}
+            className="open-transaction-animate-icon edit-icon"
+          />
+        );
+      case "Draft":
+        return (
+          <MdSaveAs
+            onClick={showHandlePrompt}
+            className="open-transaction-animate-icon draft-icon"
+          />
+        );
+      default:
+        break;
+    }
+  };
+
   return (
     <div style={{ display: "flex", alignItems: "center" }}>
       <motion.div
@@ -65,12 +112,8 @@ const IconAnimation = (props) => {
         />
         <Button
           content={type}
-          color={
-            type === "Delete" ? "#f44336" : type === "Edit" ? "#1e88e5" : null
-          }
-          backgroundColor={
-            type === "Delete" ? "#f8b3ab" : type === "Edit" ? "#e3f2fd" : null
-          }
+          color={iconColor.dark}
+          backgroundColor={iconColor.light}
           width="60px"
           height="30px"
           border="none"
@@ -84,17 +127,7 @@ const IconAnimation = (props) => {
         animate={animateHandleIcon}
         style={{ fontSize: "26px", overflow: "hidden", height: "32px" }}
       >
-        {type === "Delete" ? (
-          <MdDeleteForever
-            onClick={showHandlePrompt}
-            className="open-transaction-delete-icon"
-          />
-        ) : type === "Edit" ? (
-          <GrEdit
-            onClick={showHandlePrompt}
-            className="open-transaction-edit-icon"
-          />
-        ) : null}
+        <Icon />
       </motion.div>
     </div>
   );

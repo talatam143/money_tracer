@@ -3,13 +3,14 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Login from "./components/login/login";
 import Dashboard from "./components/Dashboard/dashboard";
-import Transactions from "./components/Transactions/transactions";
+import Transactions from "./components/transactions/transactions";
 import Account from "./components/Account/account";
 import { statesEnum } from "./utils/enums";
 import { LinearProgress, Snackbar } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
 import { resetSnackBar } from "./features/snackbar/snackbar";
 import Global from "./components/global/global";
+import TransactionForm from "./components/transactions/transactionForm/transaction_form";
 
 const App = () => {
   const fetchState = useSelector((state) => state.fetchState);
@@ -67,6 +68,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/transactions" element={<Transactions />} />
+          <Route path="/new-transaction" element={<TransactionForm />} />
           <Route path="/account" element={<Account />} />
           <Route path="/login" element={<Login />} />
           <Route path="/offline" element={<Global type="offline" />} />

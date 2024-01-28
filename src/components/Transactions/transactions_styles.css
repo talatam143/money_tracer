@@ -3,7 +3,14 @@
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  margin: 10px 0 70px 0;
+  margin-bottom: 70px;
+}
+
+.transaction-list-query-reset-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 95%;
 }
 
 .transactions-list-item {
@@ -125,7 +132,7 @@
 }
 
 .open-transaction-payments-container {
-  margin: 10px 0;
+  margin: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -165,15 +172,22 @@
 }
 
 .transaction-filter-container {
-  display: grid;
-  grid-template-columns: 87% 11%;
-  gap: 1%;
-  align-items: center;
   padding: 5px 0;
   position: sticky;
-  top: 5px;
+  top: 0px;
   background-color: #ffffff;
   border-radius: 8px;
+  margin-top: 5px;
+  width: 100%;
+}
+
+.transaction-filter-search-container {
+  display: grid;
+  grid-template-columns: 75% 11% 11%;
+  gap: 1.5%;
+  align-items: center;
+  width: 95%;
+  margin: 0 auto;
 }
 
 .transaction-filter-button {
@@ -200,4 +214,94 @@
 
 .transactions-list-item-amount-container {
   align-items: flex-end;
+}
+
+.transaction-filter-radio-container {
+  margin: 10px 20px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.transaction-filter-radio-items {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.transaction-filter-radio-label {
+  color: #202020;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+input[type="radio"]:checked + label {
+  font-weight: 600;
+}
+
+input[type="radio"] {
+  height: 20px;
+  width:20px;
+}
+
+.transaction-filter-settings-container {
+  overflow-y: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  height: 100%;
+}
+
+.transaction-filter-settings-header {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: solid 1px;
+}
+
+.transaction-filter-settings-header :last-child {
+  position: fixed;
+  bottom: 0px;
+}
+
+.transaction-filter-settings-button {
+  width: 100%;
+  background-color: transparent;
+  font-size: 18px;
+  text-align: start;
+  border: none;
+  padding: 10px 0 10px 5px;
+  cursor: pointer;
+}
+
+.transaction-filter-settings-options {
+  border-top: solid 1px;
+  width: 59%;
+  height: 100%;
+  background-color: #ffffff;
+  padding: 5px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.transaction-filter-checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  margin: 8px 0;
+}
+
+.transaction-filter-checkboc-container label {
+  font-size: 17px;
+}
+
+.transaction-filter-date-picker {
+  border: solid 1px;
+  padding: 5px;
+  border-radius: 6px;
+}
+
+.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation24.MuiDialog-paper.MuiDialog-paperScrollPaper.MuiDialog-paperWidthSm.MuiPaper-root.MuiDialog-paper {
+  background-color: #e3f2fd !important;
+  border-radius: 14px;
 }

@@ -4,6 +4,7 @@ import {
   MdOutlinePermPhoneMsg,
   MdPermIdentity,
   MdPassword,
+  MdCurrencyRupee,
 } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 import {
@@ -13,6 +14,7 @@ import {
   IoSearch,
 } from "react-icons/io5";
 import { GrSecure } from "react-icons/gr";
+import { LuSubtitles } from "react-icons/lu";
 import Text from "./text";
 
 const InputField = (props) => {
@@ -68,8 +70,13 @@ const InputField = (props) => {
         return <IoCalendarOutline style={iconStyles} />;
       case "otp":
         return <MdPassword style={iconStyles} />;
+      case "title":
+        return <LuSubtitles style={iconStyles} />;
+      case "amount":
+        return <MdCurrencyRupee style={iconStyles} />;
       case "search":
         return <IoSearch style={{ ...iconStyles, top: 5 }} />;
+
       default:
         break;
     }
@@ -106,7 +113,7 @@ const InputField = (props) => {
         style={{
           height: height ? height : "40px",
           width: width ? width : "100%",
-          border: "solid 1px",
+          border: "solid 1.2px",
           borderColor: error ? "#F44336" : "grey",
           borderRadius: "8px",
           boxSizing: "border-box",

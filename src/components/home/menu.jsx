@@ -42,8 +42,10 @@ const Menu = () => {
   };
 
   const handleMenuClick = (menu) => {
-    setSelectedMenu(menu.name);
-    naviagate(menu.path);
+    if (location.pathname !== menu.path) {
+      setSelectedMenu(menu.name);
+      naviagate(menu.path);
+    }
   };
 
   return (

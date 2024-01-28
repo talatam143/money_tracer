@@ -61,20 +61,22 @@ input[type="date"] {
   right: 16px;
 }
 
-.open-transaction-delete-icon {
-  background-color: #f8b3ab;
+.open-transaction-animate-icon {
   border-radius: 6px;
   padding: 3px;
   font-size: 26px;
-  color: #f44336;
   cursor: pointer;
 }
 
-.open-transaction-edit-icon {
+.delet-icon {
+  background-color: #f8b3ab;
+  color: #f44336;
+}
+.edit-icon {
   background-color: #e3f2fd;
-  border-radius: 6px;
-  padding: 3px;
-  font-size: 26px;
   color: #1e88e5;
-  cursor: pointer;
+}
+.draft-icon {
+  background-color: #fff8e1;
+  color: #ffc107;
 }

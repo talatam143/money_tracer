@@ -1,65 +1,77 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { SwipeableDrawer } from "@mui/material";
 import InputField from "../elements/input_field";
 import TransactionsFilterIcon from "../../assets/transactions_filter";
-import { transactionService } from "../../services/transactions/transactions";
+import { TbArrowsSort } from "react-icons/tb";
 import { useDispatch } from "react-redux";
-import { updateTransactionsData } from "../../features/transactions/transactions";
+import { resetTransactionsData } from "../../features/transactions/transactions";
 import { queryDataEnums } from "../../utils/enums";
+import {
+  transactionFilterHeaders,
+  transactionSortOptions,
+} from "../../utils/transactions_form_data";
+import Text from "../elements/text";
+import TransactionFilterLayer from "./transaction_filter_layout";
+import Button from "../elements/button";
+
+const intialFilters = {
+  categories: [],
+  paymentMethods: [],
+  banks: [],
+  UPI: [],
+  creditCards: [],
+  date: "",
+  fromdate: "",
+  todate: "",
+};
 
 const TransactionFilter = (props) => {
+  const { transactionsCount } = props;
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [sortOptions, setSortOptions] = useState("");
+  const [sortOptions, setSortOptions] = useState("reset");
+  const [toggleFilters, setToggleFilters] = useState(false);
+  const [filterType, setFilterType] = useState("sort");
+  const [filterOption, setFilterOption] = useState(transactionFilterHeaders[0]);
+  const [searchfield, setSearchField] = useState("");
+  const [selectedFilters, setSelectedFilters] = useState(intialFilters);
 
   useEffect(() => {
-    async function fetchData() {
-      const queryParams = new URLSearchParams(location.search);
-      const queries = {};
-      queryParams.forEach((value, key) => {
-        queries[key] = value;
-      });
-      // let queryKeys = Object.keys(queries);
-      // if (queryKeys?.length > 0) {
-      //   if (
-      //     queryKeys.includes("sort") &&
-      //     queryDataEnums.sort.includes(queries.sort)
-      //   ) {
-      //     setSortOptions(
-      //       `${queries["sort"]}-${
-      //         queryDataEnums.order.includes(queries.order)
-      //           ? queries.order
-      //           : "asec"
-      //       }`
-      //     );
-      //   } else {
-      //     console.log("resetted");
-      //     setSortOptions("reset");
-      //   }
-      // }
+    const queryParams = new URLSearchParams(location.search);
+    const queries = {};
+    queryParams.forEach((value, key) => {
+      queries[key] = value;
+    });
 
-      const { status, data } = await transactionService(
-        {},
-        "get",
-        "?skip=0",
-        queries
-      );
-      if (status === 200) {
-        dispatch(
-          updateTransactionsData({
-            transactionsCount: data?.transactionsCount,
-            transactions: data.transactions,
-          })
+    let queryKeys = Object.keys(queries);
+    if (queryKeys?.length > 0) {
+      if (
+        queryKeys.includes("sort") &&
+        queryDataEnums.sort.includes(queries.sort)
+      ) {
+        setSortOptions(
+          `${queries["sort"]}-${
+            queryDataEnums.order.includes(queries.order)
+              ? queries.order
+              : "asec"
+          }`
         );
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth",
-        });
+      } else {
+        setSortOptions("reset");
       }
+      Object.keys(selectedFilters).forEach((eachFilter) => {
+        if (queryKeys.includes(eachFilter)) {
+          setSelectedFilters((prevSelectedCategories) => ({
+            ...prevSelectedCategories,
+            [eachFilter]: queries[eachFilter].split(","),
+          }));
+        }
+      });
+    } else {
+      setSelectedFilters(intialFilters);
     }
-    fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.search]);
 
@@ -67,7 +79,7 @@ const TransactionFilter = (props) => {
     const urlParams = new URLSearchParams(location.search);
     let value = e.target.value;
     if (value === "reset") {
-      setSortOptions("");
+      setSortOptions("reset");
       urlParams.delete("sort");
       urlParams.delete("order");
     } else {
@@ -76,91 +88,193 @@ const TransactionFilter = (props) => {
       urlParams.set("order", value.split("-")[1]);
     }
     navigate(`?${urlParams.toString()}`);
+    dispatch(resetTransactionsData());
+    setToggleFilters(false);
+  };
+
+  const handleCategoryChange = (e) => {
+    const { name, value } = e.target;
+    setSelectedFilters((prevSelectedCategories) => ({
+      ...prevSelectedCategories,
+      [name]: e.target.checked
+        ? [...prevSelectedCategories[name], value]
+        : prevSelectedCategories[name].filter((category) => category !== value),
+    }));
+  };
+
+  const handleDateChange = (value) => {
+    setSelectedFilters((prevSelectedCategories) => ({
+      ...prevSelectedCategories,
+      date: `${value.$y}-${value.$M + 1}-${value.$D}`,
+    }));
+  };
+
+  const handleToggleFilters = (type) => {
+    setFilterType(type);
+    setToggleFilters(!toggleFilters);
+  };
+
+  const handleFiltersQuery = () => {
+    const urlParams = new URLSearchParams(location.search);
+    let oldString = urlParams.toString();
+    for (const key of urlParams.keys()) {
+      urlParams.delete(key);
+    }
+    Object.keys(selectedFilters).forEach((eachFilter) => {
+      if (
+        ["date", "fromdate", "todate"].includes(eachFilter) &&
+        selectedFilters[eachFilter].length > 0
+      ) {
+        urlParams.set(eachFilter, selectedFilters[eachFilter]);
+      } else if (selectedFilters[eachFilter].length > 0) {
+        urlParams.set(eachFilter, selectedFilters[eachFilter].join(","));
+      }
+    });
+    if (urlParams.toString().length > 0 && oldString !== urlParams.toString()) {
+      navigate(`?${urlParams.toString()}`);
+      dispatch(resetTransactionsData());
+      setToggleFilters(false);
+    }
+  };
+
+  const handleSearchChange = (e) => {
+    let value = "";
+    if (e.target.value === "\\") {
+      value = "";
+    } else {
+      value = e.target.value;
+    }
+    setSearchField(value);
+    const urlParams = new URLSearchParams(location.search);
+    if (value.length === 0) {
+      urlParams.delete("searchfield");
+      navigate(`?${urlParams.toString()}`);
+      dispatch(resetTransactionsData());
+    } else if (value.length >= 3) {
+      urlParams.set("searchfield", value);
+      navigate(`?${urlParams.toString()}`);
+      dispatch(resetTransactionsData());
+    }
   };
 
   return (
     <div className="transaction-filter-container">
-      <InputField
-        width="100%"
-        icon="search"
-        type="search"
-        margin="-2px 0 0 0"
-        placeholder="Search Transactions"
-        fontSize="30px"
-      />
-      <button className="transaction-filter-button">
-        <TransactionsFilterIcon />
-      </button>
-      <div>
-        <FormControl
-          sx={{
-            m: "0 0 0 5px",
-            minWidth: 185,
-            "& .MuiInputLabel-root": {
-              color: "#000000",
-              fontWeight: 500,
-              fontSize: 18,
-            },
-            "& .MuiInputLabel-root.Mui-focused": {
-              color: "#000000",
-            },
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": {
-                borderColor: "#000000",
-                borderWidth: 1,
-              },
-            },
-            "& .MuiOutlinedInput-root:hover fieldset": {
-              borderColor: "#000000",
-            },
-            "& .MuiInputBase-root.MuiInput-root ": {
-              borderBottom: "#000000",
-            },
-            "& .MuiInputBase-root.MuiInput-root:after ": {
-              borderBottom: "2px solid #000000",
-            },
-            "& input[type=number]::-webkit-inner-spin-button, & input[type=number]::-webkit-outer-spin-button":
-              {
-                WebkitAppearance: "none",
-                appearance: "none",
-                margin: 0,
-              },
-          }}
-          size="small"
+      <div className="transaction-filter-search-container">
+        <InputField
+          width="100%"
+          icon="search"
+          type="search"
+          margin="-2px 0 0 0"
+          placeholder="Search Transactions"
+          fontSize="30px"
+          value={searchfield}
+          onChange={handleSearchChange}
+        />
+        <button
+          className="transaction-filter-button"
+          onClick={() => handleToggleFilters("filters")}
+          disabled={transactionsCount > 0 ? false : true}
         >
-          <InputLabel id="transaction-sort-filter">Sort</InputLabel>
-          <Select
-            labelId="transaction-sort-filter"
-            value={sortOptions}
-            label="Sort"
-            onChange={handleSortOption}
-            sx={{
-              "& .MuiSelect-select.MuiInputBase-input": {
-                color: "#000000",
-                display: "flex",
-                alignItems: "center",
-                gap: "5px",
-              },
-              "& .MuiSvgIcon-root.MuiSelect-icon": {
-                fill: "#000000",
-              },
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: "#000000 !important",
-              },
-            }}
-          >
-            <MenuItem value="reset">
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value={"amount-desc"}>Amount: High to Low</MenuItem>
-            <MenuItem value={"amount-asec"}>Amount: Low to High</MenuItem>
-            <MenuItem value={"transactiondate-desc"}>
-              Latest Transactions
-            </MenuItem>
-            <MenuItem value={"transactiondate-asec"}>Old Transactions</MenuItem>
-          </Select>
-        </FormControl>
+          <TransactionsFilterIcon />
+        </button>
+        <button
+          className="transaction-filter-button"
+          onClick={() => handleToggleFilters("sort")}
+          disabled={transactionsCount > 0 ? false : true}
+        >
+          <TbArrowsSort fontSize={30} />
+        </button>
       </div>
+      <SwipeableDrawer
+        anchor="bottom"
+        open={toggleFilters}
+        onClose={handleToggleFilters}
+        onOpen={handleToggleFilters}
+        sx={{
+          "& .MuiPaper-root.MuiDrawer-paper": {
+            backgroundColor: "#E3F2FD",
+            borderRadius: "18px 18px 0 0",
+            height: filterType === "sort" ? null : "60vh",
+            overflowY: "auto",
+          },
+        }}
+      >
+        <Text
+          content={filterType === "sort" ? "Sort By" : "Filters"}
+          p="15px 15px 0 15px"
+          m="5px 0 10px 0"
+          weight="600"
+          size="22px"
+          color="#202020"
+        />
+        {filterType === "sort" ? (
+          <div className="transaction-filter-radio-container">
+            {transactionSortOptions.map((eachOption) => (
+              <div
+                key={eachOption.value}
+                className="transaction-filter-radio-items"
+              >
+                <input
+                  type="radio"
+                  value={eachOption.value}
+                  id={eachOption.value}
+                  name="sort-transactions"
+                  checked={sortOptions === eachOption.value}
+                  onChange={handleSortOption}
+                />
+                <label
+                  htmlFor={eachOption.value}
+                  className="transaction-filter-radio-label"
+                >
+                  {eachOption.name}
+                </label>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="transaction-filter-settings-container">
+            <div className="transaction-filter-settings-header">
+              {transactionFilterHeaders.map((eachFilter) => (
+                <button
+                  key={eachFilter.displayText}
+                  className="transaction-filter-settings-button"
+                  style={{
+                    backgroundColor:
+                      filterOption === eachFilter ? "#FFFFFF" : null,
+                  }}
+                  onClick={() => setFilterOption(eachFilter)}
+                >
+                  {eachFilter.displayText}
+                  {selectedFilters[eachFilter.name].length > 0
+                    ? eachFilter.name === "date"
+                      ? " (1)"
+                      : ` (${selectedFilters[eachFilter.name].length})`
+                    : null}
+                </button>
+              ))}
+              <Button
+                content="Apply Filters"
+                border="none"
+                fontSize="22px"
+                fontWeight="600"
+                backgroundColor="#202020"
+                color="#FFFFFF"
+                width="40%"
+                height="50px"
+                handleClick={handleFiltersQuery}
+              />
+            </div>
+            <div className="transaction-filter-settings-options">
+              <TransactionFilterLayer
+                filterOption={filterOption}
+                selectedFilters={selectedFilters}
+                handleCategoryChange={handleCategoryChange}
+                handleDateChange={handleDateChange}
+              />
+            </div>
+          </div>
+        )}
+      </SwipeableDrawer>
     </div>
   );
 };

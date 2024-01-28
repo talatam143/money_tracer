@@ -11,6 +11,7 @@ const Text = (props) => {
     align,
     background,
     borderRadius,
+    width,
   } = props;
   return (
     <p
@@ -23,6 +24,7 @@ const Text = (props) => {
         textAlign: align ? align : null,
         backgroundColor: background ? background : null,
         borderRadius: borderRadius ? borderRadius : null,
+        width: width || null,
       }}
     >
       {content ? content : ""}

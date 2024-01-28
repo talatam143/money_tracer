@@ -339,3 +339,75 @@ export const transactionCategories = {
     },
   },
 };
+
+export const categoriesList = {
+  Entertainment: ["Games", "Movies", "Music", "Other", "Sports"],
+  "Food and drink": ["Dining out", "Groceries", "Liquor", "Other"],
+  Home: [
+    "Electronics",
+    "Furniture",
+    "Household supplies",
+    "Maintenance",
+    "Mortgage",
+    "Other",
+    "Pets",
+    "Rent",
+    "Services",
+  ],
+  Life: [
+    "Childcare",
+    "Clothing",
+    "Education",
+    "Gifts",
+    "Insurance",
+    "Medical expenses",
+    "Other",
+    "Taxes",
+  ],
+  Transportation: [
+    "Bicycle",
+    "Bus/train",
+    "Car",
+    "Gas/fuel",
+    "Hotel",
+    "Other",
+    "Parking",
+    "Plane",
+    "Taxi",
+  ],
+  Uncategorized: ["General"],
+  Utilities: [
+    "Cleaning",
+    "Electricity",
+    "Heat/gas",
+    "Other",
+    "Trash",
+    "TV/Phone/Internet",
+    "Water",
+  ],
+};
+
+export const transactionSortOptions = [
+  { name: "Amount: High to Low", value: "amount-desc" },
+  { name: "Amount: Low to High", value: "amount-asec" },
+  { name: "Latest Transactions", value: "transactiondate-desc" },
+  { name: "Old Transactions", value: "transactiondate-asec" },
+  { name: "None", value: "reset" },
+];
+
+export const transactionFilterHeaders = [
+  { displayText: "Categories", name: "categories" },
+  { displayText: "Payment methods", name: "paymentMethods" },
+  { displayText: "Date", name: "date" },
+  { displayText: "Banks", name: "banks" },
+  { displayText: "UPI", name: "UPI" },
+  { displayText: "Credit Cards", name: "creditCards" },
+];
+
+export const transactionPaymentMethods = [
+  "UPI",
+  "Credit Card",
+  "Debit Card",
+  "Intenet Baning",
+  "Cash",
+];
