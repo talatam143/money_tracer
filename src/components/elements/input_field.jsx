@@ -12,9 +12,12 @@ import {
   IoEyeOffOutline,
   IoCalendarOutline,
   IoSearch,
+  IoAddSharp,
+  IoPricetagsOutline,
 } from "react-icons/io5";
 import { GrSecure } from "react-icons/gr";
 import { LuSubtitles } from "react-icons/lu";
+import { FaRegUser } from "react-icons/fa";
 import Text from "./text";
 
 const InputField = (props) => {
@@ -35,6 +38,8 @@ const InputField = (props) => {
     readOnly,
     containerWidth,
     containerMargin,
+    addButton,
+    handleAddButtonClick,
   } = props;
   const [inputType, setInputType] = useState(props.type);
 
@@ -74,6 +79,10 @@ const InputField = (props) => {
         return <LuSubtitles style={iconStyles} />;
       case "amount":
         return <MdCurrencyRupee style={iconStyles} />;
+      case "user":
+        return <FaRegUser style={iconStyles} />;
+      case "tags":
+        return <IoPricetagsOutline style={iconStyles} />;
       case "search":
         return <IoSearch style={{ ...iconStyles, top: 5 }} />;
 
@@ -150,6 +159,25 @@ const InputField = (props) => {
           ) : (
             <IoEyeOffOutline style={iconStyle} />
           )}
+        </button>
+      ) : null}
+      {addButton ? (
+        <button
+          style={{
+            border: "none",
+            background: "#202020",
+            color: "#FFFFFF",
+            position: "absolute",
+            right: 0,
+            top: 26.7,
+            height: "40px",
+            cursor: "pointer",
+            borderRadius: "0 8px 8px 0",
+          }}
+          onClick={handleAddButtonClick}
+          type="button"
+        >
+          <IoAddSharp style={iconStyle} />
         </button>
       ) : null}
       <Icon />

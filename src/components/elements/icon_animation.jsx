@@ -15,6 +15,7 @@ const IconAnimation = (props) => {
   useEffect(() => {
     switch (type) {
       case "Delete":
+      case "Discard":
         setIconCOlor({ dark: "#f44336", light: "#f8b3ab" });
         break;
       case "Edit":
@@ -68,6 +69,7 @@ const IconAnimation = (props) => {
   const Icon = () => {
     switch (type) {
       case "Delete":
+      case "Discard":
         return (
           <MdDeleteForever
             onClick={showHandlePrompt}

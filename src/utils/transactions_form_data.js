@@ -39,7 +39,7 @@ import { TbWavesElectricity } from "react-icons/tb";
 import { GrInternetExplorer } from "react-icons/gr";
 
 const largeSize = "60px";
-const mediumSize = "32px";
+const mediumSize = "22px";
 
 export const transactionCategories = {
   Entertainment: {

@@ -6,12 +6,12 @@ import { userAuthService } from "../../services/auth/auth";
 import { useNavigate } from "react-router-dom";
 
 const initialFormState = {
-  name: "Sri",
-  email: "cocjarvis143@gmail.com",
-  mobileNumber: "8190885866",
-  dateOfBirth: "15-08-1997",
-  password: "Test@123",
-  mpin: "1234",
+  name: "",
+  email: "",
+  mobileNumber: "",
+  dateOfBirth: "",
+  password: "",
+  mpin: "",
 };
 
 const initialErrorState = {

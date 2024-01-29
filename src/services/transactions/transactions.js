@@ -19,10 +19,8 @@ export const transactionService = async (formData, method, path, queries) => {
       headers: {},
       params: queries,
     };
-    if (method === "get" || "delete") {
-      const token = localStorage.getItem("userId");
-      config.headers.Authorization = `bearer ${token}`;
-    }
+    const token = localStorage.getItem("userId");
+    config.headers.Authorization = `bearer ${token}`;
     if (method !== "get") {
       config.headers["Content-Type"] = "application/json";
       let data = JSON.stringify(formData);
@@ -31,7 +29,7 @@ export const transactionService = async (formData, method, path, queries) => {
 
     const response = await axios.request(config);
     store.dispatch(setSuccessState());
-    if (method === "delete") {
+    if (method === "delete" || method === "post") {
       store.dispatch(
         showSnackBar({
           message: response?.data?.data?.message,
