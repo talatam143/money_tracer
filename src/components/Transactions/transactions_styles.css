@@ -241,7 +241,7 @@ input[type="radio"]:checked + label {
 
 input[type="radio"] {
   height: 20px;
-  width:20px;
+  width: 20px;
 }
 
 .transaction-filter-settings-container {
@@ -304,4 +304,22 @@ input[type="radio"] {
 .MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation24.MuiDialog-paper.MuiDialog-paperScrollPaper.MuiDialog-paperWidthSm.MuiPaper-root.MuiDialog-paper {
   background-color: #e3f2fd !important;
   border-radius: 14px;
+}
+
+.transaction-scroll-top-btn {
+  position: fixed;
+  bottom: 65px;
+  left: 12px;
+  background-color: #000000;
+  color: #ffffff;
+  border-radius: 50px;
+  width: 50px;
+  height: 50px;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }

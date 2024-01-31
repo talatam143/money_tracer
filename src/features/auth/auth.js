@@ -1,4 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { resetTransactionsData } from "../transactions/transactions";
+import { store } from "../../store";
 
 const initialState = {
   isUserLoggedIn: false,

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { IoMdCloseCircle } from "react-icons/io";
 import Text from "../../elements/text";
 import "./transaction_form_styles.css";
@@ -16,7 +17,11 @@ import MuiSelect from "../../elements/mui_select";
 import Button from "../../elements/button";
 import { transactionService } from "../../../services/transactions/transactions";
 import { resetTransactionsData } from "../../../features/transactions/transactions";
-import { useNavigate } from "react-router-dom";
+import {
+  draftTransactionForm,
+  resetTransactionForm,
+} from "../../../features/transactions/transaction_form";
+import { Dialog, DialogActions } from "@mui/material";
 
 const initalFormState = {
   title: "",
@@ -40,9 +45,17 @@ const TransactionForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userData = useSelector((state) => state.userData);
-  const [transactionFormData, setTransactionFormData] =
-    useState(initalFormState);
-  const [membersTags, setMemebersTags] = useState(intialMembersTags);
+  const { isTransactionDrafted, transactionObj, membersObj } = useSelector(
+    (state) => state.transactionForm
+  );
+  const [transactionFormData, setTransactionFormData] = useState(
+    isTransactionDrafted ? transactionObj : initalFormState
+  );
+  const [membersTags, setMemebersTags] = useState(
+    isTransactionDrafted ? membersObj : intialMembersTags
+  );
+  const [draftConfirmation, setDraftConfirmation] =
+    useState(isTransactionDrafted);
   const [paymentInfoVar, setPaymentInfoVar] = useState("");
   const [titleError, setTitleError] = useState(false);
 
@@ -62,6 +75,19 @@ const TransactionForm = () => {
     }
     fetchUserData();
   }, [dispatch, userData.isDataFetched]);
+
+  useEffect(() => {
+    if (isTransactionDrafted) {
+      if (transactionObj.paymentMethod === "UPI") {
+        setPaymentInfoVar("upiData");
+      } else if (transactionObj.paymentMethod === "Credit Card") {
+        setPaymentInfoVar("creditCardData");
+      } else {
+        setPaymentInfoVar("");
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleTransactionSubmit = async (e) => {
     e.preventDefault();
@@ -90,9 +116,10 @@ const TransactionForm = () => {
       const { status } = await transactionService(formData, "post", "/add");
       if (status === 200) {
         dispatch(resetTransactionsData());
-        setTransactionFormData(initalFormState);
-        setMemebersTags(intialMembersTags);
-        navigate("/transactions");
+        if (isTransactionDrafted) {
+          dispatch(resetTransactionForm());
+        }
+        handleTransactionDiscard();
       }
     }
   };
@@ -152,6 +179,37 @@ const TransactionForm = () => {
     }));
   };
 
+  const handleTransactionDiscard = (state) => {
+    if (isTransactionDrafted && state) {
+      dispatch(resetTransactionForm());
+    }
+    setTransactionFormData(initalFormState);
+    setMemebersTags(intialMembersTags);
+    setPaymentInfoVar("");
+    setTitleError(false);
+    navigate("/transactions");
+  };
+
+  const handleTransactionDraft = () => {
+    dispatch(
+      draftTransactionForm({
+        transactionObj: transactionFormData,
+        membersObj: membersTags,
+      })
+    );
+    handleTransactionDiscard();
+  };
+
+  const handleDialogAction = (action) => {
+    if (action === "Yes") {
+      setDraftConfirmation(false);
+    } else if (action === "No") {
+      dispatch(resetTransactionForm());
+      setDraftConfirmation(false);
+      setTransactionFormData(initalFormState);
+    }
+  };
+
   return (
     <div className="transaction-form-container">
       <div className="transaction-form-header-continer">
@@ -163,11 +221,15 @@ const TransactionForm = () => {
           color="#E0E0E0"
         />
         <div className="transaction-form-header-icon-container">
-          <IconAnimation type="Draft" theme />
+          <IconAnimation
+            type="Draft"
+            theme
+            handleClickFunc={handleTransactionDraft}
+          />
           <IconAnimation
             type="Discard"
             theme
-            handleClickFunc={() => navigate("/")}
+            handleClickFunc={() => handleTransactionDiscard(true)}
           />
         </div>
       </div>
@@ -209,6 +271,7 @@ const TransactionForm = () => {
             className="transaction-form-text-area"
             style={{ resize: "vertical" }}
             onChange={handleFormChange}
+            value={transactionFormData.description}
           ></textarea>
         </div>
 
@@ -326,9 +389,7 @@ const TransactionForm = () => {
             ))}
           </div>
         ))}
-        <div
-          style={{ width: "100%", display: "flex", justifyContent: "center" }}
-        >
+        <div className="transaction-form-submit-btn-container">
           <Button
             type="submit"
             content="Save Transaction"
@@ -340,9 +401,35 @@ const TransactionForm = () => {
             height="42px"
             fontSize="20px"
             fontWeight="500"
+            icon="none"
           />
         </div>
       </form>
+      <Dialog open={draftConfirmation}>
+        <Text
+          content="Continue with drafted transaction .?"
+          m="15px"
+          size="22px"
+          weight="600"
+        />
+        <DialogActions sx={{ margin: "10px" }}>
+          {["Yes", "No"].map((eachAction) => (
+            <Button
+              key={eachAction}
+              content={eachAction}
+              border="none"
+              backgroundColor="#202020"
+              color="#FFFFFF"
+              borderRadius="8px"
+              width="70px"
+              height="38px"
+              fontSize="20px"
+              fontWeight="500"
+              handleClick={() => handleDialogAction(eachAction)}
+            />
+          ))}
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

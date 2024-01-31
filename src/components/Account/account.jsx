@@ -9,10 +9,14 @@ import Profilecard from "./profile_card";
 import PaymentInfoCard from "./paymentInfo_cards";
 import Button from "../elements/button";
 import { userInfoService } from "../../services/user/user_info";
-import { setUserData } from "../../features/user_info/user_info";
+import { resetUserData, setUserData } from "../../features/user_info/user_info";
 import UserDataDialog from "./user_data_dialog";
 import { userDataEnums } from "../../utils/enums";
 import { formatUserData } from "../../utils/format_user_data";
+import { resetSnackBar } from "../../features/snackbar/snackbar";
+import { resetTransactionForm } from "../../features/transactions/transaction_form";
+import { resetState } from "../../features/fetch_state/fetch_state";
+import { resetTransactionsData } from "../../features/transactions/transactions";
 
 const Account = () => {
   const dispatch = useDispatch();
@@ -23,6 +27,11 @@ const Account = () => {
   const userData = useSelector((state) => state.userData);
 
   const handleLogout = () => {
+    dispatch(resetUserData());
+    dispatch(resetSnackBar());
+    dispatch(resetTransactionForm());
+    dispatch(resetState());
+    dispatch(resetTransactionsData());
     dispatch(setUserLogout());
     navigate("/login");
   };
@@ -136,7 +145,11 @@ const Account = () => {
           }
           animate={containerAnimation}
         >
-          <UserDataDialog toggleDialog={toggleDialog} type={dialogDataType} />
+          <UserDataDialog
+            toggleDialog={toggleDialog}
+            type={dialogDataType}
+            state={showDetailsDialog}
+          />
         </motion.div>
       </motion.div>
       <Menu />

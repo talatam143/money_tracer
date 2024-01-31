@@ -14,6 +14,7 @@ import {
   setTransactionsData,
   updateTransactionsData,
 } from "../../features/transactions/transactions";
+import { FaArrowUp } from "react-icons/fa";
 import { MemoizedNoTransactions } from "./transactions_constant_components";
 import Text from "../elements/text";
 import Button from "../elements/button";
@@ -28,12 +29,13 @@ const Transactions = () => {
   const { transactions, transactionsCount, isDataFetched } = useSelector(
     (state) => state.transactionData
   );
-  const [transactionsFetched, setTransactionsFetched] = useState(false);
+  const [transactionsFetched, setTransactionsFetcing] = useState(false);
   const [hasQueries, setHasQueries] = useState(false);
+  const [scrollTop, setScrollTop] = useState(false);
 
   useEffect(() => {
-    setTransactionsFetched(false);
     async function fetchData() {
+      setTransactionsFetcing(true);
       const queryParams = new URLSearchParams(location.search);
       const queries = {};
       queryParams.forEach((value, key) => {
@@ -54,14 +56,15 @@ const Transactions = () => {
         queries
       );
       if (status === 200) {
+        console.log("herer");
         dispatch(
           updateTransactionsData({
             transactionsCount: data?.transactionsCount,
             transactions: data.transactions,
           })
         );
-        setTransactionsFetched(true);
       }
+      setTransactionsFetcing(false);
     }
     if (!isDataFetched) {
       fetchData();
@@ -75,6 +78,20 @@ const Transactions = () => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.search]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 2500) {
+        setScrollTop(true);
+      } else {
+        setScrollTop(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   const lastTransactionElementRef = useCallback(
     (node) => {
@@ -143,6 +160,13 @@ const Transactions = () => {
     navigate("/transactions");
   };
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <>
       <TransactionFilter transactionsCount={transactionsCount} />
@@ -193,6 +217,14 @@ const Transactions = () => {
               transactionItem={eachTransaction}
             />
           ))}
+          {scrollTop ? (
+            <button
+              className="transaction-scroll-top-btn"
+              onClick={scrollToTop}
+            >
+              <FaArrowUp />
+            </button>
+          ) : null}
         </div>
       ) : null}
       {fetchState.state === statesEnum.LOADING ? (
@@ -216,7 +248,7 @@ const Transactions = () => {
           ))}
         </div>
       ) : null}
-      {transactions.length === 0 && transactionsFetched ? (
+      {transactions.length === 0 && !transactionsFetched ? (
         <MemoizedNoTransactions
           hasQueries={hasQueries}
           handleResetFilters={handleResetFilters}

@@ -1,5 +1,5 @@
 .transaction-form-container {
-  background-color: #697586;
+  background-color: antiquewhite;
   min-height: 100vh;
   margin: 0;
   padding: 5px;
@@ -66,6 +66,16 @@
   color: #ffffff;
   padding: 5px 2px 5px 5px;
   border-radius: 8px;
+}
+
+.transaction-form-submit-btn-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.transaction-form-submit-btn-container > button {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
 .MuiSelect-select.MuiInputBase-input.MuiOutlinedInput-input.MuiSelect-select.MuiInputBase-input.MuiOutlinedInput-input.MuiSelect-select.MuiInputBase-input.MuiOutlinedInput-input {

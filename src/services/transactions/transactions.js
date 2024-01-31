@@ -32,16 +32,20 @@ export const transactionService = async (formData, method, path, queries) => {
     if (method === "delete" || method === "post") {
       store.dispatch(
         showSnackBar({
-          message: response?.data?.data?.message,
+          message:
+            response?.data?.data?.message ||
+            response?.data?.data?.errorMessage ||
+            "",
           severity: "success",
         })
       );
     }
+
     return { status: response?.status, data: response?.data?.data };
   } catch (error) {
     if (
       error?.response?.status &&
-      [400, 404, 500, 202].includes(error?.response?.status)
+      [400, 404, 500].includes(error?.response?.status)
     ) {
       store.dispatch(setErrorState());
       store.dispatch(

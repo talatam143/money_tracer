@@ -9,12 +9,12 @@ const TransactionButton = React.memo(() => {
       className="transaction-add-button"
       onClick={() => navigate("/new-transaction")}
     >
-      Add
+      New Transaction
       <svg
         xmlns="http://www.w3.org/2000/svg"
         className="icon icon-tabler icon-tabler-playlist-add transaction-add-button-icon"
-        width="30"
-        height="30"
+        width="35"
+        height="35"
         viewBox="0 0 24 24"
         strokeWidth="2"
         stroke="#FFFFFF"

@@ -33,7 +33,7 @@ import VijayaBank from "../assets/bank logos/Vijaya Bank.svg";
 
 import phonePayLogo from "../assets/upi logos/phone_pay.webp";
 import gpayLogo from "../assets/upi logos/gpay.webp";
-import amazonPayLogo from "../assets/upi logos/amazon_pay.png";
+import amazonPayLogo from "../assets/upi logos/amazon_pay.webp";
 import paytmLogo from "../assets/upi logos/paytm.webp";
 import credLogo from "../assets/upi logos/cred.webp";
 import axisPayLogo from "../assets/upi logos/axis_pay.webp";

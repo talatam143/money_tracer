@@ -15,7 +15,7 @@ import { setUserData } from "../../features/user_info/user_info";
 import { formatUserData } from "../../utils/format_user_data";
 
 const UserDataDialog = (props) => {
-  const { toggleDialog, type } = props;
+  const { toggleDialog, type, state } = props;
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.userData.userData);
   const [enableSearch, setEnableSearch] = useState(false);
@@ -67,10 +67,16 @@ const UserDataDialog = (props) => {
 
   const NoInfo = () => {
     return (
-      <div className="userdata-noinfo-container">
+      <div
+        className="userdata-noinfo-container"
+        style={{
+          height: !state ? "0px" : null,
+          overflow: !state ? "hidden" : null,
+        }}
+      >
         <NoData />
         <Text
-          content={`Looks like you haven't added any ${type.name.toLowerCase()} details yet. Click "Add" to add your bank information.`}
+          content={`Looks like you haven't added any ${type.name.toLowerCase()} details yet. Click "Add" to add.`}
           weight="500"
           size="18px"
         />

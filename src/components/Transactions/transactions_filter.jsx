@@ -192,7 +192,7 @@ const TransactionFilter = (props) => {
         onOpen={handleToggleFilters}
         sx={{
           "& .MuiPaper-root.MuiDrawer-paper": {
-            backgroundColor: "#E3F2FD",
+            backgroundColor: "antiquewhite",
             borderRadius: "18px 18px 0 0",
             height: filterType === "sort" ? null : "60vh",
             overflowY: "auto",
