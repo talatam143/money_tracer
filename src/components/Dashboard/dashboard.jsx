@@ -1,14 +1,15 @@
 import React from "react";
 import Menu from "../home/menu";
 import TransactionButton from "../elements/transaction_button";
+import NewUserDashBoard from "./new_user/dashboard";
 
 const Dashboard = () => {
   return (
-    <div>
-      <p>Dashboard</p>
+    <>
+      <NewUserDashBoard />
       <TransactionButton />
       <Menu />
-    </div>
+    </>
   );
 };
 
