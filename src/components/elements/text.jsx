@@ -12,6 +12,7 @@ const Text = (props) => {
     background,
     borderRadius,
     width,
+    lineheight,
   } = props;
   return (
     <p
@@ -25,6 +26,7 @@ const Text = (props) => {
         backgroundColor: background ? background : null,
         borderRadius: borderRadius ? borderRadius : null,
         width: width || null,
+        lineHeight: lineheight || null,
       }}
     >
       {content ? content : ""}
