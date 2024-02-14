@@ -2,14 +2,8 @@
 
 body {
   font-family: "Open Sans", sans-serif;
-  /* background-color: #f5f5dc; */
-  /* color: #6ab04c;
-  color: #87ceeb;
-  color: #dc143c;
-  color: #ff8c00;
-  color: #f5f5dc;
-  color: #faf0e6; */
   margin: 0;
+  box-sizing: border-box;
 }
 
 /* Chrome, Safari, Edge, Opera */

@@ -17,6 +17,7 @@ import { resetSnackBar } from "../../features/snackbar/snackbar";
 import { resetTransactionForm } from "../../features/transactions/transaction_form";
 import { resetState } from "../../features/fetch_state/fetch_state";
 import { resetTransactionsData } from "../../features/transactions/transactions";
+import { resetDashboardState } from "../../features/dashboard/dashboard";
 
 const Account = () => {
   const dispatch = useDispatch();
@@ -33,6 +34,7 @@ const Account = () => {
     dispatch(resetState());
     dispatch(resetTransactionsData());
     dispatch(setUserLogout());
+    dispatch(resetDashboardState());
     navigate("/login");
   };
 

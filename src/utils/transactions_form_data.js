@@ -26,9 +26,14 @@ import {
   MdPets,
   MdCleaningServices,
 } from "react-icons/md";
-import { LuPlugZap } from "react-icons/lu";
+import { LuPlugZap, LuQrCode } from "react-icons/lu";
 import { HiHomeModern, HiMiniTrash } from "react-icons/hi2";
-import { BsCashCoin, BsFillTaxiFrontFill } from "react-icons/bs";
+import {
+  BsCashCoin,
+  BsFillTaxiFrontFill,
+  BsGlobe2,
+  BsCreditCard2FrontFill,
+} from "react-icons/bs";
 import { FaHandsHoldingChild, FaHotel } from "react-icons/fa6";
 import { LiaLifeRingSolid } from "react-icons/lia";
 import { RiMedicineBottleFill, RiGasStationFill } from "react-icons/ri";
@@ -37,6 +42,7 @@ import { IoMdTrain } from "react-icons/io";
 import { FaCar, FaParking, FaPlaneDeparture, FaWater } from "react-icons/fa";
 import { TbWavesElectricity } from "react-icons/tb";
 import { GrInternetExplorer } from "react-icons/gr";
+import { GiMoneyStack } from "react-icons/gi";
 
 const largeSize = "60px";
 const mediumSize = "22px";
@@ -411,3 +417,11 @@ export const transactionPaymentMethods = [
   "Intenet Baning",
   "Cash",
 ];
+
+export const transactionPaymentMethodIcons = {
+  UPI: { icon: <LuQrCode /> },
+  "Credit Card": { icon: <BsCreditCard2FrontFill /> },
+  "Debit Card": { icon: <BsCreditCard2FrontFill /> },
+  "Intenet Baning": { icon: <BsGlobe2 /> },
+  Cash: { icon: <GiMoneyStack /> },
+};

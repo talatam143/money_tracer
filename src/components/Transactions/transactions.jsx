@@ -56,7 +56,6 @@ const Transactions = () => {
         queries
       );
       if (status === 200) {
-        console.log("herer");
         dispatch(
           updateTransactionsData({
             transactionsCount: data?.transactionsCount,
