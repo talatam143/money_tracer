@@ -12,7 +12,7 @@ const Dashboard = () => {
   const isDashboardFetched = useSelector((state) => state.dashboard.isFetched);
   const [analyticsState, setAnalyticsState] = useState(statesEnum.INITIAL);
   const [chartsState, setChartsState] = useState(statesEnum.INITIAL);
-  
+
   useEffect(() => {
     if (!isDashboardFetched) {
       fetchDashBoardData();
@@ -31,14 +31,16 @@ const Dashboard = () => {
     );
     if (status === 200) {
       setAnalyticsState(statesEnum.SUCCESS);
-      setChartsState(statesEnum.LOADING);
       if (isChartsAvailable) {
+        setChartsState(statesEnum.LOADING);
         let { status } = await dashboardService("get", "/charts");
         if (status === 200) {
           setChartsState(statesEnum.SUCCESS);
         } else {
           setChartsState(statesEnum.ERROR);
         }
+      } else {
+        setChartsState(statesEnum.ERROR);
       }
     } else if (status === 202) {
       setAnalyticsState(statesEnum.ERROR);
@@ -54,7 +56,7 @@ const Dashboard = () => {
       ) : (
         <div className="dashboard-container">
           <Analytics state={analyticsState} />
-          {/* <Charts state={chartsState} /> */}
+          <Charts state={chartsState} />
         </div>
       )}
       <Menu />

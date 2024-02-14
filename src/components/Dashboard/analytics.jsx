@@ -66,6 +66,8 @@ const Analytics = (props) => {
   const oldTransaction = transactionsStats?.OldTransaction?.[0]?.transaction;
 
   switch (state) {
+    case statesEnum.INITIAL:
+      return null;
     case statesEnum.LOADING:
       return (
         <div className="dashboard-transactions-skeleton-container">

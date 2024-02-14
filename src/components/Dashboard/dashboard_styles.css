@@ -1,9 +1,10 @@
 .dashboard-container {
-  margin-bottom: 60px;
+  margin-bottom: 55px;
 }
 
 .dashboard-transactions-skeleton-container {
-  height: calc(100vh - 60px);
+  height: calc(100vh - 70px);
+  overflow: hidden;
   box-sizing: border-box;
   margin: 10px;
   display: flex;
@@ -20,8 +21,9 @@
   flex-grow: 1;
 }
 
-.dashboard-transactions-container {
-  padding: 10px;
+.dashboard-transactions-container,
+.dashboard-charts-container {
+  padding: 10px 10px 0 10px;
   background-color: #eef2f6;
   display: flex;
   flex-wrap: wrap;
@@ -266,4 +268,11 @@
 .dashboard-records-sub-text-container > p:nth-child(3) {
   font-size: 14px;
   font-weight: 500;
+}
+
+.dashboard-chart-pie-container{
+  background-color: #ffffff;
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
 }

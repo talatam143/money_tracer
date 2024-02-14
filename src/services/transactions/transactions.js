@@ -6,6 +6,7 @@ import {
   setSuccessState,
 } from "../../features/fetch_state/fetch_state";
 import { showSnackBar } from "../../features/snackbar/snackbar";
+import { resetDashboardState } from "../../features/dashboard/dashboard";
 
 const serverUrl = `${process.env.REACT_APP_SERVER_URL}transaction`;
 
@@ -30,6 +31,7 @@ export const transactionService = async (formData, method, path, queries) => {
     const response = await axios.request(config);
     store.dispatch(setSuccessState());
     if (method === "delete" || method === "post") {
+      store.dispatch(resetDashboardState());
       store.dispatch(
         showSnackBar({
           message:
