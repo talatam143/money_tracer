@@ -2,7 +2,10 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Skeleton } from "@mui/material";
 import { statesEnum } from "../../utils/enums";
-import Text from "../elements/text";
+import PaymentMethodChart from "./Charts/payment_method";
+import BankChart from "./Charts/banks";
+import CategoriesChart from "./Charts/categorie";
+import UserCarousel from "./new_user/carousel";
 
 const skeletonProperties = [
   { width: 100, height: 250 },
@@ -14,7 +17,6 @@ const Charts = (props) => {
   const { state } = props;
   const chartsStats = useSelector((state) => state.dashboard.charts);
 
-  console.log(chartsStats);
   switch (state) {
     case statesEnum.INITIAL:
       return null;
@@ -40,13 +42,20 @@ const Charts = (props) => {
       return (
         <div className="dashboard-charts-container">
           {chartsStats?.paymentMethodStats ? (
-            <div className="dashboard-chart-pie-container">
-              <Text content="Payment methods" m="0" />
-            </div>
+            <PaymentMethodChart
+              paymentMethodStats={chartsStats?.paymentMethodStats}
+            />
+          ) : null}
+          {chartsStats?.bankStats ? (
+            <BankChart bankStats={chartsStats?.bankStats} />
+          ) : null}
+          {chartsStats?.categoryStats ? (
+            <CategoriesChart categoryStats={chartsStats?.categoryStats} />
           ) : null}
         </div>
       );
-
+    case statesEnum.ERROR:
+      return <UserCarousel />;
     default:
       return null;
   }

@@ -20,6 +20,18 @@ export const transactionsSlice = createSlice({
       let { transactionsCount, transactions } = payload.payload;
       state.isDataFetched = true;
       state.transactionsCount = transactionsCount;
+      state.transactions = [...[], ...transactions];
+    },
+    updateEditTransaction: (state, payload) => {
+      let updatedTransaction = payload?.payload?.data;
+      let transactions = state.transactions;
+
+      const foundIndex = transactions?.findIndex(
+        (obj) => obj?._id === updatedTransaction?._id
+      );
+      if (foundIndex !== -1) {
+        transactions[foundIndex] = updatedTransaction;
+      }
       state.transactions = transactions;
     },
     resetTransactionsData: (state) => {
@@ -30,7 +42,11 @@ export const transactionsSlice = createSlice({
   },
 });
 
-export const { setTransactionsData, resetTransactionsData, updateTransactionsData } =
-  transactionsSlice.actions;
+export const {
+  setTransactionsData,
+  resetTransactionsData,
+  updateTransactionsData,
+  updateEditTransaction,
+} = transactionsSlice.actions;
 
 export default transactionsSlice.reducer;

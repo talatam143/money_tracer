@@ -34,8 +34,8 @@ export const dashboardService = async (method, path) => {
       isChartsAvailable: response?.data?.isChartsAvailable,
     };
   } catch (error) {
+    store.dispatch(setErrorState());
     if (error?.response?.status && [500].includes(error?.response?.status)) {
-      store.dispatch(setErrorState());
       store.dispatch(
         showSnackBar({
           message: error?.response?.data?.data?.errorMessage,
@@ -43,7 +43,7 @@ export const dashboardService = async (method, path) => {
         })
       );
     } else {
-      //   window.location.href = "/error";
+      // window.location.href = "/error";
       console.log(error);
     }
     return {

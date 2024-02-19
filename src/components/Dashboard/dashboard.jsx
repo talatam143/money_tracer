@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Menu from "../home/menu";
 import NewUserDashBoard from "./new_user/dashboard";
 import { dashboardService } from "../../services/dashboard/dashboard";
@@ -7,14 +8,20 @@ import Charts from "./charts";
 import { useSelector } from "react-redux";
 import { statesEnum } from "../../utils/enums";
 import "./dashboard_styles.css";
+import BrandLogo from "../../assets/brand_logo";
+import DashBoardUser from "../../assets/dashboard_user";
+import Text from "../elements/text";
 
 const Dashboard = () => {
   const isDashboardFetched = useSelector((state) => state.dashboard.isFetched);
   const [analyticsState, setAnalyticsState] = useState(statesEnum.INITIAL);
   const [chartsState, setChartsState] = useState(statesEnum.INITIAL);
+  const userInfo = useSelector((state) => state.auth);
+  const isUserLoggedIn = useSelector((state) => state.auth.isUserLoggedIn);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isDashboardFetched) {
+    if (!isDashboardFetched && isUserLoggedIn) {
       fetchDashBoardData();
     } else {
       setAnalyticsState(statesEnum.SUCCESS);
@@ -55,6 +62,22 @@ const Dashboard = () => {
         <NewUserDashBoard />
       ) : (
         <div className="dashboard-container">
+          {analyticsState === statesEnum.SUCCESS ? (
+            <div className="dashboard-navbar-container">
+              <BrandLogo width="50px" height="50px" />
+              <div
+                className="dashboard-navbar-user-container"
+                onClick={() => navigate("/account")}
+              >
+                <Text
+                  content={userInfo?.name?.split(" ")[0]}
+                  color="#4527A0"
+                  m="0"
+                />
+                <DashBoardUser />
+              </div>
+            </div>
+          ) : null}
           <Analytics state={analyticsState} />
           <Charts state={chartsState} />
         </div>

@@ -30,7 +30,7 @@ export const transactionService = async (formData, method, path, queries) => {
 
     const response = await axios.request(config);
     store.dispatch(setSuccessState());
-    if (method === "delete" || method === "post") {
+    if (method === "delete" || method === "post" || method === "put") {
       store.dispatch(resetDashboardState());
       store.dispatch(
         showSnackBar({
@@ -42,14 +42,13 @@ export const transactionService = async (formData, method, path, queries) => {
         })
       );
     }
-
     return { status: response?.status, data: response?.data?.data };
   } catch (error) {
+    store.dispatch(setErrorState());
     if (
       error?.response?.status &&
-      [400, 404, 500].includes(error?.response?.status)
+      [400, 404, 422, 500].includes(error?.response?.status)
     ) {
-      store.dispatch(setErrorState());
       store.dispatch(
         showSnackBar({
           message: error?.response?.data?.data?.errorMessage,

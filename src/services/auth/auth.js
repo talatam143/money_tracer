@@ -46,14 +46,16 @@ export const userAuthService = async (formData, method, path) => {
     }
     return { status: response?.status, data: response?.data?.data };
   } catch (error) {
+    store.dispatch(setErrorState());
     if (
       error?.response?.status &&
       [400, 401, 404, 409, 422, 500].includes(error?.response?.status)
     ) {
-      store.dispatch(setErrorState());
       store.dispatch(
         showSnackBar({
-          message: error?.response?.data?.data?.errorMessage,
+          message:
+            error?.response?.data?.data?.errorMessage ||
+            error?.response?.data?.errors.message,
           severity: "error",
         })
       );

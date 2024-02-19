@@ -1,5 +1,28 @@
 .dashboard-container {
-  margin-bottom: 55px;
+  padding-bottom: 65px;
+  background-color: #eef2f6;
+  min-height: 90vh;
+}
+
+.dashboard-navbar-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 10px 5px 10px;
+  box-sizing: border-box;
+}
+
+.dashboard-navbar-user-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.dashboard-navbar-user-container > p {
+  font-family: "Kaushan Script", cursive;
+  font-weight: 600;
+  font-size: 32px;
 }
 
 .dashboard-transactions-skeleton-container {
@@ -23,8 +46,7 @@
 
 .dashboard-transactions-container,
 .dashboard-charts-container {
-  padding: 10px 10px 0 10px;
-  background-color: #eef2f6;
+  padding: 10px;
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
@@ -270,7 +292,7 @@
   font-weight: 500;
 }
 
-.dashboard-chart-pie-container{
+.dashboard-chart-pie-container {
   background-color: #ffffff;
   width: 100%;
   border-radius: 8px;

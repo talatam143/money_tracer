@@ -213,14 +213,6 @@
   justify-content: space-between;
 }
 
-.user-info-credit-delete-prompt-container {
-  display: flex;
-  align-items: center;
-  width: 0;
-  overflow: hidden;
-  gap: 3px;
-}
-
 .user-info-search-container {
   display: grid;
   grid-template-columns: 90% 10%;

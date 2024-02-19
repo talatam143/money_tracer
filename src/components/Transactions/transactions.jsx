@@ -18,6 +18,7 @@ import { FaArrowUp } from "react-icons/fa";
 import { MemoizedNoTransactions } from "./transactions_constant_components";
 import Text from "../elements/text";
 import Button from "../elements/button";
+import TransactionForm from "./transactionForm/transaction_form";
 
 const Transactions = () => {
   const dispatch = useDispatch();
@@ -25,6 +26,8 @@ const Transactions = () => {
   const navigate = useNavigate();
   const transactionsObserver = useRef();
   const transactionsContainer = useRef(null);
+  const [editTransaction, setEditTransaction] = useState(false);
+  const isUserLoggedIn = useSelector((state) => state.auth.isUserLoggedIn);
   const fetchState = useSelector((state) => state.fetchState);
   const { transactions, transactionsCount, isDataFetched } = useSelector(
     (state) => state.transactionData
@@ -65,7 +68,7 @@ const Transactions = () => {
       }
       setTransactionsFetcing(false);
     }
-    if (!isDataFetched) {
+    if (!isDataFetched && isUserLoggedIn) {
       fetchData();
     }
     return () => {
@@ -74,6 +77,8 @@ const Transactions = () => {
       if (hasQueryParams) {
         dispatch(resetTransactionsData());
       }
+      localStorage.removeItem("ur-ti");
+      localStorage.removeItem("tr-ln");
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.search]);
@@ -103,7 +108,6 @@ const Transactions = () => {
             entries[0].isIntersecting &&
             transactions.length < transactionsCount
           ) {
-            let pageNumber = transactions.length;
             const queryParams = new URLSearchParams(location.search);
             const queries = {};
             queryParams.forEach((value, key) => {
@@ -115,14 +119,14 @@ const Transactions = () => {
                 queries[key] = value.split(",");
               }
             });
-
             const { status, data } = await transactionService(
               {},
               "get",
-              `?skip=${pageNumber}`,
+              `?skip=${localStorage.getItem("tr-ln") || transactions?.length}`,
               queries
             );
             if (status === 200) {
+              localStorage.removeItem("tr-ln");
               dispatch(
                 setTransactionsData({
                   transactionsCount: data?.transactionsCount,
@@ -139,19 +143,14 @@ const Transactions = () => {
   );
 
   const updateDeleteTransactions = (id) => {
-    let removedIndex = transactions.findIndex((obj) => obj._id === id);
-    if (removedIndex !== -1) {
-      let updatedTransactions = [
-        ...transactions.slice(0, removedIndex),
-        ...transactions.slice(removedIndex + 1),
-      ];
-      dispatch(
-        updateTransactionsData({
-          transactionsCount: transactionsCount - 1,
-          transactions: updatedTransactions,
-        })
-      );
-    }
+    let tempTransactions = transactions.filter((obj) => obj._id !== id);
+    localStorage.setItem("tr-ln", tempTransactions.length);
+    dispatch(
+      updateTransactionsData({
+        transactionsCount: transactionsCount - 1,
+        transactions: tempTransactions,
+      })
+    );
   };
 
   const handleResetFilters = () => {
@@ -166,7 +165,7 @@ const Transactions = () => {
     });
   };
 
-  return (
+  return !editTransaction ? (
     <>
       <TransactionFilter transactionsCount={transactionsCount} />
       {transactions.length > 0 ? (
@@ -214,6 +213,7 @@ const Transactions = () => {
               index={index}
               lastTransactionElementRef={lastTransactionElementRef}
               transactionItem={eachTransaction}
+              setEditTransaction={setEditTransaction}
             />
           ))}
           {scrollTop ? (
@@ -256,6 +256,8 @@ const Transactions = () => {
       <TransactionButton />
       <Menu />
     </>
+  ) : (
+    <TransactionForm setEditTransaction={setEditTransaction} />
   );
 };
 

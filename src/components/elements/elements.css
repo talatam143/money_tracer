@@ -81,3 +81,11 @@ input[type="date"] {
   background-color: #fff8e1;
   color: #ffc107;
 }
+
+.user-info-credit-delete-prompt-container {
+  display: flex;
+  align-items: center;
+  width: 0;
+  overflow: hidden;
+  gap: 3px;
+}

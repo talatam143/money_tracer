@@ -10,12 +10,12 @@ import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [isLoginForm, setIsLoginForm] = useState(true);
-  const naviagate = useNavigate();
-
+  const navigate = useNavigate();
+  
   useEffect(() => {
     const userId = localStorage.getItem("userId");
     if (userId) {
-      naviagate("/");
+      navigate("/");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -70,27 +70,6 @@ const Login = () => {
         ) : (
           <SignUpForm setIsLoginForm={setIsLoginForm} />
         )}
-        <Text
-          content="Or With"
-          size="15px"
-          weight={500}
-          align="center"
-          m="5px 0 0 0"
-        />
-        <Button
-          content="Google"
-          backgroundColor="#FFFFFF"
-          color="#000000"
-          border="solid 1px lightgrey"
-          borderRadius="8px"
-          height="40px"
-          width="100%"
-          fontSize="18px"
-          fontWeight="600"
-          type="submit"
-          icon="google"
-          margin="10px 0 0 0"
-        />
       </div>
     </div>
   );

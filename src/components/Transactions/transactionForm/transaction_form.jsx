@@ -16,7 +16,10 @@ import {
 import MuiSelect from "../../elements/mui_select";
 import Button from "../../elements/button";
 import { transactionService } from "../../../services/transactions/transactions";
-import { resetTransactionsData } from "../../../features/transactions/transactions";
+import {
+  resetTransactionsData,
+  updateEditTransaction,
+} from "../../../features/transactions/transactions";
 import {
   draftTransactionForm,
   resetTransactionForm,
@@ -41,21 +44,21 @@ const initalFormState = {
 
 const intialMembersTags = { members: [], tags: [] };
 
-const TransactionForm = () => {
+const TransactionForm = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { setEditTransaction } = props;
   const userData = useSelector((state) => state.userData);
-  const { isTransactionDrafted, transactionObj, membersObj } = useSelector(
-    (state) => state.transactionForm
-  );
-  const [transactionFormData, setTransactionFormData] = useState(
-    isTransactionDrafted ? transactionObj : initalFormState
-  );
-  const [membersTags, setMemebersTags] = useState(
-    isTransactionDrafted ? membersObj : intialMembersTags
-  );
-  const [draftConfirmation, setDraftConfirmation] =
-    useState(isTransactionDrafted);
+  const {
+    isTransactionDrafted,
+    isTransactionEdit,
+    transactionObj,
+    membersObj,
+  } = useSelector((state) => state.transactionForm);
+  const [transactionFormData, setTransactionFormData] =
+    useState(initalFormState);
+  const [membersTags, setMemebersTags] = useState(intialMembersTags);
+  const [draftConfirmation, setDraftConfirmation] = useState(false);
   const [paymentInfoVar, setPaymentInfoVar] = useState("");
   const [titleError, setTitleError] = useState(false);
 
@@ -77,7 +80,9 @@ const TransactionForm = () => {
   }, [dispatch, userData.isDataFetched]);
 
   useEffect(() => {
-    if (isTransactionDrafted) {
+    if (isTransactionDrafted || isTransactionEdit) {
+      setTransactionFormData(transactionObj);
+      setMemebersTags(membersObj);
       if (transactionObj.paymentMethod === "UPI") {
         setPaymentInfoVar("upiData");
       } else if (transactionObj.paymentMethod === "Credit Card") {
@@ -85,6 +90,9 @@ const TransactionForm = () => {
       } else {
         setPaymentInfoVar("");
       }
+    }
+    if (isTransactionDrafted) {
+      setDraftConfirmation(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -113,13 +121,19 @@ const TransactionForm = () => {
           }
         }
       });
-      const { status } = await transactionService(formData, "post", "/add");
+
+      let method = isTransactionEdit ? "put" : "post";
+      let path = isTransactionEdit
+        ? `/update/${localStorage.getItem("ur-ti")}`
+        : "/add";
+      const { status, data } = await transactionService(formData, method, path);
       if (status === 200) {
-        dispatch(resetTransactionsData());
-        if (isTransactionDrafted) {
-          dispatch(resetTransactionForm());
+        if (isTransactionEdit) {
+          dispatch(updateEditTransaction(data));
+        } else {
+          dispatch(resetTransactionsData());
         }
-        handleTransactionDiscard();
+        handleTransactionDiscard(true);
       }
     }
   };
@@ -180,14 +194,18 @@ const TransactionForm = () => {
   };
 
   const handleTransactionDiscard = (state) => {
-    if (isTransactionDrafted && state) {
+    if ((isTransactionDrafted || isTransactionEdit) && state) {
       dispatch(resetTransactionForm());
     }
     setTransactionFormData(initalFormState);
     setMemebersTags(intialMembersTags);
     setPaymentInfoVar("");
     setTitleError(false);
-    navigate("/transactions");
+    if (isTransactionEdit) {
+      setEditTransaction(false);
+    } else {
+      navigate("/transactions");
+    }
   };
 
   const handleTransactionDraft = () => {
@@ -221,11 +239,13 @@ const TransactionForm = () => {
           color="#E0E0E0"
         />
         <div className="transaction-form-header-icon-container">
-          <IconAnimation
-            type="Draft"
-            theme
-            handleClickFunc={handleTransactionDraft}
-          />
+          {!isTransactionEdit ? (
+            <IconAnimation
+              type="Draft"
+              theme
+              handleClickFunc={handleTransactionDraft}
+            />
+          ) : null}
           <IconAnimation
             type="Discard"
             theme
@@ -392,7 +412,9 @@ const TransactionForm = () => {
         <div className="transaction-form-submit-btn-container">
           <Button
             type="submit"
-            content="Save Transaction"
+            content={
+              isTransactionEdit ? "Update Transaction" : "Save Transaction"
+            }
             color="#FFFFFF"
             backgroundColor="#121926"
             border="none"

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { motion, useAnimation } from "framer-motion";
+import { useDispatch } from "react-redux";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { FaRupeeSign, FaRegCalendarAlt } from "react-icons/fa";
 import Text from "../elements/text";
@@ -7,6 +8,7 @@ import { transactionCategories } from "../../utils/transactions_form_data";
 import StarIcon from "../../assets/star_icon";
 import IconAnimation from "../elements/icon_animation";
 import { transactionService } from "../../services/transactions/transactions";
+import { editTransactionForm } from "../../features/transactions/transaction_form";
 
 const TransactionItem = (props) => {
   const {
@@ -15,10 +17,14 @@ const TransactionItem = (props) => {
     lastTransactionElementRef,
     transactionItem,
     updateDeleteTransactions,
+    setEditTransaction,
   } = props;
+  const dispatch = useDispatch();
   const [fontClass, setFontClass] = useState("");
   const transactionAnimation = useAnimation();
-  const [openState, setOpenState] = useState(false);
+  const [openState, setOpenState] = useState(
+    transactionItem._id === localStorage.getItem("ur-ti")
+  );
   const [transactionDate, setTransactionDate] = useState("");
 
   useEffect(() => {
@@ -66,6 +72,46 @@ const TransactionItem = (props) => {
   const handleDialogClose = () => {
     setOpenState(false);
     setTimeout(() => setFontClass(""), 400);
+    localStorage.removeItem("ur-ti");
+  };
+
+  const editTransaction = () => {
+    localStorage.setItem("ur-ti", transactionItem?._id);
+    let editTransactionObj = {
+      title: transactionItem?.title || "",
+      description: transactionItem?.description || "",
+      amount: transactionItem?.amount.toString() || "",
+      category: transactionItem?.category || "reset",
+      paymentMethod: transactionItem?.payment_method || "reset",
+      paymentInfo:
+        transactionItem?.credit_card || transactionItem?.upi || "reset",
+      bank: transactionItem?.bank || "reset",
+      transactionDate: transactionItem?.transaction_date
+        ? `${new Date(
+            transactionItem?.transaction_date
+          ).getFullYear()}-${String(
+            new Date(transactionItem?.transaction_date).getMonth() + 1
+          ).padStart(2, "0")}-${String(
+            new Date(transactionItem?.transaction_date).getDate()
+          ).padStart(2, "0")}`
+        : `${new Date().getFullYear()}-${String(
+            new Date().getMonth() + 1
+          ).padStart(2, "0")}-${String(new Date().getDate()).padStart(2, "0")}`,
+      starred: transactionItem.starred,
+      members: "",
+      tags: "",
+    };
+    let membersObj = {
+      members: transactionItem?.members || [],
+      tags: transactionItem?.tags || [],
+    };
+    dispatch(
+      editTransactionForm({
+        transactionObj: editTransactionObj,
+        membersObj: membersObj,
+      })
+    );
+    setEditTransaction(true);
   };
 
   const deleteTransaction = async () => {
@@ -103,7 +149,7 @@ const TransactionItem = (props) => {
               <div className="open-transaction-header-controls-sub-container">
                 <IconAnimation
                   type="Edit"
-                  handleClickFunc={() => alert("Edit")}
+                  handleClickFunc={editTransaction}
                   theme
                 />
                 <IconAnimation
@@ -207,15 +253,15 @@ const TransactionItem = (props) => {
                   </div>
                 ) : null}
 
-                {transactionItem.bank && transactionItem.payment_method ? (
+                {(transactionItem.upi || transactionItem.credit_card) &&
+                transactionItem.payment_method ? (
                   <hr className="open-transaction-payments-container-hr" />
                 ) : null}
-                {["Credit Card", "UPI"].includes(
-                  transactionItem.payment_method
-                ) ? (
+
+                {transactionItem.upi || transactionItem.credit_card ? (
                   <div style={{ textAlign: "center" }}>
                     <Text
-                      content={transactionItem.payment_method}
+                      content={transactionItem.payment_method || "Payment Info"}
                       m="0"
                       weight="600"
                       size="17px"
@@ -234,9 +280,10 @@ const TransactionItem = (props) => {
                     />
                   </div>
                 ) : null}
-                {["Credit Card", "UPI"].includes(
-                  transactionItem.payment_method
-                ) ? (
+                {transactionItem.bank &&
+                (transactionItem.payment_method ||
+                  transactionItem.upi ||
+                  transactionItem.credit_card) ? (
                   <hr className="open-transaction-payments-container-hr" />
                 ) : null}
                 {transactionItem.bank ? (

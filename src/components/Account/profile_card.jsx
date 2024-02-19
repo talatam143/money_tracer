@@ -21,12 +21,14 @@ const Profilecard = () => {
             {user?.email ? user.email : "N/A"}
           </span>
         </div>
-        <div className="account-user-details-container">
-          <FaPhone style={{ fontSize: "20px" }} />
-          <span className="account-user-details">
-            {user?.mobileNumber ? `+91 ${user.mobileNumber}` : "N/A"}
-          </span>
-        </div>
+        {user?.mobileNumber ? (
+          <div className="account-user-details-container">
+            <FaPhone style={{ fontSize: "20px" }} />
+            <span className="account-user-details">
+              {user?.mobileNumber ? `+91 ${user.mobileNumber}` : "N/A"}
+            </span>
+          </div>
+        ) : null}
       </div>
     </>
   ) : (

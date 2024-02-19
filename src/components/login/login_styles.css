@@ -49,3 +49,8 @@
 .login-toggle-container button {
   flex-grow: 1;
 }
+
+.forgot-password-span {
+  cursor: pointer;
+  color: blue;
+}

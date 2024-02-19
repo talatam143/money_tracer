@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 import { statesEnum } from "../../utils/enums";
 import { Skeleton } from "@mui/material";
 import { useSelector } from "react-redux";
@@ -65,6 +66,27 @@ const Analytics = (props) => {
     transactionsStats?.latestTransaction?.[0]?.transaction;
   const oldTransaction = transactionsStats?.OldTransaction?.[0]?.transaction;
 
+  const analyticsContainer = {
+    hidden: { opacity: 1, scale: 0 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        delayChildren: 0.1,
+        staggerChildren: 0.1,
+        type: "linear",
+      },
+    },
+  };
+
+  const analyticsItem = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+    },
+  };
+
   switch (state) {
     case statesEnum.INITIAL:
       return null;
@@ -92,11 +114,19 @@ const Analytics = (props) => {
       );
     case statesEnum.SUCCESS:
       return (
-        <div className="dashboard-transactions-container">
+        <motion.div
+          className="dashboard-transactions-container"
+          variants={analyticsContainer}
+          initial="hidden"
+          animate="visible"
+        >
           {totalStats ? (
             <>
               {totalStats.totalTransactions ? (
-                <div className="dashboard-total-transactions-container dashboard-sub-transactions-container">
+                <motion.div
+                  className="dashboard-total-transactions-container dashboard-sub-transactions-container"
+                  variants={analyticsItem}
+                >
                   <div>
                     <Text
                       content={totalStats.totalTransactions}
@@ -109,11 +139,14 @@ const Analytics = (props) => {
                     />
                   </div>
                   <HiOutlineClipboardDocumentList className="dashboard-sub-transactions-icons" />
-                </div>
+                </motion.div>
               ) : null}
 
               {totalStats.totalTarnsactionsAmount ? (
-                <div className="dashboard-sub-transactions-container dashboard-total-amount-container">
+                <motion.div
+                  className="dashboard-sub-transactions-container dashboard-total-amount-container"
+                  variants={analyticsItem}
+                >
                   <div>
                     <Text
                       content={totalStats.totalTarnsactionsAmount}
@@ -126,10 +159,13 @@ const Analytics = (props) => {
                     />
                   </div>
                   <HiOutlineCurrencyRupee className="dashboard-sub-transactions-icons" />
-                </div>
+                </motion.div>
               ) : null}
               {totalStats.starredTransactions ? (
-                <div className="dashboard-sub-transactions-container dashboard-toal-starred-container">
+                <motion.div
+                  className="dashboard-sub-transactions-container dashboard-toal-starred-container"
+                  variants={analyticsItem}
+                >
                   <div>
                     <Text
                       content={totalStats.starredTransactions}
@@ -146,7 +182,7 @@ const Analytics = (props) => {
                     className="dashboard-sub-transactions-icons"
                     color="#000000"
                   />
-                </div>
+                </motion.div>
               ) : null}
             </>
           ) : null}
@@ -154,13 +190,13 @@ const Analytics = (props) => {
           preferredBank ||
           preferredPaymentMethod ||
           preferredDate ? (
-            <>
+            <motion.div variants={analyticsItem}>
               <Text
                 content="Usage Trends"
                 m="5px 0 0 0"
                 color="#000000"
                 weight="600"
-                size="22px"
+                size="19px"
               />
               <div className="dashboard-preferred-transactions-container">
                 {preferredBank ? (
@@ -253,9 +289,12 @@ const Analytics = (props) => {
                   </div>
                 ) : null}
               </div>
-            </>
+            </motion.div>
           ) : null}
-          <div className="dashboard-records-transactions-container">
+          <motion.div
+            variants={analyticsItem}
+            className="dashboard-records-transactions-container"
+          >
             {highestTransaction ? (
               <div className="dashboard-records-sub-container">
                 {highestTransaction.transaction_date ? (
@@ -285,13 +324,15 @@ const Analytics = (props) => {
                   <Text content={`₹${highestTransaction.amount}`} m="0" />
                   <Text content={highestTransaction.title} m="0" />
                 </div>
-                {highestTransaction.category
-                  ? transactionCategories[
-                      highestTransaction.category?.split?.("-")?.[0]
-                    ][highestTransaction.category?.split?.("-")?.[1]]?.icon || (
-                      <GiPerspectiveDiceSixFacesRandom />
-                    )
-                  : null}
+                {highestTransaction.category ? (
+                  transactionCategories[
+                    highestTransaction.category?.split?.("-")?.[0]
+                  ][highestTransaction.category?.split?.("-")?.[1]]?.icon || (
+                    <GiPerspectiveDiceSixFacesRandom />
+                  )
+                ) : (
+                  <GiPerspectiveDiceSixFacesRandom />
+                )}
               </div>
             ) : null}
             {lowestTransaction ? (
@@ -323,13 +364,15 @@ const Analytics = (props) => {
                   <Text content={`₹${lowestTransaction.amount}`} m="0" />
                   <Text content={lowestTransaction.title} m="0" />
                 </div>
-                {lowestTransaction.category
-                  ? transactionCategories[
-                      lowestTransaction.category?.split?.("-")?.[0]
-                    ][lowestTransaction.category?.split?.("-")?.[1]]?.icon || (
-                      <GiPerspectiveDiceSixFacesRandom />
-                    )
-                  : null}
+                {lowestTransaction.category ? (
+                  transactionCategories[
+                    lowestTransaction.category?.split?.("-")?.[0]
+                  ][lowestTransaction.category?.split?.("-")?.[1]]?.icon || (
+                    <GiPerspectiveDiceSixFacesRandom />
+                  )
+                ) : (
+                  <GiPerspectiveDiceSixFacesRandom />
+                )}
               </div>
             ) : null}
             {latestTransaction ? (
@@ -361,13 +404,15 @@ const Analytics = (props) => {
                   <Text content={`₹${latestTransaction.amount}`} m="0" />
                   <Text content={latestTransaction.title} m="0" />
                 </div>
-                {latestTransaction.category
-                  ? transactionCategories[
-                      latestTransaction.category?.split?.("-")?.[0]
-                    ][latestTransaction.category?.split?.("-")?.[1]]?.icon || (
-                      <GiPerspectiveDiceSixFacesRandom />
-                    )
-                  : null}
+                {latestTransaction.category ? (
+                  transactionCategories[
+                    latestTransaction.category?.split?.("-")?.[0]
+                  ][latestTransaction.category?.split?.("-")?.[1]]?.icon || (
+                    <GiPerspectiveDiceSixFacesRandom />
+                  )
+                ) : (
+                  <GiPerspectiveDiceSixFacesRandom />
+                )}
               </div>
             ) : null}
             {oldTransaction ? (
@@ -399,17 +444,19 @@ const Analytics = (props) => {
                   <Text content={`₹${oldTransaction.amount}`} m="0" />
                   <Text content={oldTransaction.title} m="0" />
                 </div>
-                {oldTransaction.category
-                  ? transactionCategories[
-                      oldTransaction.category?.split?.("-")?.[0]
-                    ][oldTransaction.category?.split?.("-")?.[1]]?.icon || (
-                      <GiPerspectiveDiceSixFacesRandom />
-                    )
-                  : null}
+                {oldTransaction.category ? (
+                  transactionCategories[
+                    oldTransaction.category?.split?.("-")?.[0]
+                  ][oldTransaction.category?.split?.("-")?.[1]]?.icon || (
+                    <GiPerspectiveDiceSixFacesRandom />
+                  )
+                ) : (
+                  <GiPerspectiveDiceSixFacesRandom />
+                )}
               </div>
             ) : null}
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       );
     default:
       return null;

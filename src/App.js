@@ -1,16 +1,21 @@
-import React, { useEffect } from "react";
+import React, { lazy, useEffect, Suspense } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import Login from "./components/login/login";
-import Dashboard from "./components/Dashboard/dashboard";
-import Transactions from "./components/transactions/transactions";
-import Account from "./components/Account/account";
 import { statesEnum } from "./utils/enums";
 import { LinearProgress, Snackbar } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
 import { resetSnackBar } from "./features/snackbar/snackbar";
-import Global from "./components/global/global";
-import TransactionForm from "./components/transactions/transactionForm/transaction_form";
+
+const Login = lazy(() => import("./components/login/login"));
+const Dashboard = lazy(() => import("./components/Dashboard/dashboard"));
+const Transactions = lazy(() =>
+  import("./components/transactions/transactions")
+);
+const Account = lazy(() => import("./components/Account/account"));
+const Global = lazy(() => import("./components/global/global"));
+const TransactionForm = lazy(() =>
+  import("./components/transactions/transactionForm/transaction_form")
+);
 
 const App = () => {
   const fetchState = useSelector((state) => state.fetchState);
@@ -40,8 +45,28 @@ const App = () => {
     };
   }, []);
 
+  function Loader() {
+    return (
+      <div id="suspense-loader">
+        <svg viewBox="0 0 86 86" className="circle-outer">
+          <circle r="40" cy="43" cx="43" className="back"></circle>
+          <circle r="40" cy="43" cx="43" className="front"></circle>
+          <circle r="40" cy="43" cx="43" className="new"></circle>
+        </svg>
+        <svg viewBox="0 0 60 60" className="circle-middle">
+          <circle r="27" cy="30" cx="30" className="back"></circle>
+          <circle r="27" cy="30" cx="30" className="front"></circle>
+        </svg>
+        <svg viewBox="0 0 34 34" className="circle-inner">
+          <circle r="14" cy="17" cx="17" className="back"></circle>
+          <circle r="14" cy="17" cx="17" className="front"></circle>
+        </svg>
+      </div>
+    );
+  }
+
   return (
-    <>
+    <Suspense fallback={<Loader />}>
       {fetchState.state === statesEnum.LOADING ? (
         <LinearProgress
           color="inherit"
@@ -77,7 +102,7 @@ const App = () => {
           <Route path="*" element={<Navigate to="/not-found" replace />} />
         </Routes>
       </BrowserRouter>
-    </>
+    </Suspense>
   );
 };
 
