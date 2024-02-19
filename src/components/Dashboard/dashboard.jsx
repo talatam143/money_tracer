@@ -23,12 +23,8 @@ const Dashboard = () => {
   useEffect(() => {
     if (!isDashboardFetched && isUserLoggedIn) {
       fetchDashBoardData();
-    } else {
-      setAnalyticsState(statesEnum.SUCCESS);
-      setChartsState(statesEnum.SUCCESS);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isDashboardFetched, isUserLoggedIn]);
 
   async function fetchDashBoardData() {
     setAnalyticsState(statesEnum.LOADING);
