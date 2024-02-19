@@ -1,6 +1,9 @@
 import { MdOutlineDashboard, MdDashboard } from "react-icons/md";
-import { IoIosList, IoIosListBox } from "react-icons/io";
-import { BiSolidUser, BiSolidUserRectangle } from "react-icons/bi";
+import { FaRegUser, FaUser } from "react-icons/fa";
+import {
+  HiOutlineClipboardDocumentList,
+  HiClipboardDocumentList,
+} from "react-icons/hi2";
 
 const MenuIcon = (props) => {
   const { icon, isSelected } = props;
@@ -19,15 +22,15 @@ const MenuIcon = (props) => {
       );
     case "Transactions":
       return isSelected ? (
-        <IoIosListBox style={iconStyle} />
+        <HiClipboardDocumentList style={iconStyle} />
       ) : (
-        <IoIosList style={iconStyle} />
+        <HiOutlineClipboardDocumentList style={iconStyle} />
       );
     case "Account":
       return isSelected ? (
-        <BiSolidUserRectangle style={iconStyle} />
+        <FaUser style={iconStyle} />
       ) : (
-        <BiSolidUser style={iconStyle} />
+        <FaRegUser style={iconStyle} />
       );
     default:
       break;

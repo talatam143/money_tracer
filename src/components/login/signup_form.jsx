@@ -2,19 +2,21 @@ import React, { useState } from "react";
 import InputField from "../elements/input_field";
 import Button from "../elements/button";
 import dayjs from "dayjs";
+import { userAuthService } from "../../services/auth/auth";
+import { useNavigate } from "react-router-dom";
 
 const initialFormState = {
   name: "",
   email: "",
   mobileNumber: "",
-  date: "",
+  dateOfBirth: "",
   password: "",
   mpin: "",
 };
 
 const initialErrorState = {
   mobileNumber: { state: false, text: "Mobile should contain only 10 digits" },
-  date: {
+  dateOfBirth: {
     state: false,
     text: "You should have atleast 18 Years to create account",
   },
@@ -31,17 +33,46 @@ const currentDate = dayjs();
 
 const SignUpForm = () => {
   const [signupForm, setSignupForm] = useState(initialFormState);
-  const [errorState, setErrorState] = useState(initialErrorState);
+  const [errorState, setErrorDataState] = useState(initialErrorState);
+  const [otp, setOTP] = useState();
+  const [otpFetched, setOtpFetched] = useState(false);
+  const navigate = useNavigate();
 
   const handleLoginSubmit = (e) => {
     e.preventDefault();
+    if (!otpFetched) {
+      getOtp();
+    } else {
+      verifyUser();
+    }
+  };
 
+  const getOtp = async () => {
     if (
       !errorState.mobileNumber.state &&
-      !errorState.date.state &&
+      !errorState.dateOfBirth.state &&
       !errorState.password.state &&
       !errorState.mpin.state
     ) {
+      const response = await userAuthService(signupForm, "post", "/signup");
+      if (response.status === 200) {
+        setOtpFetched(true);
+      }
+    }
+  };
+
+  const resendOtp = async () => {
+    await userAuthService({ email: signupForm.email }, "post", "/resendotp");
+  };
+
+  const verifyUser = async () => {
+    const response = await userAuthService(
+      { email: signupForm.email, otp },
+      "post",
+      "/verifyUser"
+    );
+    if (response.status === 200) {
+      navigate("/");
     }
   };
 
@@ -50,20 +81,24 @@ const SignUpForm = () => {
     let value = e.target.value;
 
     function isFieldValid() {
+      if (value.length === 0) return false;
       if (name === "mobileNumber" && value.length !== 10) {
         return true;
       } else if (name === "mpin" && value.length !== 4) {
         return true;
       } else if (name === "password" && !passwordRegex.test(value)) {
         return true;
-      } else if (name === "date" && currentDate.diff(value, "years") < 18) {
+      } else if (
+        name === "dateOfBirth" &&
+        currentDate.diff(value, "years") < 18
+      ) {
         return true;
       } else {
         return false;
       }
     }
 
-    setErrorState((prevState) => ({
+    setErrorDataState((prevState) => ({
       ...prevState,
       [name]: {
         ...prevState[name],
@@ -88,6 +123,7 @@ const SignUpForm = () => {
         value={signupForm.name}
         onChange={handleFormChange}
         required={true}
+        readOnly={otpFetched}
       />
       <InputField
         type="email"
@@ -98,6 +134,7 @@ const SignUpForm = () => {
         value={signupForm.email}
         onChange={handleFormChange}
         required={true}
+        readOnly={otpFetched}
       />
       <InputField
         type="number"
@@ -110,18 +147,20 @@ const SignUpForm = () => {
         required={true}
         error={errorState.mobileNumber.state}
         errorText={errorState.mobileNumber.text}
+        readOnly={otpFetched}
       />
       <InputField
         type="date"
-        name="date"
+        name="dateOfBirth"
         placeholder="Enter your date of birth"
         label="Date of birth"
         icon="date"
         value={signupForm.date}
         onChange={handleFormChange}
         required={true}
-        error={errorState.date.state}
-        errorText={errorState.date.text}
+        error={errorState.dateOfBirth.state}
+        errorText={errorState.dateOfBirth.text}
+        readOnly={otpFetched}
       />
       <InputField
         type="password"
@@ -134,6 +173,7 @@ const SignUpForm = () => {
         required={true}
         error={errorState.password.state}
         errorText={errorState.password.text}
+        readOnly={otpFetched}
       />
       <InputField
         type="number"
@@ -146,14 +186,41 @@ const SignUpForm = () => {
         required={true}
         error={errorState.mpin.state}
         errorText={errorState.mpin.text}
+        readOnly={otpFetched}
       />
+      {otpFetched ? (
+        <>
+          <InputField
+            type="number"
+            name="otp"
+            placeholder="Enter 6 digit OTP"
+            label="OTP"
+            icon="otp"
+            value={otp}
+            onChange={(e) => setOTP(e.target.value)}
+            required={true}
+          />
+          <Button
+            content="Resend OTP"
+            border="none"
+            backgroundColor="transparent"
+            color="red"
+            width="fit-content"
+            fontSize="14px"
+            fontWeight="500"
+            type="button"
+            handleClick={resendOtp}
+          />
+        </>
+      ) : null}
+
       <Button
-        content="Send OTP"
+        content={otpFetched ? "Sign up" : "Send OTP"}
         backgroundColor="#000000"
         color="#FFFFFF"
         border="none"
         borderRadius="8px"
-        height="42px"
+        height="40px"
         fontSize="18px"
         fontWeight="500"
         margin="10px 0 0 0"

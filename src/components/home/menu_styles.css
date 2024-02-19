@@ -1,0 +1,28 @@
+.menu-container {
+  height: 55px;
+  width: 100%;
+  background-color: #ffffff;
+  position: fixed;
+  bottom: 0;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+.menu-item-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  width: 80px;
+  height: 100%;
+}
+
+.menu-item-container:active {
+  background-color: lightgrey !important;
+  transition: 0.3s all ease-out;
+}

@@ -28,3 +28,64 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 input[type="date"] {
   background-color: #ffffff !important;
 }
+
+.transaction-add-button {
+  position: fixed;
+  bottom: 65px;
+  right: 12px;
+  background-color: #000000;
+  color: #ffffff;
+  width: 220px;
+  height: 48px;
+  border-radius: 8px;
+  border: none;
+  display: flex;
+  align-items: center;
+  padding: 0 10px 0 13px;
+  font-size: 21px;
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.transaction-add-button-icon {
+  position: absolute;
+  right: 4px;
+}
+
+.transaction-add-button-line {
+  width: 48px;
+  height: 1.5px;
+  border: none;
+  background-color: grey;
+  transform: rotate(90deg);
+  position: absolute;
+  right: 16px;
+}
+
+.open-transaction-animate-icon {
+  border-radius: 6px;
+  padding: 3px;
+  font-size: 26px;
+  cursor: pointer;
+}
+
+.delet-icon {
+  background-color: #f8b3ab;
+  color: #f44336;
+}
+.edit-icon {
+  background-color: #e3f2fd;
+  color: #1e88e5;
+}
+.draft-icon {
+  background-color: #fff8e1;
+  color: #ffc107;
+}
+
+.user-info-credit-delete-prompt-container {
+  display: flex;
+  align-items: center;
+  width: 0;
+  overflow: hidden;
+  gap: 3px;
+}

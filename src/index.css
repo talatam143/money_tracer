@@ -1,15 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cedarville+Cursive&family=Kaushan+Script&display=swap");
 
 body {
   font-family: "Open Sans", sans-serif;
-  /* background-color: #f5f5dc; */
-  /* color: #6ab04c;
-  color: #87ceeb;
-  color: #dc143c;
-  color: #ff8c00;
-  color: #f5f5dc;
-  color: #faf0e6; */
   margin: 0;
+  box-sizing: border-box;
 }
 
 /* Chrome, Safari, Edge, Opera */
@@ -19,6 +14,216 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
-button:active {
-  background-color: #6ab04c !important;
+.MuiPaper-root.MuiPopover-paper.MuiMenu-paper {
+  border-radius: 0 0 8px 8px;
+}
+
+#suspense-loader {
+  --background: #62abff;
+  --front-color: #000;
+  --back-color: #c3c8de;
+  --text-color: #414856;
+  width: 100vw;
+  height: 100vh;
+  border-radius: 50px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#suspense-loader svg {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#suspense-loader svg circle {
+  position: absolute;
+  fill: none;
+  stroke-width: 6px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transform: rotate(-100deg);
+  transform-origin: center;
+}
+
+#suspense-loader svg circle.back {
+  stroke: var(--back-color);
+}
+
+#suspense-loader svg circle.front {
+  stroke: var(--front-color);
+}
+
+#suspense-loader svg.circle-outer {
+  height: 86px;
+  width: 86px;
+}
+
+#suspense-loader svg.circle-outer circle {
+  stroke-dasharray: 62.75 188.25;
+}
+
+#suspense-loader svg.circle-outer circle.back {
+  animation: circle-outer135 1.8s ease infinite 0.3s;
+}
+
+#suspense-loader svg.circle-outer circle.front {
+  animation: circle-outer135 1.8s ease infinite 0.15s;
+}
+
+#suspense-loader svg.circle-middle {
+  height: 60px;
+  width: 60px;
+}
+
+#suspense-loader svg.circle-middle circle {
+  stroke-dasharray: 42.5 127.5;
+}
+
+#suspense-loader svg.circle-middle circle.back {
+  animation: circle-middle6123 1.8s ease infinite 0.25s;
+}
+
+#suspense-loader svg.circle-middle circle.front {
+  animation: circle-middle6123 1.8s ease infinite 0.1s;
+}
+
+#suspense-loader svg.circle-inner {
+  height: 34px;
+  width: 34px;
+}
+
+#suspense-loader svg.circle-inner circle {
+  stroke-dasharray: 22 66;
+}
+
+#suspense-loader svg.circle-inner circle.back {
+  animation: circle-inner162 1.8s ease infinite 0.2s;
+}
+
+#suspense-loader svg.circle-inner circle.front {
+  animation: circle-inner162 1.8s ease infinite 0.05s;
+}
+
+#suspense-loader .text {
+  position: absolute;
+  bottom: -40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: lowercase;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 0.2px;
+}
+
+#suspense-loader .text::before,
+#suspense-loader .text::after {
+  content: attr(data-text);
+}
+
+#suspense-loader .text::before {
+  color: var(--text-color);
+}
+
+#suspense-loader .text::after {
+  color: var(--front-color);
+  animation: text-animation76 3.6s ease infinite;
+  position: absolute;
+  left: 0;
+}
+
+@keyframes circle-outer135 {
+  0% {
+    stroke-dashoffset: 25;
+  }
+
+  25% {
+    stroke-dashoffset: 0;
+  }
+
+  65% {
+    stroke-dashoffset: 301;
+  }
+
+  80% {
+    stroke-dashoffset: 276;
+  }
+
+  100% {
+    stroke-dashoffset: 276;
+  }
+}
+
+@keyframes circle-middle6123 {
+  0% {
+    stroke-dashoffset: 17;
+  }
+
+  25% {
+    stroke-dashoffset: 0;
+  }
+
+  65% {
+    stroke-dashoffset: 204;
+  }
+
+  80% {
+    stroke-dashoffset: 187;
+  }
+
+  100% {
+    stroke-dashoffset: 187;
+  }
+}
+
+@keyframes circle-inner162 {
+  0% {
+    stroke-dashoffset: 9;
+  }
+
+  25% {
+    stroke-dashoffset: 0;
+  }
+
+  65% {
+    stroke-dashoffset: 106;
+  }
+
+  80% {
+    stroke-dashoffset: 97;
+  }
+
+  100% {
+    stroke-dashoffset: 97;
+  }
+}
+
+@keyframes text-animation76 {
+  0% {
+    clip-path: inset(0 100% 0 0);
+  }
+
+  50% {
+    clip-path: inset(0);
+  }
+
+  100% {
+    clip-path: inset(0 0 0 100%);
+  }
+}
+
+.dashboard-user-icon-svg {
+  border-radius: 50px;
+  cursor: pointer;
+  background: #ede7f6;
+  background: radial-gradient(circle, #ede7f6 1%, #b39ddb 66%);
+  box-shadow: #00000012 0px 1px 2px, #00000012 0px 2px 4px,
+    #00000012 0px 4px 8px, #00000012 0px 8px 16px, #00000012 0px 16px 32px,
+    #00000012 0px 32px 64px;
+  width: 50px;
+  height: 50px;
 }

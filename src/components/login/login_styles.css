@@ -3,6 +3,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 10px;
 }
 
 .login-sub-container {
@@ -47,4 +48,9 @@
 
 .login-toggle-container button {
   flex-grow: 1;
+}
+
+.forgot-password-span {
+  cursor: pointer;
+  color: blue;
 }

@@ -1,5 +1,3 @@
-import React from "react";
-
 const BrandLogo = (props) => {
   const { width, height } = props;
   return (
