@@ -22,7 +22,10 @@ export const authSlice = createSlice({
     },
     setUserLogout: (state) => {
       localStorage.removeItem("userId");
-      state = initialState;
+      state.isUserLoggedIn = false;
+      state.email = "";
+      state.name = "";
+      state.mobileNumber = "";
     },
   },
 });

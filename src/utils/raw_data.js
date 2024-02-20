@@ -31,14 +31,14 @@ import UCOBank from "../assets/bank logos/UCO Bank.svg";
 import UnionBank from "../assets/bank logos/Union Bank.svg";
 import VijayaBank from "../assets/bank logos/Vijaya Bank.svg";
 
-import phonePayLogo from "../assets/upi logos/phone_pay.webp";
-import gpayLogo from "../assets/upi logos/gpay.webp";
-import amazonPayLogo from "../assets/upi logos/amazon_pay.webp";
-import paytmLogo from "../assets/upi logos/paytm.webp";
-import credLogo from "../assets/upi logos/cred.webp";
-import axisPayLogo from "../assets/upi logos/axis_pay.webp";
-import freechargeLogo from "../assets/upi logos/freecharge.webp";
-import imobilePayLogo from "../assets/upi logos/imobile_pay.webp";
+import phonePayLogo from "../assets/upi logos/phone_pay.png";
+import gpayLogo from "../assets/upi logos/gpay.png";
+import amazonPayLogo from "../assets/upi logos/amazon_pay.png";
+import paytmLogo from "../assets/upi logos/paytm.png";
+import credLogo from "../assets/upi logos/cred.png";
+import axisPayLogo from "../assets/upi logos/axis_pay.png";
+import freechargeLogo from "../assets/upi logos/freecharge.png";
+import imobilePayLogo from "../assets/upi logos/imobile_pay.png";
 
 export const bankRawData = [
   {
