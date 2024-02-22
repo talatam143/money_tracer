@@ -24,17 +24,16 @@ const Dashboard = () => {
   const [isChartsAvailable, setIsChartsAvailable] = useState(false);
 
   useEffect(() => {
-    if (isUserLoggedIn && !isAnalyticsFetched) {
-      fetchAnalyticsData();
-    } else if (isUserLoggedIn && isAnalyticsFetched) {
-      setAnalyticsState(statesEnum.SUCCESS);
-    }
-    if (isChartsAvailable && !isChartsFetched) {
-      fetchChartsData();
-    } else if (isChartsFetched) {
-      setChartsState(statesEnum.SUCCESS);
-    } else if (!isChartsAvailable) {
-      setChartsState(statesEnum.ERROR);
+    if (isUserLoggedIn) {
+      isAnalyticsFetched
+        ? setAnalyticsState(statesEnum.SUCCESS)
+        : fetchAnalyticsData();
+
+      isChartsAvailable && !isChartsFetched
+        ? fetchChartsData()
+        : isChartsFetched
+        ? setChartsState(statesEnum.SUCCESS)
+        : setChartsState(statesEnum.ERROR);
     }
   }, [isAnalyticsFetched, isChartsAvailable, isChartsFetched, isUserLoggedIn]);
 

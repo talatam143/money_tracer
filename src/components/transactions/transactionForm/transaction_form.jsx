@@ -107,7 +107,45 @@ const TransactionForm = (props) => {
             formData[eachField] = membersTags[eachField];
           }
         } else if (eachField === "transactionDate") {
-          formData[eachField] = transactionFormData[eachField];
+          const ioDate = new Date(transactionFormData[eachField]);
+          const cuDate = new Date();
+          console.log(
+            ioDate.getFullYear(),
+            ioDate.getMonth(),
+            ioDate.getDate(),
+            cuDate.getFullYear(),
+            cuDate.getMonth(),
+            cuDate.getDate()
+          );
+          if (
+            ioDate.getFullYear() === cuDate.getFullYear() &&
+            ioDate.getMonth() === cuDate.getMonth() &&
+            ioDate.getDate() === cuDate.getDate()
+          ) {
+            ioDate.setHours(cuDate.getHours());
+            ioDate.setMinutes(cuDate.getMinutes());
+            ioDate.setSeconds(cuDate.getSeconds());
+            const formattedDate = `${ioDate.getFullYear()}-${(
+              ioDate.getMonth() + 1
+            )
+              .toString()
+              .padStart(2, "0")}-${ioDate
+              .getDate()
+              .toString()
+              .padStart(2, "0")} ${ioDate
+              .getHours()
+              .toString()
+              .padStart(2, "0")}:${ioDate
+              .getMinutes()
+              .toString()
+              .padStart(2, "0")}:${ioDate
+              .getSeconds()
+              .toString()
+              .padStart(2, "0")}`;
+            formData[eachField] = formattedDate;
+          } else {
+            formData[eachField] = transactionFormData[eachField];
+          }
         } else if (eachField === "starred" && transactionFormData[eachField]) {
           formData[eachField] = transactionFormData[eachField];
         } else if (
@@ -150,7 +188,7 @@ const TransactionForm = (props) => {
       }
     }
     if (name === "title") {
-      value.length > 3 ? setTitleError(false) : setTitleError(true);
+      value.length >= 3 ? setTitleError(false) : setTitleError(true);
     }
     if (name === "paymentMethod") {
       setTransactionFormData((prevData) => ({

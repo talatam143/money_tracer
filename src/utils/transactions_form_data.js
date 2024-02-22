@@ -43,6 +43,10 @@ import { FaCar, FaParking, FaPlaneDeparture, FaWater } from "react-icons/fa";
 import { TbWavesElectricity } from "react-icons/tb";
 import { GrInternetExplorer } from "react-icons/gr";
 import { GiMoneyStack } from "react-icons/gi";
+import { SiUber } from "react-icons/si";
+import { SiSwiggy } from "react-icons/si";
+import { SiZomato } from "react-icons/si";
+import RapidoIcon from "../assets/rapido";
 
 const largeSize = "60px";
 const mediumSize = "22px";
@@ -85,6 +89,18 @@ export const transactionCategories = {
     },
   },
   "Food and drink": {
+    Swiggy: {
+      name: "Swiggy",
+      icon: <SiSwiggy />,
+      mediumIcon: <SiSwiggy style={{ fontSize: mediumSize }} />,
+      largeIcon: <SiSwiggy style={{ fontSize: largeSize }} />,
+    },
+    Zomato: {
+      name: "Zomato",
+      icon: <SiZomato  style={{ fontSize: "32px" }}/>,
+      mediumIcon: <SiZomato style={{ fontSize: "32px" }} />,
+      largeIcon: <SiZomato style={{ fontSize: "85px" }} />,
+    },
     "Dining out": {
       name: "Dining out",
       icon: <IoFastFood />,
@@ -229,6 +245,18 @@ export const transactionCategories = {
     },
   },
   Transportation: {
+    Uber: {
+      name: "Uber",
+      icon: <SiUber />,
+      mediumIcon: <SiUber style={{ fontSize: mediumSize }} />,
+      largeIcon: <SiUber style={{ fontSize: largeSize }} />,
+    },
+    Rapido: {
+      name: "Rapido",
+      icon: <RapidoIcon />,
+      mediumIcon: <RapidoIcon width={mediumSize} height={mediumSize} />,
+      largeIcon: <RapidoIcon height={largeSize} width={largeSize} />,
+    },
     Bicycle: {
       name: "Bicycle",
       icon: <IoBicycle />,
