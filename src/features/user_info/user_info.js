@@ -18,7 +18,10 @@ export const userInfoSlice = createSlice({
         state.userData.creditCardData = data.creditCardsDetails;
     },
     resetUserData: (state) => {
-      state = initialState;
+      state.isDataFetched = false;
+      state.userData.bankData = [];
+      state.userData.upiData = [];
+      state.userData.creditCardData = [];
     },
   },
 });

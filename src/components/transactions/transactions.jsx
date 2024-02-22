@@ -81,7 +81,7 @@ const Transactions = () => {
       localStorage.removeItem("tr-ln");
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.search]);
+  }, [location.search, isUserLoggedIn]);
 
   useEffect(() => {
     const handleScroll = () => {

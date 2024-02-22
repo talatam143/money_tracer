@@ -19,7 +19,6 @@ const Charts = (props) => {
 
   switch (state) {
     case statesEnum.INITIAL:
-      return null;
     case statesEnum.LOADING:
       return (
         <div

@@ -13,24 +13,31 @@ import DashBoardUser from "../../assets/dashboard_user";
 import Text from "../elements/text";
 
 const Dashboard = () => {
-  const isDashboardFetched = useSelector((state) => state.dashboard.isFetched);
-  const [analyticsState, setAnalyticsState] = useState(statesEnum.INITIAL);
-  const [chartsState, setChartsState] = useState(statesEnum.INITIAL);
+  const navigate = useNavigate();
+  const { isAnalyticsFetched, isChartsFetched } = useSelector(
+    (state) => state.dashboard
+  );
   const userInfo = useSelector((state) => state.auth);
   const isUserLoggedIn = useSelector((state) => state.auth.isUserLoggedIn);
-  const navigate = useNavigate();
+  const [analyticsState, setAnalyticsState] = useState(statesEnum.INITIAL);
+  const [chartsState, setChartsState] = useState(statesEnum.INITIAL);
+  const [isChartsAvailable, setIsChartsAvailable] = useState(false);
 
   useEffect(() => {
-    if (!isDashboardFetched && isUserLoggedIn) {
-      fetchDashBoardData();
-    } else {
-      setAnalyticsState(statesEnum.SUCCESS);
-      setChartsState(statesEnum.SUCCESS);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (isUserLoggedIn) {
+      isAnalyticsFetched
+        ? setAnalyticsState(statesEnum.SUCCESS)
+        : fetchAnalyticsData();
 
-  async function fetchDashBoardData() {
+      isChartsAvailable && !isChartsFetched
+        ? fetchChartsData()
+        : isChartsFetched
+        ? setChartsState(statesEnum.SUCCESS)
+        : setChartsState(statesEnum.ERROR);
+    }
+  }, [isAnalyticsFetched, isChartsAvailable, isChartsFetched, isUserLoggedIn]);
+
+  async function fetchAnalyticsData() {
     setAnalyticsState(statesEnum.LOADING);
     let { status, isChartsAvailable } = await dashboardService(
       "get",
@@ -38,19 +45,19 @@ const Dashboard = () => {
     );
     if (status === 200) {
       setAnalyticsState(statesEnum.SUCCESS);
-      if (isChartsAvailable) {
-        setChartsState(statesEnum.LOADING);
-        let { status } = await dashboardService("get", "/charts");
-        if (status === 200) {
-          setChartsState(statesEnum.SUCCESS);
-        } else {
-          setChartsState(statesEnum.ERROR);
-        }
-      } else {
-        setChartsState(statesEnum.ERROR);
-      }
-    } else if (status === 202) {
+      setIsChartsAvailable(isChartsAvailable);
+    } else {
       setAnalyticsState(statesEnum.ERROR);
+      setChartsState(statesEnum.ERROR);
+    }
+  }
+
+  async function fetchChartsData() {
+    setChartsState(statesEnum.LOADING);
+    let { status } = await dashboardService("get", "/charts");
+    if (status === 200) {
+      setChartsState(statesEnum.SUCCESS);
+    } else {
       setChartsState(statesEnum.ERROR);
     }
   }

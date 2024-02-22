@@ -13,6 +13,7 @@ const CategoriesChart = (props) => {
   const categoriesOptions = {
     chart: {
       type: "bar",
+      minWidth: "100%",
     },
     plotOptions: {
       bar: {
@@ -65,14 +66,14 @@ const CategoriesChart = (props) => {
   return (
     <div
       className="dashboard-chart-pie-container"
-      style={{ overflowX: "scroll" }}
+      style={{ overflowX: categoryStats?.length > 8 ? "scroll" : "none" }}
     >
       <ReactApexChart
         options={categoriesOptions}
         series={categoriesSeries}
         type="bar"
         height={380}
-        width={categoryStats?.length * 35 || 100}
+        width={categoryStats?.length > 8 ? categoryStats?.length * 35 : "100%"}
       />
     </div>
   );
