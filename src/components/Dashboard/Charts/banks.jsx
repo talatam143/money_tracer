@@ -44,7 +44,7 @@ const BankChart = (props) => {
       colors: ["#fff"],
     },
     xaxis: {
-      categories: bankStats?.map?.((eachMethod) => eachMethod._id)||[],
+      categories: bankStats?.map?.((eachMethod) => eachMethod._id) || [],
     },
     yaxis: {
       labels: {
@@ -83,7 +83,7 @@ const BankChart = (props) => {
         options={bankOptions}
         series={bankSeries}
         type="bar"
-        height={bankStats?.length * 35 || 100}
+        height={bankStats?.length > 4 ? bankStats?.length * 35 : 4 * 35}
       />
     </div>
   );
