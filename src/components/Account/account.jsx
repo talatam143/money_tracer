@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { motion, useAnimation } from "framer-motion";
@@ -23,9 +23,17 @@ const Account = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const containerAnimation = useAnimation();
+  const dialogType = useSelector((state) => state.dialogType.dialogType);
   const [showDetailsDialog, setShowDetailsDialog] = useState(false);
   const [dialogDataType, setDialogDataType] = useState(userDataEnums[0]);
   const userData = useSelector((state) => state.userData);
+
+  useEffect(() => {
+    if (dialogType?.name) {
+      toggleDialog(dialogType);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dialogType]);
 
   const handleLogout = () => {
     dispatch(resetUserData());

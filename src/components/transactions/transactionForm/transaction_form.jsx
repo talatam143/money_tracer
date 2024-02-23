@@ -465,6 +465,19 @@ const TransactionForm = (props) => {
           />
         </div>
       </form>
+      <ul>
+        <li>Title & Amount are required to save your transaction</li>
+        <li>
+          To ensure seamless transactions, add your Banks, UPI, or Credit Cards
+          to your account before using them in the form.
+        </li>
+        <li>Click on respective link below to add details</li>
+        <ul>
+          <li>Add Bank</li>
+          <li>Add Credit Card</li>
+          <li>Add UPI</li>
+        </ul>
+      </ul>
       <Dialog open={draftConfirmation}>
         <Text
           content="Continue with drafted transaction .?"
