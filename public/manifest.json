@@ -3,17 +3,16 @@
   "name": "Transactions Store",
   "icons": [
     {
-      "src": "logo192.png",
-      "type": "image/svg+xml",
+      "src": "/logo192.png",
+      "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "logo512.png",
-      "type": "image/svg+xml",
+      "src": "/logo512.png",
+      "type": "image/png",
       "sizes": "512x512"
     }
   ],
-  "id": "/",
   "start_url": "/",
   "background_color": "#202020",
   "display": "standalone",
@@ -25,23 +24,15 @@
       "short_name": "Add Transaction",
       "description": "Add a transaction",
       "url": "/new-transaction",
-      "icons": [{ "src": "playlist-add.png", "sizes": "192x192" }]
+      "icons": [{ "src": "/playlist-add.png", "sizes": "192x192" }]
     },
     {
       "name": "Account Details",
       "short_name": "Account Details",
       "description": "View your account details",
       "url": "/account",
-      "icons": [{ "src": "user-hexagon.png", "sizes": "192x192" }]
+      "icons": [{ "src": "/user-hexagon.png", "sizes": "192x192" }]
     }
   ],
-  "description": "Transactions Store: Effortless Spending Management and Analysis.",
-  "screenshots": [
-    {
-      "src": "logo192.png",
-      "type": "image/png",
-      "sizes": "540x720",
-      "form_factor": "narrow"
-    }
-  ]
+  "description": "Transactions Store: Effortless Spending Management and Analysis."
 }
