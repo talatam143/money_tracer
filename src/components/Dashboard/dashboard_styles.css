@@ -49,7 +49,7 @@
   padding: 10px;
   display: flex;
   flex-wrap: wrap;
-  gap: 5px;
+  gap: 8px;
 }
 
 .dashboard-total-transactions-container {
@@ -69,7 +69,7 @@
 .dashboard-toal-starred-container {
   background: #ffc107;
   background: linear-gradient(80deg, #ffc107 18%, #ffe57f 88%);
-  height: 80px;
+  height: 85px;
   width: 100%;
 }
 
@@ -92,7 +92,7 @@
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  gap: 5px;
+  gap: 8px;
 }
 
 .dashboard-preferred-sub-container {
@@ -149,7 +149,7 @@
 .dashboard-records-transactions-container:has(div) {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
   width: 100%;
   border-radius: 8px;
   box-shadow: #63636333 0px 2px 8px 0px;

@@ -25,14 +25,14 @@
       "short_name": "Add Transaction",
       "description": "Add a transaction",
       "url": "/new-transaction",
-      "icons": [{ "src": "logo192.png", "sizes": "192x192" }]
+      "icons": [{ "src": "playlist-add.png", "sizes": "192x192" }]
     },
     {
       "name": "Account Details",
       "short_name": "Account Details",
       "description": "View your account details",
       "url": "/account",
-      "icons": [{ "src": "logo192.png", "sizes": "192x192" }]
+      "icons": [{ "src": "user-hexagon.png", "sizes": "192x192" }]
     }
   ],
   "description": "Transactions Store: Effortless Spending Management and Analysis.",

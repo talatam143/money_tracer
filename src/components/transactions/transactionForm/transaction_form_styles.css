@@ -27,7 +27,8 @@
   align-items: baseline;
   gap: 2%;
   flex-wrap: wrap;
-  margin-top: 10px;
+  margin: 10px 2px 0 7px; 
+
 }
 
 .transaction-form > div {
@@ -36,8 +37,8 @@
 
 .transaction-form-text-area {
   border-radius: 8px;
-  border: solid 1px;
-  max-width: 96vw;
+  border: solid 1px lightgrey;
+  width: 97%;
 }
 
 .transaction-form-text-area-container {
@@ -172,4 +173,18 @@
 
 .switch input:checked + .slider:before {
   transform: translateX(1.5em);
+}
+
+.transaction-form-list-items {
+  list-style: square;
+  margin: 5px;
+}
+
+.transaction-form-navigate-list-items {
+  text-decoration: underline;
+  list-style: decimal;
+  text-decoration-color: blue;
+  color: blue;
+  margin: 2px 0;
+  cursor: pointer;
 }

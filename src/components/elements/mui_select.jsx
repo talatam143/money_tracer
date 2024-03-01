@@ -16,8 +16,9 @@ const MuiSelect = (props) => {
         background: "#FFFFFF",
         borderRadius: "8px",
         margin: "5px 0 0 0",
+
         "& .MuiOutlinedInput-notchedOutline": {
-          borderColor: "#202020 !important",
+          borderColor: "lightgrey !important",
         },
       }}
     >

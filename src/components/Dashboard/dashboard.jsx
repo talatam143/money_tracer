@@ -14,38 +14,35 @@ import Text from "../elements/text";
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { isAnalyticsFetched, isChartsFetched } = useSelector(
-    (state) => state.dashboard
-  );
+  const { isAnalyticsFetched, isChartsFetched, isChartsAvailable } =
+    useSelector((state) => state.dashboard);
   const userInfo = useSelector((state) => state.auth);
   const isUserLoggedIn = useSelector((state) => state.auth.isUserLoggedIn);
   const [analyticsState, setAnalyticsState] = useState(statesEnum.INITIAL);
   const [chartsState, setChartsState] = useState(statesEnum.INITIAL);
-  const [isChartsAvailable, setIsChartsAvailable] = useState(false);
 
   useEffect(() => {
     if (isUserLoggedIn) {
-      isAnalyticsFetched
-        ? setAnalyticsState(statesEnum.SUCCESS)
-        : fetchAnalyticsData();
-
-      isChartsAvailable && !isChartsFetched
-        ? fetchChartsData()
-        : isChartsFetched
-        ? setChartsState(statesEnum.SUCCESS)
-        : setChartsState(statesEnum.ERROR);
+      if (isAnalyticsFetched) {
+        setAnalyticsState(statesEnum.SUCCESS);
+        if (isChartsAvailable && isChartsFetched) {
+          setChartsState(statesEnum.SUCCESS);
+        } else if (isChartsAvailable && !isChartsFetched) {
+          fetchChartsData();
+        } else {
+          setChartsState(statesEnum.ERROR);
+        }
+      } else {
+        fetchAnalyticsData();
+      }
     }
   }, [isAnalyticsFetched, isChartsAvailable, isChartsFetched, isUserLoggedIn]);
 
   async function fetchAnalyticsData() {
     setAnalyticsState(statesEnum.LOADING);
-    let { status, isChartsAvailable } = await dashboardService(
-      "get",
-      "/transactions"
-    );
+    let { status } = await dashboardService("get", "/transactions");
     if (status === 200) {
       setAnalyticsState(statesEnum.SUCCESS);
-      setIsChartsAvailable(isChartsAvailable);
     } else {
       setAnalyticsState(statesEnum.ERROR);
       setChartsState(statesEnum.ERROR);

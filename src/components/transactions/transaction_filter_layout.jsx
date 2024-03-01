@@ -64,12 +64,12 @@ const TransactionFilterLayer = (props) => {
   switch (filterOption.displayText) {
     case transactionFilterHeaders[0].displayText:
       return Object.keys(categoriesList).map((eachCategory) => (
-        <div key={eachCategory}>
+        <div key={eachCategory} style={{marginBottom:"10px"}}>
           <Text
             content={eachCategory}
-            m="10px 0 0 0"
-            weight="500"
-            size="16px"
+            m="0"
+            weight="600"
+            size="20px"
           />
           {renderCheckboxes(
             "categories",

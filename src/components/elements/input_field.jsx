@@ -122,8 +122,8 @@ const InputField = (props) => {
         style={{
           height: height ? height : "40px",
           width: width ? width : "100%",
-          border: "solid 1.2px",
-          borderColor: error ? "#F44336" : "grey",
+          border: "solid 1px lightgrey",
+          borderColor: error ? "#F44336" : "lightgrey",
           borderRadius: "8px",
           boxSizing: "border-box",
           paddingLeft: icon ? "35px" : "10px",
@@ -169,8 +169,8 @@ const InputField = (props) => {
             color: "#FFFFFF",
             position: "absolute",
             right: 0,
-            top: 26.7,
-            height: "40px",
+            top: 27.8,
+            height: "38px",
             cursor: "pointer",
             borderRadius: "0 8px 8px 0",
           }}

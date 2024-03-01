@@ -18,6 +18,7 @@ import { resetTransactionForm } from "../../features/transactions/transaction_fo
 import { resetState } from "../../features/fetch_state/fetch_state";
 import { resetTransactionsData } from "../../features/transactions/transactions";
 import { resetDashboardState } from "../../features/dashboard/dashboard";
+import { resetDialogType } from "../../features/user_info/account_dialog";
 
 const Account = () => {
   const dispatch = useDispatch();
@@ -30,10 +31,11 @@ const Account = () => {
 
   useEffect(() => {
     if (dialogType?.name) {
-      toggleDialog(dialogType);
+      setTimeout(() => toggleDialog(dialogType), 200);
     }
+    return () => dispatch(resetDialogType());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dialogType]);
+  }, []);
 
   const handleLogout = () => {
     dispatch(resetUserData());

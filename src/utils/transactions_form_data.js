@@ -42,7 +42,7 @@ import { IoMdTrain } from "react-icons/io";
 import { FaCar, FaParking, FaPlaneDeparture, FaWater } from "react-icons/fa";
 import { TbWavesElectricity } from "react-icons/tb";
 import { GrInternetExplorer } from "react-icons/gr";
-import { GiMoneyStack } from "react-icons/gi";
+import { GiMoneyStack, GiCoffeeCup } from "react-icons/gi";
 import { SiUber } from "react-icons/si";
 import { SiSwiggy } from "react-icons/si";
 import { SiZomato } from "react-icons/si";
@@ -97,9 +97,15 @@ export const transactionCategories = {
     },
     Zomato: {
       name: "Zomato",
-      icon: <SiZomato  style={{ fontSize: "32px" }}/>,
+      icon: <SiZomato style={{ fontSize: "32px" }} />,
       mediumIcon: <SiZomato style={{ fontSize: "32px" }} />,
       largeIcon: <SiZomato style={{ fontSize: "85px" }} />,
+    },
+    Tea: {
+      name: "Tea",
+      icon: <GiCoffeeCup />,
+      mediumIcon: <GiCoffeeCup style={{ fontSize: "32px" }} />,
+      largeIcon: <GiCoffeeCup style={{ fontSize: "85px" }} />,
     },
     "Dining out": {
       name: "Dining out",
@@ -374,57 +380,15 @@ export const transactionCategories = {
   },
 };
 
-export const categoriesList = {
-  Entertainment: ["Games", "Movies", "Music", "Other", "Sports"],
-  "Food and drink": ["Dining out", "Groceries", "Liquor", "Other"],
-  Home: [
-    "Electronics",
-    "Furniture",
-    "Household supplies",
-    "Maintenance",
-    "Mortgage",
-    "Other",
-    "Pets",
-    "Rent",
-    "Services",
-  ],
-  Life: [
-    "Childcare",
-    "Clothing",
-    "Education",
-    "Gifts",
-    "Insurance",
-    "Medical expenses",
-    "Other",
-    "Taxes",
-  ],
-  Transportation: [
-    "Bicycle",
-    "Bus/train",
-    "Car",
-    "Gas/fuel",
-    "Hotel",
-    "Other",
-    "Parking",
-    "Plane",
-    "Taxi",
-  ],
-  Uncategorized: ["General"],
-  Utilities: [
-    "Cleaning",
-    "Electricity",
-    "Heat/gas",
-    "Other",
-    "Trash",
-    "TV/Phone/Internet",
-    "Water",
-  ],
-};
+export const categoriesList = {};
+Object.keys(transactionCategories).map(
+  (eachItem) =>
+    (categoriesList[eachItem] = Object.keys(transactionCategories[eachItem]))
+);
 
 export const transactionSortOptions = [
   { name: "Amount: High to Low", value: "amount-desc" },
   { name: "Amount: Low to High", value: "amount-asec" },
-  { name: "Latest Transactions", value: "transactiondate-desc" },
   { name: "Old Transactions", value: "transactiondate-asec" },
   { name: "None", value: "reset" },
 ];

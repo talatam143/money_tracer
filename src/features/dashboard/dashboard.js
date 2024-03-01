@@ -4,6 +4,7 @@ const initialState = {
   transactions: [],
   charts: [],
   isAnalyticsFetched: false,
+  isChartsAvailable: false,
   isChartsFetched: false,
 };
 
@@ -15,6 +16,7 @@ export const dashboardState = createSlice({
       state[payload.payload.type] = payload.payload.data;
       if (payload.payload.type === "transactions") {
         state.isAnalyticsFetched = true;
+        state.isChartsAvailable = payload.payload.isChartsAvailable;
       } else if (payload.payload.type === "charts") {
         state.isChartsFetched = true;
       }
