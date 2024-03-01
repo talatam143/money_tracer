@@ -13,9 +13,11 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": ".",
+  "id": "/",
+  "start_url": "/",
   "background_color": "#202020",
   "display": "standalone",
+  "scope": "/",
   "theme_color": "#202020",
   "shortcuts": [
     {
