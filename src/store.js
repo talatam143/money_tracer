@@ -7,6 +7,7 @@ import userDataReducer from "./features/user_info/user_info";
 import transactionDatReducer from "./features/transactions/transactions";
 import transactionFormReducer from "./features/transactions/transaction_form";
 import dashBoardReducer from "./features/dashboard/dashboard";
+import dialogTypeReducer from "./features/user_info/account_dialog";
 
 export const store = configureStore({
   reducer: {
@@ -17,5 +18,6 @@ export const store = configureStore({
     transactionData: transactionDatReducer,
     transactionForm: transactionFormReducer,
     dashboard: dashBoardReducer,
+    dialogType: dialogTypeReducer,
   },
 });

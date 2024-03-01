@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { motion, useAnimation } from "framer-motion";
@@ -18,14 +18,24 @@ import { resetTransactionForm } from "../../features/transactions/transaction_fo
 import { resetState } from "../../features/fetch_state/fetch_state";
 import { resetTransactionsData } from "../../features/transactions/transactions";
 import { resetDashboardState } from "../../features/dashboard/dashboard";
+import { resetDialogType } from "../../features/user_info/account_dialog";
 
 const Account = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const containerAnimation = useAnimation();
+  const dialogType = useSelector((state) => state.dialogType.dialogType);
   const [showDetailsDialog, setShowDetailsDialog] = useState(false);
   const [dialogDataType, setDialogDataType] = useState(userDataEnums[0]);
   const userData = useSelector((state) => state.userData);
+
+  useEffect(() => {
+    if (dialogType?.name) {
+      setTimeout(() => toggleDialog(dialogType), 200);
+    }
+    return () => dispatch(resetDialogType());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleLogout = () => {
     dispatch(resetUserData());

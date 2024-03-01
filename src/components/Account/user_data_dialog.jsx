@@ -13,6 +13,7 @@ import { allRawData } from "../../utils/raw_data";
 import { userInfoService } from "../../services/user/user_info";
 import { setUserData } from "../../features/user_info/user_info";
 import { formatUserData } from "../../utils/format_user_data";
+import { resetDialogType } from "../../features/user_info/account_dialog";
 
 const UserDataDialog = (props) => {
   const { toggleDialog, type, state } = props;
@@ -63,6 +64,7 @@ const UserDataDialog = (props) => {
   const handleMinimizeDialog = () => {
     toggleDialog();
     setEnableSearch(false);
+    dispatch(resetDialogType());
   };
 
   const NoInfo = () => {

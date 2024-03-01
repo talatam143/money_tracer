@@ -55,7 +55,9 @@ const TransactionItem = (props) => {
       );
 
       setTransactionDate(
-        `${dateFormat}-${monthFormat}-${yearFormat} ${timeFormat}`
+        `${dateFormat}-${monthFormat}-${yearFormat} ${
+          timeFormat !== "12:00 AM" ? timeFormat : ""
+        }`
       );
     } else {
       setTransactionDate(`${dateFormat}-${monthFormat}-${yearFormat}`);

@@ -26,12 +26,15 @@ export const dashboardService = async (method, path) => {
     store.dispatch(setSuccessState());
     if (response.status === 200) {
       store.dispatch(
-        setDashboardState({ data: response.data.data, type: path.slice(1) })
+        setDashboardState({
+          data: response.data.data,
+          type: path.slice(1),
+          isChartsAvailable: response?.data?.isChartsAvailable,
+        })
       );
     }
     return {
       status: response?.status,
-      isChartsAvailable: response?.data?.isChartsAvailable,
     };
   } catch (error) {
     store.dispatch(setErrorState());

@@ -61,6 +61,11 @@ const TransactionFilter = (props) => {
       } else {
         setSortOptions("reset");
       }
+      if (queryKeys.includes("searchfield")) {
+        setSearchField(queries["searchfield"]);
+      } else {
+        setSearchField("");
+      }
       Object.keys(selectedFilters).forEach((eachFilter) => {
         if (queryKeys.includes(eachFilter)) {
           setSelectedFilters((prevSelectedCategories) => ({
@@ -71,6 +76,7 @@ const TransactionFilter = (props) => {
       });
     } else {
       setSelectedFilters(intialFilters);
+      setSearchField("");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.search]);
