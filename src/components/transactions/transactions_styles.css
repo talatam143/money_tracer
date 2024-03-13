@@ -169,10 +169,7 @@
 
 .transaction-filter-container {
   width: 95%;
-}
-
-.transaction-filter-container {
-  padding: 5px 0;
+  padding: 5px 0 0.5px 0;
   position: sticky;
   top: 0px;
   background-color: #ffffff;
@@ -322,4 +319,78 @@ input[type="radio"] {
   align-items: center;
   justify-content: center;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.transactions-month-filter-container {
+  width: fit-content;
+  margin: 10px auto;
+  border: solid 1px #000000;
+  border-radius: 6px;
+  display: flex;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+
+.transactions-month-filter-container > button {
+  border: none;
+  cursor: pointer;
+  height: 28px;
+  font-size: 16px;
+}
+
+.transactions-monthly-filter-active-btn {
+  background: linear-gradient(to right, #ffffff 50%, #000000 50%);
+  background-size: 200% 100%;
+  background-position: right bottom;
+  transition: all 0.4s ease;
+  color: #ffffff;
+  border-radius: 5px 0 0 5px;
+}
+
+.transactions-monthly-filter-inactive-btn {
+  background: linear-gradient(to right, #ffffff 50%, #000000 50%);
+  background-size: 200% 100%;
+  color: #000000;
+  background-position: left bottom;
+  transition: all 0.4s ease-in;
+  border-radius: 5px 0 0 5px;
+}
+
+.transactions-all-filter-inactive-btn {
+  background: linear-gradient(to left, #ffffff 50%, #000000 50%);
+  background-size: 200% 100%;
+  color: #000000;
+  background-position: right bottom;
+  transition: all 0.4s ease-in;
+  border-radius: 0 5px 5px 0;
+}
+
+.transactions-all-filter-active-btn {
+  background: linear-gradient(to right, #000000 50%, #ffffff 50%);
+  background-size: 200% 100%;
+  color: #ffffff;
+  background-position: left bottom;
+  transition: all 0.4s ease;
+  border-radius: 0 5px 5px 0;
+}
+
+.transactions-monthly-container {
+  background-color: #121926;
+  color: #ffffff;
+  border-radius: 8px;
+  width: 95%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.transactions-monthly-count-container {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.transactions-monthly-container p {
+  margin: 0;
 }

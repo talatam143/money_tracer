@@ -67,7 +67,8 @@ const App = () => {
 
   return (
     <Suspense fallback={<Loader />}>
-      {fetchState.state === statesEnum.LOADING ? (
+      {fetchState.state === statesEnum.LOADING &&
+      window.location.pathname !== "/transactions" ? (
         <LinearProgress
           color="inherit"
           sx={{ position: "sticky", width: "100%", top: 0 }}
@@ -93,6 +94,11 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/transactions" element={<Transactions />} />
+          <Route
+            path="/transactions"
+            element={<Navigate to="/transactions?monthly=true" replace />}
+          />
+
           <Route path="/new-transaction" element={<TransactionForm />} />
           <Route path="/account" element={<Account />} />
           <Route path="/login" element={<Login />} />

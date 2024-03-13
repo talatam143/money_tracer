@@ -24,6 +24,7 @@ const intialFilters = {
   date: "",
   fromdate: "",
   todate: "",
+  monthly: true,
 };
 
 const TransactionFilter = (props) => {
@@ -31,6 +32,7 @@ const TransactionFilter = (props) => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [monthlyFilter, setMonthlyFilter] = useState(true);
   const [sortOptions, setSortOptions] = useState("reset");
   const [toggleFilters, setToggleFilters] = useState(false);
   const [filterType, setFilterType] = useState("sort");
@@ -45,39 +47,46 @@ const TransactionFilter = (props) => {
       queries[key] = value;
     });
 
+    if (queryParams.get("monthly") !== "true") {
+      setMonthlyFilter(false);
+    }
+
     let queryKeys = Object.keys(queries);
-    if (queryKeys?.length > 0) {
-      if (
-        queryKeys.includes("sort") &&
-        queryDataEnums.sort.includes(queries.sort)
-      ) {
-        setSortOptions(
-          `${queries["sort"]}-${
-            queryDataEnums.order.includes(queries.order)
-              ? queries.order
-              : "asec"
-          }`
-        );
-      } else {
-        setSortOptions("reset");
-      }
-      if (queryKeys.includes("searchfield")) {
-        setSearchField(queries["searchfield"]);
-      } else {
-        setSearchField("");
-      }
-      Object.keys(selectedFilters).forEach((eachFilter) => {
-        if (queryKeys.includes(eachFilter)) {
-          setSelectedFilters((prevSelectedCategories) => ({
-            ...prevSelectedCategories,
-            [eachFilter]: queries[eachFilter].split(","),
-          }));
-        }
-      });
+
+    if (
+      queryKeys.includes("sort") &&
+      queryDataEnums.sort.includes(queries.sort)
+    ) {
+      setSortOptions(
+        `${queries["sort"]}-${
+          queryDataEnums.order.includes(queries.order) ? queries.order : "asec"
+        }`
+      );
     } else {
-      setSelectedFilters(intialFilters);
+      setSortOptions("reset");
+    }
+    if (queryKeys.includes("searchfield")) {
+      setSearchField(queries["searchfield"]);
+    } else {
       setSearchField("");
     }
+    if (queryKeys.includes("monthly") && queries.monthly === "false") {
+      setMonthlyFilter(false);
+    }
+    Object.keys(selectedFilters).forEach((eachFilter) => {
+      if (queryKeys.includes(eachFilter)) {
+        setSelectedFilters((prevSelectedCategories) => ({
+          ...prevSelectedCategories,
+          [eachFilter]: queries[eachFilter].split(","),
+        }));
+      } else {
+        setSelectedFilters((prevSelectedCategories) => ({
+          ...prevSelectedCategories,
+          [eachFilter]: [],
+        }));
+      }
+    });
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.search]);
 
@@ -118,6 +127,7 @@ const TransactionFilter = (props) => {
   const handleToggleFilters = (type) => {
     setFilterType(type);
     setToggleFilters(!toggleFilters);
+    setFilterOption(transactionFilterHeaders[0]);
   };
 
   const handleFiltersQuery = () => {
@@ -163,6 +173,31 @@ const TransactionFilter = (props) => {
     }
   };
 
+  const handleMonthlyFilter = (type) => {
+    const urlParams = new URLSearchParams(location.search);
+
+    if (type === "monthly" && monthlyFilter === false) {
+      setMonthlyFilter(true);
+      let oldString = urlParams.toString();
+      for (const key of urlParams.keys()) {
+        urlParams.delete(key);
+      }
+      urlParams.set("monthly", true);
+      if (
+        urlParams.toString().length > 0 &&
+        oldString !== urlParams.toString()
+      ) {
+        navigate(`?${urlParams.toString()}`);
+        dispatch(resetTransactionsData());
+        setToggleFilters(false);
+      }
+    } else if (type === "all" && monthlyFilter === true) {
+      setMonthlyFilter(false);
+      dispatch(resetTransactionsData());
+      navigate("/transactions?monthly=false");
+    }
+  };
+
   return (
     <div className="transaction-filter-container">
       <div className="transaction-filter-search-container">
@@ -175,6 +210,7 @@ const TransactionFilter = (props) => {
           fontSize="30px"
           value={searchfield}
           onChange={handleSearchChange}
+          readOnly={transactionsCount > 0 ? false : true}
         />
         <button
           className="transaction-filter-button"
@@ -189,6 +225,29 @@ const TransactionFilter = (props) => {
           disabled={transactionsCount > 0 ? false : true}
         >
           <TbArrowsSort fontSize={30} />
+        </button>
+      </div>
+      <div className="transactions-month-filter-container">
+        <button
+          className={
+            monthlyFilter
+              ? "transactions-monthly-filter-active-btn"
+              : "transactions-monthly-filter-inactive-btn"
+          }
+          onClick={() => handleMonthlyFilter("monthly")}
+        >
+          {new Date().toLocaleDateString("en-US", { month: "long" })}{" "}
+          Transactions
+        </button>
+        <button
+          onClick={() => handleMonthlyFilter("all")}
+          className={
+            !monthlyFilter
+              ? "transactions-all-filter-active-btn"
+              : "transactions-all-filter-inactive-btn"
+          }
+        >
+          All-Time Transactions
         </button>
       </div>
       <SwipeableDrawer
@@ -240,24 +299,26 @@ const TransactionFilter = (props) => {
         ) : (
           <div className="transaction-filter-settings-container">
             <div className="transaction-filter-settings-header">
-              {transactionFilterHeaders.map((eachFilter) => (
-                <button
-                  key={eachFilter.displayText}
-                  className="transaction-filter-settings-button"
-                  style={{
-                    backgroundColor:
-                      filterOption === eachFilter ? "#FFFFFF" : null,
-                  }}
-                  onClick={() => setFilterOption(eachFilter)}
-                >
-                  {eachFilter.displayText}
-                  {selectedFilters[eachFilter.name].length > 0
-                    ? eachFilter.name === "date"
-                      ? " (1)"
-                      : ` (${selectedFilters[eachFilter.name].length})`
-                    : null}
-                </button>
-              ))}
+              {transactionFilterHeaders.map((eachFilter) => {
+                return eachFilter.name === "date" && monthlyFilter ? null : (
+                  <button
+                    key={eachFilter.displayText}
+                    className="transaction-filter-settings-button"
+                    style={{
+                      backgroundColor:
+                        filterOption === eachFilter ? "#FFFFFF" : null,
+                    }}
+                    onClick={() => setFilterOption(eachFilter)}
+                  >
+                    {eachFilter.displayText}
+                    {selectedFilters[eachFilter.name].length > 0
+                      ? eachFilter.name === "date"
+                        ? " (1)"
+                        : ` (${selectedFilters[eachFilter.name].length})`
+                      : null}
+                  </button>
+                );
+              })}
               <Button
                 content="Apply Filters"
                 border="none"

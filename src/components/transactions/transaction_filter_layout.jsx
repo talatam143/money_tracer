@@ -48,12 +48,12 @@ const TransactionFilterLayer = (props) => {
           <input
             type="checkbox"
             value={key}
-            id={item}
+            id={key}
             name={name}
             onChange={handleCategoryChange}
             checked={storeArray.includes(key)}
           />
-          <label htmlFor={item} className="transaction-filter-radio-label">
+          <label htmlFor={key} className="transaction-filter-radio-label">
             {item}
           </label>
         </div>
@@ -64,13 +64,8 @@ const TransactionFilterLayer = (props) => {
   switch (filterOption.displayText) {
     case transactionFilterHeaders[0].displayText:
       return Object.keys(categoriesList).map((eachCategory) => (
-        <div key={eachCategory} style={{marginBottom:"10px"}}>
-          <Text
-            content={eachCategory}
-            m="0"
-            weight="600"
-            size="20px"
-          />
+        <div key={eachCategory} style={{ marginBottom: "10px" }}>
+          <Text content={eachCategory} m="0" weight="600" size="20px" />
           {renderCheckboxes(
             "categories",
             categoriesList[eachCategory],

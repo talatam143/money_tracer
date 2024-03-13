@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   isDataFetched: false,
   transactionsCount: 0,
+  totalTransactionsAmount: 0,
   transactions: [],
 };
 
@@ -11,15 +12,17 @@ export const transactionsSlice = createSlice({
   initialState,
   reducers: {
     setTransactionsData: (state, payload) => {
-      let { transactionsCount, transactions } = payload.payload;
+      let { transactionsCount, transactions, totalAmount } = payload.payload;
       state.isDataFetched = true;
       state.transactionsCount = transactionsCount;
+      state.totalTransactionsAmount = totalAmount;
       state.transactions = [...state.transactions, ...transactions];
     },
     updateTransactionsData: (state, payload) => {
-      let { transactionsCount, transactions } = payload.payload;
+      let { transactionsCount, transactions, totalAmount } = payload.payload;
       state.isDataFetched = true;
       state.transactionsCount = transactionsCount;
+      state.totalTransactionsAmount = totalAmount;
       state.transactions = [...[], ...transactions];
     },
     updateEditTransaction: (state, payload) => {
@@ -37,6 +40,7 @@ export const transactionsSlice = createSlice({
     resetTransactionsData: (state) => {
       state.isDataFetched = false;
       state.transactionsCount = 0;
+      state.totalTransactionsAmount = 0;
       state.transactions = [];
     },
   },

@@ -229,7 +229,7 @@ const TransactionForm = (props) => {
     if (isTransactionEdit) {
       setEditTransaction(false);
     } else {
-      navigate("/transactions");
+      navigate("/transactions?monthly=true");
     }
   };
 
