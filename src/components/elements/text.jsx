@@ -11,9 +11,11 @@ const Text = (props) => {
     align,
     background,
     borderRadius,
+    border,
     width,
     lineheight,
     position,
+    handleClick,
   } = props;
   return (
     <p
@@ -29,7 +31,9 @@ const Text = (props) => {
         width: width || null,
         lineHeight: lineheight || null,
         position: position || null,
+        border: border || null,
       }}
+      onClick={handleClick}
     >
       {content ? content : ""}
     </p>

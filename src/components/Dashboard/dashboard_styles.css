@@ -26,7 +26,7 @@
 }
 
 .dashboard-transactions-skeleton-container {
-  height: calc(100vh - 70px);
+  height: calc(100dvh - 70px);
   overflow: hidden;
   box-sizing: border-box;
   margin: 10px;

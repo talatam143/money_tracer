@@ -1,175 +1,44 @@
-import BankofBaroda from "../assets/bank logos/Bank of Baroda.svg";
-import BankofIndia from "../assets/bank logos/Bank of India.svg";
-import BankofMaharashtra from "../assets/bank logos/Bank of Maharashtra.svg";
-import CanaraBank from "../assets/bank logos/Canara Bank.svg";
-import CentralBankofIndia from "../assets/bank logos/Central Bank of India.svg";
-import CitiBank from "../assets/bank logos/Citi Bank.svg";
-import CityUnion from "../assets/bank logos/City Union.svg";
-import DBS from "../assets/bank logos/DBS.svg";
-import DenaBank from "../assets/bank logos/Dena Bank.svg";
-import DeutscheBank from "../assets/bank logos/Deutsche Bank.svg";
-import Federal from "../assets/bank logos/Federal.svg";
-import HDFC from "../assets/bank logos/HDFC.svg";
-import HSBC from "../assets/bank logos/HSBC.svg";
-import ICICI from "../assets/bank logos/ICICI.svg";
-import IDBI from "../assets/bank logos/IDBI.svg";
-import IDFC from "../assets/bank logos/IDFC.svg";
-import IndianBank from "../assets/bank logos/Indian Bank.svg";
-import IndianOverseasBank from "../assets/bank logos/Indian Overseas Bank.svg";
-import IndusInd from "../assets/bank logos/IndusInd.svg";
-import KarurVysya from "../assets/bank logos/Karur Vysya.svg";
-import KotakMahindra from "../assets/bank logos/Kotak Mahindra.svg";
-import OBC from "../assets/bank logos/OBC.svg";
-import PNB from "../assets/bank logos/PNB.svg";
-import RBL from "../assets/bank logos/RBL.svg";
-import SaraswatBank from "../assets/bank logos/Saraswat Bank.svg";
-import SBI from "../assets/bank logos/SBI.svg";
-import SouthIndianBank from "../assets/bank logos/South Indian Bank.svg";
-import StandardChartered from "../assets/bank logos/Standard Chartered.svg";
-import TMB from "../assets/bank logos/TMB.svg";
-import UCOBank from "../assets/bank logos/UCO Bank.svg";
-import UnionBank from "../assets/bank logos/Union Bank.svg";
-import VijayaBank from "../assets/bank logos/Vijaya Bank.svg";
+function importAll(r) {
+  let images = {};
+  // eslint-disable-next-line array-callback-return
+  r.keys().map((item, index) => {
+    images[item.replace("./", "")] = r(item);
+  });
+  return images;
+}
 
-import phonePayLogo from "../assets/upi logos/phone_pay.png";
-import gpayLogo from "../assets/upi logos/gpay.png";
-import amazonPayLogo from "../assets/upi logos/amazon_pay.png";
-import paytmLogo from "../assets/upi logos/paytm.png";
-import credLogo from "../assets/upi logos/cred.png";
-import axisPayLogo from "../assets/upi logos/axis_pay.png";
-import freechargeLogo from "../assets/upi logos/freecharge.png";
-import imobilePayLogo from "../assets/upi logos/imobile_pay.png";
+const bankLogos = importAll(
+  require.context("../assets/bank logos", false, /\.(svg)$/)
+);
 
-export const bankRawData = [
-  {
-    title: "Bank of Baroda",
-    imageUrl: BankofBaroda,
-  },
-  {
-    title: "Bank of India",
-    imageUrl: BankofIndia,
-  },
-  {
-    title: "Bank of Maharashtra",
-    imageUrl: BankofMaharashtra,
-  },
-  {
-    title: "Canara Bank",
-    imageUrl: CanaraBank,
-  },
-  {
-    title: "Central Bank of India",
-    imageUrl: CentralBankofIndia,
-  },
-  {
-    title: "Citi Bank",
-    imageUrl: CitiBank,
-  },
-  {
-    title: "City Union",
-    imageUrl: CityUnion,
-  },
-  {
-    title: "DBS",
-    imageUrl: DBS,
-  },
-  {
-    title: "Dena Bank",
-    imageUrl: DenaBank,
-  },
-  {
-    title: "Deutsche Bank",
-    imageUrl: DeutscheBank,
-  },
-  {
-    title: "Federal",
-    imageUrl: Federal,
-  },
-  {
-    title: "HDFC",
-    imageUrl: HDFC,
-  },
-  {
-    title: "HSBC",
-    imageUrl: HSBC,
-  },
-  {
-    title: "ICICI",
-    imageUrl: ICICI,
-  },
-  {
-    title: "IDBI",
-    imageUrl: IDBI,
-  },
-  {
-    title: "IDFC",
-    imageUrl: IDFC,
-  },
-  {
-    title: "Indian Bank",
-    imageUrl: IndianBank,
-  },
-  {
-    title: "Indian Overseas Bank",
-    imageUrl: IndianOverseasBank,
-  },
-  {
-    title: "IndusInd",
-    imageUrl: IndusInd,
-  },
-  {
-    title: "Karur Vysya",
-    imageUrl: KarurVysya,
-  },
-  {
-    title: "Kotak Mahindra",
-    imageUrl: KotakMahindra,
-  },
-  {
-    title: "OBC",
-    imageUrl: OBC,
-  },
-  {
-    title: "PNB",
-    imageUrl: PNB,
-  },
-  {
-    title: "RBL",
-    imageUrl: RBL,
-  },
-  {
-    title: "Saraswat Bank",
-    imageUrl: SaraswatBank,
-  },
-  {
-    title: "SBI",
-    imageUrl: SBI,
-  },
-  {
-    title: "South Indian Bank",
-    imageUrl: SouthIndianBank,
-  },
-  {
-    title: "Standard Chartered",
-    imageUrl: StandardChartered,
-  },
-  {
-    title: "TMB",
-    imageUrl: TMB,
-  },
-  {
-    title: "UCO Bank",
-    imageUrl: UCOBank,
-  },
-  {
-    title: "Union Bank",
-    imageUrl: UnionBank,
-  },
-  {
-    title: "Vijaya Bank",
-    imageUrl: VijayaBank,
-  },
-];
+const bankIcons = importAll(
+  require.context("../assets/bank icons", false, /\.(svg)$/)
+);
+
+const upiLogos = importAll(
+  require.context("../assets/upi logos", false, /\.(png)$/)
+);
+
+export const bankIconData = Object.keys(bankIcons).map((logoFileName) => {
+  return {
+    title: logoFileName.replace(".svg", ""),
+    imageUrl: bankIcons[logoFileName],
+  };
+});
+
+export const bankRawData = Object.keys(bankLogos).map((logoFileName) => {
+  return {
+    title: logoFileName.replace(".svg", ""),
+    imageUrl: bankLogos[logoFileName],
+  };
+});
+
+export const upiRawData = Object.keys(upiLogos).map((logoFileName) => {
+  return {
+    title: logoFileName.replace(".png", ""),
+    imageUrl: upiLogos[logoFileName],
+  };
+});
 
 export const creditCardsRawData = [
   {
@@ -375,41 +244,6 @@ export const creditCardsRawData = [
     title: "PVR Kotak Platinum Credit Card",
     imageUrl:
       "https://cardinsider.com/wp-content/uploads/2021/07/PVR-Kotak-Platinum-Credit-Card.png",
-  },
-];
-
-export const upiRawData = [
-  {
-    title: "PhonePe",
-    imageUrl: phonePayLogo,
-  },
-  {
-    title: "GPay",
-    imageUrl: gpayLogo,
-  },
-  {
-    title: "Amazon Pay",
-    imageUrl: amazonPayLogo,
-  },
-  {
-    title: "Paytm",
-    imageUrl: paytmLogo,
-  },
-  {
-    title: "Cred",
-    imageUrl: credLogo,
-  },
-  {
-    title: "Axis Pay",
-    imageUrl: axisPayLogo,
-  },
-  {
-    title: "FreeCharge",
-    imageUrl: freechargeLogo,
-  },
-  {
-    title: "imobile Pay",
-    imageUrl: imobilePayLogo,
   },
 ];
 

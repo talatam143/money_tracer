@@ -226,7 +226,6 @@ const Transactions = () => {
                 borderRadius="50px"
                 backgroundColor="transparent"
                 color="#f44336"
-                width="135px"
                 height="28px"
                 fontSize="16px"
                 fontWeight="600"

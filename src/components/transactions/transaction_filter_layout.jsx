@@ -19,6 +19,7 @@ const TransactionFilterLayer = (props) => {
     handleCategoryChange,
     handleDateChange,
   } = props;
+
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.userData);
 
@@ -40,22 +41,26 @@ const TransactionFilterLayer = (props) => {
   }, [dispatch, userData.isDataFetched]);
 
   const renderCheckboxes = (name, list, storeArray, parentKey) => {
+    console.log(list);
     return list?.map?.((eachItem) => {
       let item = eachItem?.name ? eachItem?.name : eachItem;
       let key = parentKey ? `${parentKey}-${item}` : item;
       return (
-        <div key={key} className="transaction-filter-checkbox-container">
-          <input
-            type="checkbox"
-            value={key}
-            id={key}
-            name={name}
-            onChange={handleCategoryChange}
-            checked={storeArray.includes(key)}
+        <div key={key}>
+          <Text
+            handleClick={() => handleCategoryChange(name, key)}
+            content={
+              name === "creditCards"
+                ? item.slice(0, item?.toUpperCase()?.indexOf?.("CREDIT CARD"))
+                : item
+            }
+            m="0"
+            p="2px 7px"
+            border="solid 1px #364152"
+            borderRadius="25px"
+            background={storeArray.includes(key) ? "#202020" : "transparent"}
+            color={storeArray.includes(key) ? "#ffffff" : "#364152"}
           />
-          <label htmlFor={key} className="transaction-filter-radio-label">
-            {item}
-          </label>
         </div>
       );
     });
@@ -63,22 +68,27 @@ const TransactionFilterLayer = (props) => {
 
   switch (filterOption.displayText) {
     case transactionFilterHeaders[0].displayText:
-      return Object.keys(categoriesList).map((eachCategory) => (
-        <div key={eachCategory} style={{ marginBottom: "10px" }}>
-          <Text content={eachCategory} m="0" weight="600" size="20px" />
+      return null;
+    // Object.keys(categoriesList).map((eachCategory) => (
+    //   <div key={eachCategory} style={{ marginBottom: "10px" }}>
+    //     <Text content={eachCategory} m="0" weight="600" size="20px" />
+    //     {renderCheckboxes(
+    //       "categories",
+    //       categoriesList[eachCategory],
+    //       selectedFilters.categories,
+    //       eachCategory
+    //     )}
+    //   </div>
+    // ));
+    case transactionFilterHeaders[1].displayText:
+      return (
+        <div className="transactions-filter-chip-container">
           {renderCheckboxes(
-            "categories",
-            categoriesList[eachCategory],
-            selectedFilters.categories,
-            eachCategory
+            "paymentMethods",
+            transactionPaymentMethods,
+            selectedFilters.paymentMethods
           )}
         </div>
-      ));
-    case transactionFilterHeaders[1].displayText:
-      return renderCheckboxes(
-        "paymentMethods",
-        transactionPaymentMethods,
-        selectedFilters.paymentMethods
       );
     case transactionFilterHeaders[2].displayText:
       return (
@@ -101,14 +111,19 @@ const TransactionFilterLayer = (props) => {
       var inputName = "";
       storeArray = selectedFilters[filterOption.name];
       inputName = filterOption.name;
-      return userData.userData[reduxStoreVar].length > 0 ? (
-        renderCheckboxes(
-          inputName,
-          userData.userData[reduxStoreVar],
-          storeArray
-        )
-      ) : (
-        <Text content={`No ${name} details present`} m="0" align="center" />
+
+      return (
+        <div className="transactions-filter-chip-container">
+          {userData.userData[reduxStoreVar].length > 0 ? (
+            renderCheckboxes(
+              inputName,
+              userData.userData[reduxStoreVar],
+              storeArray
+            )
+          ) : (
+            <Text content={`No ${name} details present`} m="0" align="center" />
+          )}
+        </div>
       );
     default:
       return null;

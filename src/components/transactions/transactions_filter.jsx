@@ -13,7 +13,6 @@ import {
 } from "../../utils/transactions_form_data";
 import Text from "../elements/text";
 import TransactionFilterLayer from "./transaction_filter_layout";
-import Button from "../elements/button";
 
 const intialFilters = {
   categories: [],
@@ -36,7 +35,6 @@ const TransactionFilter = (props) => {
   const [sortOptions, setSortOptions] = useState("reset");
   const [toggleFilters, setToggleFilters] = useState(false);
   const [filterType, setFilterType] = useState("sort");
-  const [filterOption, setFilterOption] = useState(transactionFilterHeaders[0]);
   const [searchfield, setSearchField] = useState("");
   const [selectedFilters, setSelectedFilters] = useState(intialFilters);
 
@@ -107,13 +105,12 @@ const TransactionFilter = (props) => {
     setToggleFilters(false);
   };
 
-  const handleCategoryChange = (e) => {
-    const { name, value } = e.target;
+  const handleCategoryChange = (name, value) => {
     setSelectedFilters((prevSelectedCategories) => ({
       ...prevSelectedCategories,
-      [name]: e.target.checked
-        ? [...prevSelectedCategories[name], value]
-        : prevSelectedCategories[name].filter((category) => category !== value),
+      [name]: prevSelectedCategories[name].includes(value)
+        ? prevSelectedCategories[name].filter((category) => category !== value)
+        : [...prevSelectedCategories[name], value],
     }));
   };
 
@@ -127,7 +124,6 @@ const TransactionFilter = (props) => {
   const handleToggleFilters = (type) => {
     setFilterType(type);
     setToggleFilters(!toggleFilters);
-    setFilterOption(transactionFilterHeaders[0]);
   };
 
   const handleFiltersQuery = () => {
@@ -210,7 +206,6 @@ const TransactionFilter = (props) => {
           fontSize="30px"
           value={searchfield}
           onChange={handleSearchChange}
-          readOnly={transactionsCount > 0 ? false : true}
         />
         <button
           className="transaction-filter-button"
@@ -259,19 +254,26 @@ const TransactionFilter = (props) => {
           "& .MuiPaper-root.MuiDrawer-paper": {
             backgroundColor: "antiquewhite",
             borderRadius: "18px 18px 0 0",
-            height: filterType === "sort" ? null : "60vh",
+            height: filterType === "sort" ? null : "70dvh",
             overflowY: "auto",
           },
         }}
       >
-        <Text
-          content={filterType === "sort" ? "Sort By" : "Filters"}
-          p="15px 15px 0 15px"
-          m="5px 0 10px 0"
-          weight="600"
-          size="22px"
-          color="#202020"
-        />
+        <div className="transactions-filter-header-container">
+          <Text
+            content={
+              filterType === "sort"
+                ? "Sort Transactions"
+                : "Filter Transactions"
+            }
+            p="15px 15px 0 15px"
+            m="5px 0 10px 0"
+            weight="600"
+            size="22px"
+            color="#202020"
+          />
+        </div>
+
         {filterType === "sort" ? (
           <div className="transaction-filter-radio-container">
             {transactionSortOptions.map((eachOption) => (
@@ -298,47 +300,35 @@ const TransactionFilter = (props) => {
           </div>
         ) : (
           <div className="transaction-filter-settings-container">
-            <div className="transaction-filter-settings-header">
-              {transactionFilterHeaders.map((eachFilter) => {
-                return eachFilter.name === "date" && monthlyFilter ? null : (
-                  <button
-                    key={eachFilter.displayText}
-                    className="transaction-filter-settings-button"
-                    style={{
-                      backgroundColor:
-                        filterOption === eachFilter ? "#FFFFFF" : null,
-                    }}
-                    onClick={() => setFilterOption(eachFilter)}
-                  >
-                    {eachFilter.displayText}
-                    {selectedFilters[eachFilter.name].length > 0
-                      ? eachFilter.name === "date"
-                        ? " (1)"
-                        : ` (${selectedFilters[eachFilter.name].length})`
-                      : null}
-                  </button>
-                );
-              })}
-              <Button
-                content="Apply Filters"
-                border="none"
-                fontSize="22px"
-                fontWeight="600"
-                backgroundColor="#202020"
-                color="#FFFFFF"
-                width="40%"
-                height="50px"
-                handleClick={handleFiltersQuery}
-              />
-            </div>
-            <div className="transaction-filter-settings-options">
-              <TransactionFilterLayer
-                filterOption={filterOption}
-                selectedFilters={selectedFilters}
-                handleCategoryChange={handleCategoryChange}
-                handleDateChange={handleDateChange}
-              />
-            </div>
+            {transactionFilterHeaders.map((eachFilter) => {
+              return eachFilter.name === "date" && monthlyFilter ? null : (
+                <div
+                  key={eachFilter.displayText}
+                  className="transaction-filter-each-settings-container"
+                >
+                  <Text
+                    m="0"
+                    p="0"
+                    weight="600"
+                    size="18px"
+                    color="#000000"
+                    content={`${eachFilter.displayText} ${
+                      selectedFilters[eachFilter.name].length > 0
+                        ? eachFilter.name === "date"
+                          ? " (1)"
+                          : ` (${selectedFilters[eachFilter.name].length})`
+                        : ""
+                    }`}
+                  />
+                  <TransactionFilterLayer
+                    filterOption={eachFilter}
+                    selectedFilters={selectedFilters}
+                    handleCategoryChange={handleCategoryChange}
+                    handleDateChange={handleDateChange}
+                  />
+                </div>
+              );
+            })}
           </div>
         )}
       </SwipeableDrawer>

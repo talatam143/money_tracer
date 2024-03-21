@@ -1,6 +1,6 @@
 .transaction-form-container {
   background-color: antiquewhite;
-  min-height: 100vh;
+  min-height: 100dvh;
   margin: 0;
   padding: 5px;
   box-sizing: border-box;
@@ -27,8 +27,7 @@
   align-items: baseline;
   gap: 2%;
   flex-wrap: wrap;
-  margin: 10px 2px 0 7px; 
-
+  margin: 10px 2px 0 7px;
 }
 
 .transaction-form > div {

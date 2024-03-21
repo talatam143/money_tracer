@@ -148,7 +148,7 @@ const Analytics = (props) => {
                 >
                   <div>
                     <Text
-                      content={totalStats.totalTarnsactionsAmount}
+                      content={Number(totalStats.totalTarnsactionsAmount)}
                       {...TextStyles.highestHeading}
                     />
                     <Text

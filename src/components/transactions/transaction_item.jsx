@@ -314,7 +314,7 @@ const TransactionItem = (props) => {
             <>
               <div className="open-transaction-users-container">
                 <Text
-                  content="Users:"
+                  content="Members:"
                   m="0"
                   weight="600"
                   size="18px"
