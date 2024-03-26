@@ -13,6 +13,7 @@ import {
 } from "../../utils/transactions_form_data";
 import Text from "../elements/text";
 import TransactionFilterLayer from "./transaction_filter_layout";
+import Button from "../elements/button";
 
 const intialFilters = {
   categories: [],
@@ -37,6 +38,7 @@ const TransactionFilter = (props) => {
   const [filterType, setFilterType] = useState("sort");
   const [searchfield, setSearchField] = useState("");
   const [selectedFilters, setSelectedFilters] = useState(intialFilters);
+  const [selectedCategoriesList, setSelectedCategoriesList] = useState([])
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -56,8 +58,7 @@ const TransactionFilter = (props) => {
       queryDataEnums.sort.includes(queries.sort)
     ) {
       setSortOptions(
-        `${queries["sort"]}-${
-          queryDataEnums.order.includes(queries.order) ? queries.order : "asec"
+        `${queries["sort"]}-${queryDataEnums.order.includes(queries.order) ? queries.order : "asec"
         }`
       );
     } else {
@@ -70,6 +71,12 @@ const TransactionFilter = (props) => {
     }
     if (queryKeys.includes("monthly") && queries.monthly === "false") {
       setMonthlyFilter(false);
+    }
+    if (queryKeys.includes("categories")) {
+      let formattedList = queries["categories"].split(",").map((eachCategory) => eachCategory.split("-")[0])
+      setSelectedCategoriesList([...new Set(formattedList)])
+    } else {
+      setSelectedCategoriesList([])
     }
     Object.keys(selectedFilters).forEach((eachFilter) => {
       if (queryKeys.includes(eachFilter)) {
@@ -106,13 +113,21 @@ const TransactionFilter = (props) => {
   };
 
   const handleCategoryChange = (name, value) => {
-    setSelectedFilters((prevSelectedCategories) => ({
-      ...prevSelectedCategories,
-      [name]: prevSelectedCategories[name].includes(value)
-        ? prevSelectedCategories[name].filter((category) => category !== value)
-        : [...prevSelectedCategories[name], value],
-    }));
+    setSelectedFilters((prevSelectedCategories) => {
+      const updatedSelectedCategories = {
+        ...prevSelectedCategories,
+        [name]: prevSelectedCategories[name].includes(value)
+          ? prevSelectedCategories[name].filter((category) => category !== value)
+          : [...prevSelectedCategories[name], value],
+      };
+      if (name === "categories") {
+        let formattedList = updatedSelectedCategories.categories.map((eachCategory) => eachCategory.split("-")[0]);
+        setSelectedCategoriesList([...new Set(formattedList)]);
+      }
+      return updatedSelectedCategories;
+    });
   };
+
 
   const handleDateChange = (value) => {
     setSelectedFilters((prevSelectedCategories) => ({
@@ -252,10 +267,9 @@ const TransactionFilter = (props) => {
         onOpen={handleToggleFilters}
         sx={{
           "& .MuiPaper-root.MuiDrawer-paper": {
-            backgroundColor: "antiquewhite",
             borderRadius: "18px 18px 0 0",
-            height: filterType === "sort" ? null : "70dvh",
-            overflowY: "auto",
+            height: filterType === "sort" ? null : "80dvh",
+            overflowY: "hidden",
           },
         }}
       >
@@ -273,7 +287,6 @@ const TransactionFilter = (props) => {
             color="#202020"
           />
         </div>
-
         {filterType === "sort" ? (
           <div className="transaction-filter-radio-container">
             {transactionSortOptions.map((eachOption) => (
@@ -299,37 +312,61 @@ const TransactionFilter = (props) => {
             ))}
           </div>
         ) : (
-          <div className="transaction-filter-settings-container">
-            {transactionFilterHeaders.map((eachFilter) => {
-              return eachFilter.name === "date" && monthlyFilter ? null : (
-                <div
-                  key={eachFilter.displayText}
-                  className="transaction-filter-each-settings-container"
-                >
-                  <Text
-                    m="0"
-                    p="0"
-                    weight="600"
-                    size="18px"
-                    color="#000000"
-                    content={`${eachFilter.displayText} ${
-                      selectedFilters[eachFilter.name].length > 0
+          <>
+            <div className="transaction-filter-settings-container">
+              {transactionFilterHeaders.map((eachFilter) => {
+                return eachFilter.name === "date" && monthlyFilter ? null : (
+                  <div
+                    key={eachFilter.displayText}
+                    className="transaction-filter-each-settings-container"
+                  >
+                    <Text
+                      m="0"
+                      p="0"
+                      weight="600"
+                      size="18px"
+                      color="#000000"
+                      content={`${eachFilter.displayText} ${selectedFilters[eachFilter.name].length > 0
                         ? eachFilter.name === "date"
                           ? " (1)"
                           : ` (${selectedFilters[eachFilter.name].length})`
                         : ""
-                    }`}
-                  />
-                  <TransactionFilterLayer
-                    filterOption={eachFilter}
-                    selectedFilters={selectedFilters}
-                    handleCategoryChange={handleCategoryChange}
-                    handleDateChange={handleDateChange}
-                  />
-                </div>
-              );
-            })}
-          </div>
+                        }`}
+                    />
+                    <TransactionFilterLayer
+                      filterOption={eachFilter}
+                      selectedFilters={selectedFilters}
+                      selectedCategoriesList={selectedCategoriesList}
+                      handleCategoryChange={handleCategoryChange}
+                      handleDateChange={handleDateChange}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+            <div className="transactions-filter-footer-container">
+              <Button content="Clear All"
+                backgroundColor="transparent"
+                borderRadius="6px"
+                border="solid 1px #000000"
+                padding="10px 15px"
+                color="#000000"
+                fontSize="16px"
+                fontWeight="500"
+                handleClick={() => { setSelectedFilters(intialFilters); setSelectedCategoriesList([]) }}
+              />
+              <Button content="Apply"
+                backgroundColor="#000000"
+                border="solid 2px #000000"
+                borderRadius="6px"
+                padding="10px 25px"
+                color="#FFFFFF"
+                fontSize="16px"
+                fontWeight="500"
+                handleClick={handleFiltersQuery}
+              />
+            </div>
+          </>
         )}
       </SwipeableDrawer>
     </div>

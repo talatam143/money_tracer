@@ -223,10 +223,12 @@
 }
 
 .transaction-filter-radio-container {
-  margin: 10px 20px 20px 20px;
+  padding: 70px 20px 20px 20px;
   display: flex;
   flex-direction: column;
   gap: 15px;
+  background: #ede7f6;
+  background: linear-gradient(74deg, #ede7f6 12%, #e4f1fd 38%);
 }
 
 .transaction-filter-radio-items {
@@ -252,19 +254,37 @@ input[type="radio"] {
 
 .transaction-filter-settings-container {
   height: 100%;
-  padding: 0 20px 20px 20px;
+  padding: 65px 20px 20px 20px;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-top: 60px;
+  margin-bottom: 35px;
+  overflow-y: auto;
+  background: #ede7f6;
+  background: linear-gradient(74deg, #ede7f6 12%, #e4f1fd 38%);
 }
 
 .transactions-filter-header-container {
-  background-color: antiquewhite;
+  background: #ede7f6;
+  background: linear-gradient(74deg, #ede7f6 12%, #e4f1fd 38%);
   position: fixed;
   width: 100%;
   border-radius: 18px 18px 0 0;
-  margin-top: -1.9px;
+}
+
+.transactions-filter-footer-container {
+  background: #ede7f6;
+  background: linear-gradient(74deg, #ede7f6 12%, #e4f1fd 38%);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  z-index: 100;
+  padding: 5px 0;
 }
 
 /* .transaction-filter-settings-header {
@@ -307,12 +327,28 @@ input[type="radio"] {
   margin: 4px 0;
 } */
 
+.transactions-filter-chip-image {
+  width: 22px;
+  height: 22px;
+}
+
 .transactions-filter-chip-container {
   display: flex;
   align-items: center;
   gap: 7px;
   flex-wrap: wrap;
   margin: 5px 0;
+}
+
+.transactions-filter-each-chip {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  flex-wrap: wrap;
+  border: solid 1px #364152;
+  border-radius: 50px;
+  padding: 2px 8px;
+  cursor: pointer;
 }
 
 .transaction-filter-checkboc-container label {
@@ -332,7 +368,7 @@ input[type="radio"] {
 
 .transaction-scroll-top-btn {
   position: fixed;
-  bottom: 65px;
+
   left: 12px;
   background-color: #000000;
   color: #ffffff;
@@ -346,6 +382,15 @@ input[type="radio"] {
   align-items: center;
   justify-content: center;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.showScrollIcon {
+  bottom: 65px;
+  transition: all linear 0.2s;
+}
+.hideScollIcon {
+  bottom: 0px;
+  transition: all linear 0.2s;
 }
 
 .transactions-month-filter-container {

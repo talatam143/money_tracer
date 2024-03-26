@@ -396,10 +396,10 @@ export const transactionSortOptions = [
 export const transactionFilterHeaders = [
   { displayText: "Categories", name: "categories" },
   { displayText: "Payment methods", name: "paymentMethods" },
-  { displayText: "Date", name: "date" },
   { displayText: "Banks", name: "banks" },
   { displayText: "UPI", name: "UPI" },
   { displayText: "Credit Cards", name: "creditCards" },
+  { displayText: "Date", name: "date" },
 ];
 
 export const transactionPaymentMethods = [

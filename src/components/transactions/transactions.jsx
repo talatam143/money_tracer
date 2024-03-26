@@ -39,7 +39,7 @@ const Transactions = () => {
   } = useSelector((state) => state.transactionData);
   const [transactionsFetched, setTransactionsFetcing] = useState(false);
   const [hasQueries, setHasQueries] = useState(false);
-  const [scrollTop, setScrollTop] = useState(false);
+  const [scrollClass, setScrollClass] = useState("hideScollIcon");
 
   useEffect(() => {
     async function fetchData() {
@@ -93,9 +93,9 @@ const Transactions = () => {
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 2500) {
-        setScrollTop(true);
+        setScrollClass("showScrollIcon");
       } else {
-        setScrollTop(false);
+        setScrollClass("hideScollIcon");
       }
     };
     window.addEventListener("scroll", handleScroll);
@@ -207,9 +207,8 @@ const Transactions = () => {
           {hasQueries ? (
             <div className="transaction-list-query-reset-container">
               <Text
-                content={`${transactionsCount}  ${
-                  transactionsCount > 1 ? " Transactions" : " Transaction"
-                }`}
+                content={`${transactionsCount}  ${transactionsCount > 1 ? " Transactions" : " Transaction"
+                  }`}
                 align="left"
                 m="0"
                 size="16px"
@@ -271,14 +270,12 @@ const Transactions = () => {
               setEditTransaction={setEditTransaction}
             />
           ))}
-          {scrollTop ? (
-            <button
-              className="transaction-scroll-top-btn"
-              onClick={scrollToTop}
-            >
-              <FaArrowUp />
-            </button>
-          ) : null}
+          <button
+            className={`transaction-scroll-top-btn ${scrollClass}`}
+            onClick={scrollToTop}
+          >
+            <FaArrowUp />
+          </button>
         </div>
       ) : null}
       {fetchState.state === statesEnum.LOADING ? (

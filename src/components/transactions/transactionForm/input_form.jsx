@@ -32,7 +32,7 @@ const InputForm = (props) => {
         <InputField
           type="text"
           placeholder="Transaction title"
-          label="Title"
+          label="Title *"
           name="title"
           value={transactionFormData.title}
           onChange={handleFormChange}
@@ -45,7 +45,7 @@ const InputForm = (props) => {
         <InputField
           type="number"
           placeholder="Transaction amount"
-          label="Amount"
+          label="Amount *"
           name="amount"
           value={transactionFormData.amount}
           onChange={handleFormChange}

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   categoriesList,
@@ -18,10 +18,12 @@ const TransactionFilterLayer = (props) => {
     selectedFilters,
     handleCategoryChange,
     handleDateChange,
+    selectedCategoriesList
   } = props;
 
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.userData);
+  const [selectedCategory, setSelectedCategory] = useState("")
 
   useEffect(() => {
     async function fetchUserData() {
@@ -38,27 +40,28 @@ const TransactionFilterLayer = (props) => {
       }
     }
     fetchUserData();
+    return () => setSelectedCategory("")
   }, [dispatch, userData.isDataFetched]);
 
   const renderCheckboxes = (name, list, storeArray, parentKey) => {
-    console.log(list);
     return list?.map?.((eachItem) => {
       let item = eachItem?.name ? eachItem?.name : eachItem;
       let key = parentKey ? `${parentKey}-${item}` : item;
       return (
-        <div key={key}>
+        <div key={key} className="transactions-filter-each-chip"
+          style={{ backgroundColor: storeArray.includes(key) ? "#364152" : null }}
+          onClick={() => handleCategoryChange(name, key)}>
+          {eachItem?.imageUrl || eachItem.iconUrl ?
+            <img src={eachItem?.iconUrl || eachItem?.imageUrl} alt="icon"
+              style={{ borderRadius: name === "UPI" ? "50px" : "0px" }}
+              className="transactions-filter-chip-image" /> : null}
           <Text
-            handleClick={() => handleCategoryChange(name, key)}
             content={
               name === "creditCards"
                 ? item.slice(0, item?.toUpperCase()?.indexOf?.("CREDIT CARD"))
                 : item
             }
             m="0"
-            p="2px 7px"
-            border="solid 1px #364152"
-            borderRadius="25px"
-            background={storeArray.includes(key) ? "#202020" : "transparent"}
             color={storeArray.includes(key) ? "#ffffff" : "#364152"}
           />
         </div>
@@ -68,18 +71,30 @@ const TransactionFilterLayer = (props) => {
 
   switch (filterOption.displayText) {
     case transactionFilterHeaders[0].displayText:
-      return null;
-    // Object.keys(categoriesList).map((eachCategory) => (
-    //   <div key={eachCategory} style={{ marginBottom: "10px" }}>
-    //     <Text content={eachCategory} m="0" weight="600" size="20px" />
-    //     {renderCheckboxes(
-    //       "categories",
-    //       categoriesList[eachCategory],
-    //       selectedFilters.categories,
-    //       eachCategory
-    //     )}
-    //   </div>
-    // ));
+      return <>
+        <div className="transactions-filter-chip-container">
+          {Object.keys(categoriesList).map((eachCategory) => (
+            <div className="transactions-filter-each-chip"
+              key={eachCategory}
+              onClick={() => { setSelectedCategory((prevCategory) => prevCategory !== eachCategory ? eachCategory : "") }}
+              style={{ backgroundColor: selectedCategoriesList.includes(eachCategory) ? "#364152" : null }}>
+              <Text
+                content={eachCategory}
+                m="0"
+                color={selectedCategoriesList.includes(eachCategory) ? "#ffffff" : "#364152"}
+              />
+            </div>
+          ))}
+        </div>
+        <div className="transactions-filter-chip-container">
+          {renderCheckboxes(
+            "categories",
+            categoriesList[selectedCategory],
+            selectedFilters.categories,
+            selectedCategory
+          )}
+        </div>
+      </>
     case transactionFilterHeaders[1].displayText:
       return (
         <div className="transactions-filter-chip-container">
@@ -90,7 +105,7 @@ const TransactionFilterLayer = (props) => {
           )}
         </div>
       );
-    case transactionFilterHeaders[2].displayText:
+    case transactionFilterHeaders[5].displayText:
       return (
         <div>
           <CustomDatePicker
@@ -103,7 +118,7 @@ const TransactionFilterLayer = (props) => {
       );
     case transactionFilterHeaders[3].displayText:
     case transactionFilterHeaders[4].displayText:
-    case transactionFilterHeaders[5].displayText:
+    case transactionFilterHeaders[2].displayText:
       const { reduxStoreVar, name } = userDataEnums.find(
         (item) => item.name === filterOption.displayText
       );
