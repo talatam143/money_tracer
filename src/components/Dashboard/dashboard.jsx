@@ -11,6 +11,7 @@ import "./dashboard_styles.css";
 import BrandLogo from "../../assets/brand_logo";
 import DashBoardUser from "../../assets/dashboard_user";
 import Text from "../elements/text";
+import TransactionButton from "../elements/transaction_button";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -62,7 +63,7 @@ const Dashboard = () => {
   return (
     <>
       {analyticsState === statesEnum.ERROR &&
-      chartsState === statesEnum.ERROR ? (
+        chartsState === statesEnum.ERROR ? (
         <NewUserDashBoard />
       ) : (
         <div className="dashboard-container">
@@ -86,6 +87,7 @@ const Dashboard = () => {
           <Charts state={chartsState} />
         </div>
       )}
+      <TransactionButton />
       <Menu />
     </>
   );

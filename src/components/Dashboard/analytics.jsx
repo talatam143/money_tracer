@@ -148,7 +148,7 @@ const Analytics = (props) => {
                 >
                   <div>
                     <Text
-                      content={totalStats.totalTarnsactionsAmount}
+                      content={Number(totalStats.totalTarnsactionsAmount)}
                       {...TextStyles.highestHeading}
                     />
                     <Text
@@ -189,7 +189,7 @@ const Analytics = (props) => {
           preferredBank ||
           preferredPaymentMethod ||
           preferredDate ? (
-            <motion.div variants={analyticsItem}>
+            <motion.div variants={analyticsItem} style={{ flexGrow: 1 }}>
               <Text
                 content="Usage Trends"
                 m="5px 0 0 0"

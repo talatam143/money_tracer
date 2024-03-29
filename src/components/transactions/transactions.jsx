@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Skeleton } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
+import { HiOutlineClipboardDocumentList } from "react-icons/hi2";
 import Menu from "../home/menu";
 import { statesEnum } from "../../utils/enums";
 import "./transactions_styles.css";
@@ -26,31 +27,36 @@ const Transactions = () => {
   const navigate = useNavigate();
   const transactionsObserver = useRef();
   const transactionsContainer = useRef(null);
+  const queryParams = new URLSearchParams(location.search);
   const [editTransaction, setEditTransaction] = useState(false);
   const isUserLoggedIn = useSelector((state) => state.auth.isUserLoggedIn);
   const fetchState = useSelector((state) => state.fetchState);
-  const { transactions, transactionsCount, isDataFetched } = useSelector(
-    (state) => state.transactionData
-  );
+  const {
+    transactions,
+    transactionsCount,
+    isDataFetched,
+    totalTransactionsAmount,
+  } = useSelector((state) => state.transactionData);
   const [transactionsFetched, setTransactionsFetcing] = useState(false);
   const [hasQueries, setHasQueries] = useState(false);
-  const [scrollTop, setScrollTop] = useState(false);
+  const [scrollClass, setScrollClass] = useState("hideScollIcon");
 
   useEffect(() => {
     async function fetchData() {
       setTransactionsFetcing(true);
-      const queryParams = new URLSearchParams(location.search);
-      const queries = {};
-      queryParams.forEach((value, key) => {
-        if (["sort", "order", "date", "fromdate", "todate"].includes(key)) {
-          queries[key] = value;
-        } else {
-          queries[key] = value.split(",");
-        }
-      });
-      Object.keys(queries).length > 0
-        ? setHasQueries(true)
-        : setHasQueries(false);
+
+      let queries = constructQueries();
+      if (
+        (Object.keys(queries).length === 3 ||
+          Object.keys(queries).length === 1) &&
+        Object.keys(queries).includes("monthly")
+      ) {
+        setHasQueries(false);
+      } else if (Object.keys(queries).length > 0) {
+        setHasQueries(true);
+      } else {
+        setHasQueries(false);
+      }
 
       const { status, data } = await transactionService(
         {},
@@ -62,6 +68,7 @@ const Transactions = () => {
         dispatch(
           updateTransactionsData({
             transactionsCount: data?.transactionsCount,
+            totalAmount: data?.totalAmount,
             transactions: data.transactions,
           })
         );
@@ -81,14 +88,14 @@ const Transactions = () => {
       localStorage.removeItem("tr-ln");
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.search, isUserLoggedIn]);
+  }, [location, isUserLoggedIn]);
 
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 2500) {
-        setScrollTop(true);
+        setScrollClass("showScrollIcon");
       } else {
-        setScrollTop(false);
+        setScrollClass("hideScollIcon");
       }
     };
     window.addEventListener("scroll", handleScroll);
@@ -108,17 +115,7 @@ const Transactions = () => {
             entries[0].isIntersecting &&
             transactions.length < transactionsCount
           ) {
-            const queryParams = new URLSearchParams(location.search);
-            const queries = {};
-            queryParams.forEach((value, key) => {
-              if (
-                ["sort", "order", "date", "fromdate", "todate"].includes(key)
-              ) {
-                queries[key] = value;
-              } else {
-                queries[key] = value.split(",");
-              }
-            });
+            let queries = constructQueries();
             const { status, data } = await transactionService(
               {},
               "get",
@@ -130,6 +127,7 @@ const Transactions = () => {
               dispatch(
                 setTransactionsData({
                   transactionsCount: data?.transactionsCount,
+                  totalAmount: data?.totalAmount,
                   transactions: data.transactions,
                 })
               );
@@ -139,8 +137,35 @@ const Transactions = () => {
       );
       if (node) transactionsObserver.current.observe(node);
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [dispatch, fetchState, location, transactions, transactionsCount]
   );
+
+  const constructQueries = () => {
+    const queryParams = new URLSearchParams(location.search);
+    const queries = {};
+    queryParams.forEach((value, key) => {
+      if (["sort", "order", "date", "fromdate", "todate"].includes(key)) {
+        queries[key] = value;
+      } else {
+        queries[key] = value.split(",");
+      }
+    });
+    let toDate = "";
+    let currDate = new Date();
+    if (currDate.getMonth() === 11) {
+      toDate = `${currDate.getFullYear() + 1}-1-1`;
+    } else {
+      toDate = `${currDate.getFullYear()}-${currDate.getMonth() + 2}-1`;
+    }
+    let fromDate = `${currDate.getFullYear()}-${currDate.getMonth() + 1}-1`;
+
+    if (queryParams.get("monthly") === "true") {
+      queries.fromdate = fromDate;
+      queries.toDate = toDate;
+    }
+    return queries;
+  };
 
   const updateDeleteTransactions = (id) => {
     let tempTransactions = transactions.filter((obj) => obj._id !== id);
@@ -154,8 +179,14 @@ const Transactions = () => {
   };
 
   const handleResetFilters = () => {
+    const queryParams = new URLSearchParams(location.search);
+
     dispatch(resetTransactionsData());
-    navigate("/transactions");
+    if (queryParams.get("monthly") === "false") {
+      navigate("/transactions?monthly=false");
+    } else {
+      navigate("/transactions?monthly=true");
+    }
   };
 
   const scrollToTop = () => {
@@ -176,33 +207,56 @@ const Transactions = () => {
           {hasQueries ? (
             <div className="transaction-list-query-reset-container">
               <Text
-                content={`${transactionsCount}  ${
-                  transactionsCount > 1 ? " Transactions" : " Transaction"
-                }`}
+                content={`${transactionsCount}  ${transactionsCount > 1 ? " Transactions" : " Transaction"
+                  }`}
                 align="left"
                 m="0"
                 size="16px"
                 weight="500"
                 background="#202020"
                 color="#FFFFFF"
-                borderRadius="8px"
+                borderRadius="50px"
                 p="5px 8px"
                 width="fit-content"
               />
               <Button
                 content="Reset Filters"
                 border="solid 1px #f44336"
-                borderRadius="8px"
+                borderRadius="50px"
                 backgroundColor="transparent"
                 color="#f44336"
-                width="140px"
-                height="33px"
+                height="28px"
                 fontSize="16px"
                 fontWeight="600"
                 icon="delete"
                 iconPosition="end"
                 handleClick={handleResetFilters}
               />
+            </div>
+          ) : null}
+          {queryParams.get("monthly") === "true" && totalTransactionsAmount ? (
+            <div className="transactions-monthly-container">
+              <div className="transactions-monthly-count-container">
+                <HiOutlineClipboardDocumentList size={50} />
+                <div>
+                  <Text
+                    content={transactionsCount}
+                    m="0"
+                    size="20px"
+                    weight="600"
+                  />
+                  <Text content="Transactions" m="0" size="15px" />
+                </div>
+              </div>
+              <div>
+                <Text
+                  content={`₹ ${totalTransactionsAmount}`}
+                  m="0"
+                  size="20px"
+                  weight="600"
+                />
+                <Text content="Amount" m="0" size="15px" />
+              </div>
             </div>
           ) : null}
           {transactions.map((eachTransaction, index) => (
@@ -216,14 +270,12 @@ const Transactions = () => {
               setEditTransaction={setEditTransaction}
             />
           ))}
-          {scrollTop ? (
-            <button
-              className="transaction-scroll-top-btn"
-              onClick={scrollToTop}
-            >
-              <FaArrowUp />
-            </button>
-          ) : null}
+          <button
+            className={`transaction-scroll-top-btn ${scrollClass}`}
+            onClick={scrollToTop}
+          >
+            <FaArrowUp />
+          </button>
         </div>
       ) : null}
       {fetchState.state === statesEnum.LOADING ? (

@@ -7,9 +7,13 @@ import { useSelector } from "react-redux";
 import { userAuthService } from "../../services/auth/auth";
 
 const menuItems = [
-  { name: "Dashboard", path: "/" },
-  { name: "Transactions", path: "/transactions" },
-  { name: "Account", path: "/account" },
+  { name: "Dashboard", path: "/", url: "/" },
+  {
+    name: "Transactions",
+    path: "/transactions",
+    url: "/transactions?monthly=true",
+  },
+  { name: "Account", path: "/account", url: "/account" },
 ];
 
 const Menu = () => {
@@ -44,7 +48,7 @@ const Menu = () => {
   const handleMenuClick = (menu) => {
     if (location.pathname !== menu.path) {
       setSelectedMenu(menu.name);
-      naviagate(menu.path);
+      naviagate(menu.url);
     }
   };
 

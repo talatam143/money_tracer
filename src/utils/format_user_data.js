@@ -1,4 +1,9 @@
-import { bankRawData, creditCardsRawData, upiRawData } from "./raw_data";
+import {
+  bankRawData,
+  creditCardsRawData,
+  upiRawData,
+  bankIconData,
+} from "./raw_data";
 import bankImage from "../assets/bank.png";
 import upiImage from "../assets/upi.png";
 
@@ -9,8 +14,15 @@ export const formatUserData = (data) => {
       let filteredData = bankRawData.filter(
         (eachData) => eachData.title === eachBank
       );
+      let filteredIcon = bankIconData.filter(
+        (eachData) => eachData.title === eachBank
+      );
       if (filteredData.length > 0) {
-        return { name: eachBank, imageUrl: filteredData[0].imageUrl };
+        return {
+          name: eachBank,
+          imageUrl: filteredData[0].imageUrl,
+          iconUrl: filteredIcon?.[0]?.imageUrl,
+        };
       } else {
         return { name: eachBank, imageUrl: bankImage, noImage: true };
       }

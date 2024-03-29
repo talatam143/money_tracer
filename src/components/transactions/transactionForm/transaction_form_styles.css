@@ -1,9 +1,10 @@
 .transaction-form-container {
-  background-color: antiquewhite;
-  min-height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
   margin: 0;
   padding: 5px;
   box-sizing: border-box;
+  background-color: #f3f3f6;
 }
 
 .transaction-form-header-continer {
@@ -20,34 +21,30 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  overflow-x: hidden;
 }
 
 .transaction-form {
-  display: flex;
-  align-items: baseline;
-  gap: 2%;
-  flex-wrap: wrap;
-  margin: 10px 2px 0 7px; 
+  margin: 10px;
+}
 
+.transaction-form-scroll-container {
+  overflow-y: scroll;
+  height: calc(100dvh - 120px);
 }
 
 .transaction-form > div {
   margin-top: 10px;
 }
 
+.transaction-form-text-area-container {
+  height: 74px;
+}
+
 .transaction-form-text-area {
   border-radius: 8px;
   border: solid 1px lightgrey;
-  width: 97%;
-}
-
-.transaction-form-text-area-container {
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-  gap: 2px;
-  width: 100vw;
-  max-width: 100vw;
+  width: 99%;
 }
 
 .form-array-container {
@@ -65,14 +62,16 @@
   gap: 8px;
   background-color: #000000;
   color: #ffffff;
-  padding: 5px 2px 5px 5px;
+  padding: 3px 2px 3px 5px;
   border-radius: 8px;
 }
 
 .transaction-form-submit-btn-container {
-  width: 100%;
-  display: flex;
-  justify-content: center;
+  width: 93%;
+  position: fixed;
+  bottom: 0;
+  padding: 5px 0;
+  background-color: #ffffff;
 }
 
 .transaction-form-submit-btn-container > button {
@@ -187,4 +186,28 @@
   color: blue;
   margin: 2px 0;
   cursor: pointer;
+  width: fit-content;
+}
+
+.transaction-form-tags-users-contaier > div {
+  flex-grow: 1;
+}
+
+.form-array-main-container,
+.transaction-form-tags-users-contaier {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 10px;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.transaction-form-payment-parent-container {
+  border: solid lightgrey 1px;
+  padding: 4px;
+  border-radius: 8px;
+}
+
+.form-each-array-container > p {
+  word-break: break-all;
 }

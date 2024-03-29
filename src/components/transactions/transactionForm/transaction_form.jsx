@@ -163,6 +163,14 @@ const TransactionForm = (props) => {
     }
   };
 
+  const resetRadioButton = (name) => {
+    console.log("called reset", name);
+    setTransactionFormData((prevData) => ({
+      ...prevData,
+      [name]: "reset",
+    }));
+  };
+
   const handleFormChange = (e) => {
     const { name, value } = e.target;
     if (name === "paymentMethod") {
@@ -229,7 +237,7 @@ const TransactionForm = (props) => {
     if (isTransactionEdit) {
       setEditTransaction(false);
     } else {
-      navigate("/transactions");
+      navigate("/transactions?monthly=true");
     }
   };
 
@@ -310,8 +318,8 @@ const TransactionForm = (props) => {
         handleDeleteArray={handleDeleteArray}
         isTransactionEdit={isTransactionEdit}
         handleAccountNavigate={handleAccountNavigate}
+        resetRadioButton={resetRadioButton}
       />
-
       <Dialog open={draftConfirmation}>
         <Text
           content="Continue with drafted transaction .?"

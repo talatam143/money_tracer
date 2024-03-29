@@ -56,7 +56,7 @@ const InputField = (props) => {
   const Icon = () => {
     const iconStyles = {
       position: "absolute",
-      top: 35,
+      top: 30,
       left: 5,
       fontSize: "25px",
     };
@@ -127,7 +127,7 @@ const InputField = (props) => {
           borderRadius: "8px",
           boxSizing: "border-box",
           paddingLeft: icon ? "35px" : "10px",
-          margin: margin ? margin : "5px 0 0 0",
+          margin: margin ? margin : "0px",
           paddingRight: type === "password" ? "40px" : null,
         }}
       />
@@ -155,9 +155,23 @@ const InputField = (props) => {
           type="button"
         >
           {inputType === "password" ? (
-            <IoEyeOutline style={iconStyle} />
+            <IoEyeOutline
+              style={{
+                position: "absolute",
+                bottom: "-18px",
+                left: "-20px",
+                ...iconStyle,
+              }}
+            />
           ) : (
-            <IoEyeOffOutline style={iconStyle} />
+            <IoEyeOffOutline
+              style={{
+                position: "absolute",
+                bottom: "-18px",
+                left: "-20px",
+                ...iconStyle,
+              }}
+            />
           )}
         </button>
       ) : null}
@@ -169,8 +183,8 @@ const InputField = (props) => {
             color: "#FFFFFF",
             position: "absolute",
             right: 0,
-            top: 27.8,
-            height: "38px",
+            top: 21.7,
+            height: "40px",
             cursor: "pointer",
             borderRadius: "0 8px 8px 0",
           }}
