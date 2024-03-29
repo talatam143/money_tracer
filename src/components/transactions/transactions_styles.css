@@ -243,11 +243,11 @@
   cursor: pointer;
 }
 
-input[type="radio"]:checked + label {
+.transaction-filter-radio-input:checked + label {
   font-weight: 600;
 }
 
-input[type="radio"] {
+.transaction-filter-radio-input {
   height: 20px;
   width: 20px;
 }
@@ -286,46 +286,6 @@ input[type="radio"] {
   z-index: 100;
   padding: 5px 0;
 }
-
-/* .transaction-filter-settings-header {
-  width: 40%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border: solid 1px;
-}
-
-.transaction-filter-settings-header :last-child {
-  position: fixed;
-  bottom: 0px;
-} */
-
-/* .transaction-filter-settings-button {
-  width: 100%;
-  background-color: transparent;
-  font-size: 18px;
-  text-align: start;
-  border: none;
-  padding: 10px 0 10px 5px;
-  cursor: pointer;
-} */
-
-/* .transaction-filter-settings-options {
-  border-top: solid 1px;
-  width: 59%;
-  height: 100%;
-  background-color: #ffffff;
-  padding: 5px;
-  box-sizing: border-box;
-  overflow-y: auto;
-} */
-
-/* .transaction-filter-chip-container {
-  display: flex;
-  align-items: center;
-  gap: 3px;
-  margin: 4px 0;
-} */
 
 .transactions-filter-chip-image {
   width: 22px;

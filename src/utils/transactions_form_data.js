@@ -407,7 +407,7 @@ export const transactionPaymentMethods = [
   "Credit Card",
   "Debit Card",
   "Intenet Baning",
-  "Cash",
+  "Cash"
 ];
 
 export const transactionPaymentMethodIcons = {

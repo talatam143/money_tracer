@@ -38,7 +38,7 @@ const TransactionFilter = (props) => {
   const [filterType, setFilterType] = useState("sort");
   const [searchfield, setSearchField] = useState("");
   const [selectedFilters, setSelectedFilters] = useState(intialFilters);
-  const [selectedCategoriesList, setSelectedCategoriesList] = useState([])
+  const [selectedCategoriesList, setSelectedCategoriesList] = useState([]);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -58,7 +58,8 @@ const TransactionFilter = (props) => {
       queryDataEnums.sort.includes(queries.sort)
     ) {
       setSortOptions(
-        `${queries["sort"]}-${queryDataEnums.order.includes(queries.order) ? queries.order : "asec"
+        `${queries["sort"]}-${
+          queryDataEnums.order.includes(queries.order) ? queries.order : "asec"
         }`
       );
     } else {
@@ -73,10 +74,12 @@ const TransactionFilter = (props) => {
       setMonthlyFilter(false);
     }
     if (queryKeys.includes("categories")) {
-      let formattedList = queries["categories"].split(",").map((eachCategory) => eachCategory.split("-")[0])
-      setSelectedCategoriesList([...new Set(formattedList)])
+      let formattedList = queries["categories"]
+        .split(",")
+        .map((eachCategory) => eachCategory.split("-")[0]);
+      setSelectedCategoriesList([...new Set(formattedList)]);
     } else {
-      setSelectedCategoriesList([])
+      setSelectedCategoriesList([]);
     }
     Object.keys(selectedFilters).forEach((eachFilter) => {
       if (queryKeys.includes(eachFilter)) {
@@ -117,17 +120,20 @@ const TransactionFilter = (props) => {
       const updatedSelectedCategories = {
         ...prevSelectedCategories,
         [name]: prevSelectedCategories[name].includes(value)
-          ? prevSelectedCategories[name].filter((category) => category !== value)
+          ? prevSelectedCategories[name].filter(
+              (category) => category !== value
+            )
           : [...prevSelectedCategories[name], value],
       };
       if (name === "categories") {
-        let formattedList = updatedSelectedCategories.categories.map((eachCategory) => eachCategory.split("-")[0]);
+        let formattedList = updatedSelectedCategories.categories.map(
+          (eachCategory) => eachCategory.split("-")[0]
+        );
         setSelectedCategoriesList([...new Set(formattedList)]);
       }
       return updatedSelectedCategories;
     });
   };
-
 
   const handleDateChange = (value) => {
     setSelectedFilters((prevSelectedCategories) => ({
@@ -296,6 +302,7 @@ const TransactionFilter = (props) => {
               >
                 <input
                   type="radio"
+                  className="transaction-filter-radio-input"
                   value={eachOption.value}
                   id={eachOption.value}
                   name="sort-transactions"
@@ -326,12 +333,13 @@ const TransactionFilter = (props) => {
                       weight="600"
                       size="18px"
                       color="#000000"
-                      content={`${eachFilter.displayText} ${selectedFilters[eachFilter.name].length > 0
-                        ? eachFilter.name === "date"
-                          ? " (1)"
-                          : ` (${selectedFilters[eachFilter.name].length})`
-                        : ""
-                        }`}
+                      content={`${eachFilter.displayText} ${
+                        selectedFilters[eachFilter.name].length > 0
+                          ? eachFilter.name === "date"
+                            ? " (1)"
+                            : ` (${selectedFilters[eachFilter.name].length})`
+                          : ""
+                      }`}
                     />
                     <TransactionFilterLayer
                       filterOption={eachFilter}
@@ -345,7 +353,8 @@ const TransactionFilter = (props) => {
               })}
             </div>
             <div className="transactions-filter-footer-container">
-              <Button content="Clear All"
+              <Button
+                content="Clear All"
                 backgroundColor="transparent"
                 borderRadius="6px"
                 border="solid 1px #000000"
@@ -353,9 +362,13 @@ const TransactionFilter = (props) => {
                 color="#000000"
                 fontSize="16px"
                 fontWeight="500"
-                handleClick={() => { setSelectedFilters(intialFilters); setSelectedCategoriesList([]) }}
+                handleClick={() => {
+                  setSelectedFilters(intialFilters);
+                  setSelectedCategoriesList([]);
+                }}
               />
-              <Button content="Apply"
+              <Button
+                content="Apply"
                 backgroundColor="#000000"
                 border="solid 2px #000000"
                 borderRadius="6px"

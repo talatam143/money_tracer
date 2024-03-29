@@ -72,3 +72,68 @@ input[type="date"] {
   overflow: hidden;
   gap: 3px;
 }
+
+.radio-input-list-container {
+  display: flex;
+  gap: 5px;
+  margin-top: 4px;
+  overflow-x: auto;
+  padding: 0 3px;
+}
+
+.radio-input {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  gap: 3px;
+  padding: 8px 10px 8px 0;
+  background-color: #ffffff;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+.radio-input > label {
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.radio-input-checked {
+  background-color: #121926;
+  color: #ffffff;
+}
+
+.form-radio-input:after {
+  width: 12px !important;
+  height: 12px !important;
+  border-radius: 15px;
+  top: -1px;
+  left: -1px;
+  position: relative;
+  background-color: #d1d3d1;
+  content: "";
+  display: inline-block;
+  visibility: visible;
+  border: 3px solid white;
+}
+
+.form-radio-input:checked:after {
+  width: 12px !important;
+  height: 12px !important;
+  border-radius: 15px;
+  top: 0px;
+  left: 0px;
+  position: relative;
+  background-color: #121926;
+  content: "";
+  display: inline-block;
+  visibility: visible;
+  border: 2px solid white;
+}
+
+.radio-input-label-image {
+  width: 18px;
+  height: 18px;
+}
