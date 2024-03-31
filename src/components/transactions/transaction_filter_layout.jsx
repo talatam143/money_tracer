@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   categoriesList,
   transactionFilterHeaders,
   transactionPaymentMethods,
 } from "../../utils/transactions_form_data";
 import Text from "../elements/text";
-import { userInfoService } from "../../services/user/user_info";
-import { formatUserData } from "../../utils/format_user_data";
-import { setUserData } from "../../features/user_info/user_info";
+
 import { userDataEnums } from "../../utils/enums";
 import CustomDatePicker from "../elements/date_picker";
 
@@ -18,43 +16,37 @@ const TransactionFilterLayer = (props) => {
     selectedFilters,
     handleCategoryChange,
     handleDateChange,
-    selectedCategoriesList
+    selectedCategoriesList,
   } = props;
 
-  const dispatch = useDispatch();
   const userData = useSelector((state) => state.userData);
-  const [selectedCategory, setSelectedCategory] = useState("")
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   useEffect(() => {
-    async function fetchUserData() {
-      if (!userData.isDataFetched) {
-        const { status, data } = await userInfoService(
-          {},
-          "get",
-          "/getuserdetails"
-        );
-        if (status === 200) {
-          let formattedData = formatUserData(data);
-          dispatch(setUserData(formattedData));
-        }
-      }
-    }
-    fetchUserData();
-    return () => setSelectedCategory("")
-  }, [dispatch, userData.isDataFetched]);
+    return () => setSelectedCategory("");
+  }, []);
 
   const renderCheckboxes = (name, list, storeArray, parentKey) => {
     return list?.map?.((eachItem) => {
       let item = eachItem?.name ? eachItem?.name : eachItem;
       let key = parentKey ? `${parentKey}-${item}` : item;
       return (
-        <div key={key} className="transactions-filter-each-chip"
-          style={{ backgroundColor: storeArray.includes(key) ? "#364152" : null }}
-          onClick={() => handleCategoryChange(name, key)}>
-          {eachItem?.imageUrl || eachItem.iconUrl ?
-            <img src={eachItem?.iconUrl || eachItem?.imageUrl} alt="icon"
+        <div
+          key={key}
+          className="transactions-filter-each-chip"
+          style={{
+            backgroundColor: storeArray.includes(key) ? "#364152" : null,
+          }}
+          onClick={() => handleCategoryChange(name, key)}
+        >
+          {eachItem?.imageUrl || eachItem.iconUrl ? (
+            <img
+              src={eachItem?.iconUrl || eachItem?.imageUrl}
+              alt="icon"
               style={{ borderRadius: name === "UPI" ? "50px" : "0px" }}
-              className="transactions-filter-chip-image" /> : null}
+              className="transactions-filter-chip-image"
+            />
+          ) : null}
           <Text
             content={
               name === "creditCards"
@@ -71,30 +63,47 @@ const TransactionFilterLayer = (props) => {
 
   switch (filterOption.displayText) {
     case transactionFilterHeaders[0].displayText:
-      return <>
-        <div className="transactions-filter-chip-container">
-          {Object.keys(categoriesList).map((eachCategory) => (
-            <div className="transactions-filter-each-chip"
-              key={eachCategory}
-              onClick={() => { setSelectedCategory((prevCategory) => prevCategory !== eachCategory ? eachCategory : "") }}
-              style={{ backgroundColor: selectedCategoriesList.includes(eachCategory) ? "#364152" : null }}>
-              <Text
-                content={eachCategory}
-                m="0"
-                color={selectedCategoriesList.includes(eachCategory) ? "#ffffff" : "#364152"}
-              />
-            </div>
-          ))}
-        </div>
-        <div className="transactions-filter-chip-container">
-          {renderCheckboxes(
-            "categories",
-            categoriesList[selectedCategory],
-            selectedFilters.categories,
-            selectedCategory
-          )}
-        </div>
-      </>
+      return (
+        <>
+          <div className="transactions-filter-chip-container">
+            {Object.keys(categoriesList).map((eachCategory) => (
+              <div
+                className="transactions-filter-each-chip"
+                key={eachCategory}
+                onClick={() => {
+                  setSelectedCategory((prevCategory) =>
+                    prevCategory !== eachCategory ? eachCategory : ""
+                  );
+                }}
+                style={{
+                  backgroundColor: selectedCategoriesList.includes(eachCategory)
+                    ? "#364152"
+                    : null,
+                }}
+              >
+                <Text
+                  content={eachCategory}
+                  m="0"
+                  color={
+                    selectedCategoriesList.includes(eachCategory)
+                      ? "#ffffff"
+                      : "#364152"
+                  }
+                />
+              </div>
+            ))}
+          </div>
+          {selectedCategory !== "" ? <hr /> : null}
+          <div className="transactions-filter-chip-container">
+            {renderCheckboxes(
+              "categories",
+              categoriesList[selectedCategory],
+              selectedFilters.categories,
+              selectedCategory
+            )}
+          </div>
+        </>
+      );
     case transactionFilterHeaders[1].displayText:
       return (
         <div className="transactions-filter-chip-container">

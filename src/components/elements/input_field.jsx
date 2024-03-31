@@ -40,6 +40,7 @@ const InputField = (props) => {
     containerMargin,
     addButton,
     handleAddButtonClick,
+    autoFocus,
   } = props;
   const [inputType, setInputType] = useState(props.type);
 
@@ -113,6 +114,7 @@ const InputField = (props) => {
       <input
         id={name}
         type={inputType}
+        autoFocus={autoFocus || false}
         placeholder={placeholder}
         name={name}
         readOnly={readOnly ? readOnly : null}

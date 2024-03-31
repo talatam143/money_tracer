@@ -43,6 +43,7 @@ const InputForm = (props) => {
           required={true}
           error={titleError}
           errorText="Transaction title needs at least 3 letters."
+          autoFocus={true}
         />
         <InputField
           type="number"
