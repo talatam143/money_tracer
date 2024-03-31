@@ -29,39 +29,41 @@ const Transactions = () => {
   const transactionsContainer = useRef(null);
   const queryParams = new URLSearchParams(location.search);
   const [editTransaction, setEditTransaction] = useState(false);
-  const isUserLoggedIn = useSelector((state) => state.auth.isUserLoggedIn);
-  const fetchState = useSelector((state) => state.fetchState);
-  const {
-    transactions,
-    transactionsCount,
-    isDataFetched,
-    totalTransactionsAmount,
-  } = useSelector((state) => state.transactionData);
   const [transactionsFetched, setTransactionsFetcing] = useState(false);
   const [hasQueries, setHasQueries] = useState(false);
   const [scrollClass, setScrollClass] = useState("hideScollIcon");
+  const isUserLoggedIn = useSelector((state) => state.auth.isUserLoggedIn);
+  const fetchState = useSelector((state) => state.fetchState);
+  const { transactions, transactionsCount, totalTransactionsAmount } =
+    useSelector((state) => state.transactionData);
 
   useEffect(() => {
     async function fetchData() {
       setTransactionsFetcing(true);
 
       let queries = constructQueries();
-      if (
-        (Object.keys(queries).length === 3 ||
-          Object.keys(queries).length === 1) &&
-        Object.keys(queries).includes("monthly")
-      ) {
-        setHasQueries(false);
-      } else if (Object.keys(queries).length > 0) {
-        setHasQueries(true);
+      let queriesList = Object.keys(queries);
+
+      if (queriesList.includes("monthly")) {
+        if (
+          (queriesList.includes("fromdate") &&
+            queriesList.includes("toDate") &&
+            queries.monthly[0] === "true" &&
+            queriesList.length === 3) ||
+          (queries.monthly[0] === "false" && queriesList.length === 1)
+        ) {
+          setHasQueries(false);
+        } else {
+          setHasQueries(true);
+        }
       } else {
-        setHasQueries(false);
+        setHasQueries(true);
       }
 
       const { status, data } = await transactionService(
         {},
         "get",
-        `?skip=${transactions?.length || 0}`,
+        `?skip=0`,
         queries
       );
       if (status === 200) {
@@ -75,20 +77,16 @@ const Transactions = () => {
       }
       setTransactionsFetcing(false);
     }
-    if (!isDataFetched && isUserLoggedIn) {
+    if (isUserLoggedIn) {
       fetchData();
     }
     return () => {
-      const queryParams = new URLSearchParams(location.search);
-      const hasQueryParams = queryParams.keys().next().done === false;
-      if (hasQueryParams) {
-        dispatch(resetTransactionsData());
-      }
       localStorage.removeItem("ur-ti");
       localStorage.removeItem("tr-ln");
+      dispatch(resetTransactionsData());
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location, isUserLoggedIn]);
+  }, [isUserLoggedIn, location.search]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -160,9 +158,10 @@ const Transactions = () => {
     }
     let fromDate = `${currDate.getFullYear()}-${currDate.getMonth() + 1}-1`;
 
-    if (queryParams.get("monthly") === "true") {
+    if (queryParams.get("monthly") !== "false") {
       queries.fromdate = fromDate;
       queries.toDate = toDate;
+      queries.monthly = ["true"];
     }
     return queries;
   };
@@ -207,8 +206,9 @@ const Transactions = () => {
           {hasQueries ? (
             <div className="transaction-list-query-reset-container">
               <Text
-                content={`${transactionsCount}  ${transactionsCount > 1 ? " Transactions" : " Transaction"
-                  }`}
+                content={`${transactionsCount}  ${
+                  transactionsCount > 1 ? " Transactions" : " Transaction"
+                }`}
                 align="left"
                 m="0"
                 size="16px"
@@ -279,15 +279,8 @@ const Transactions = () => {
         </div>
       ) : null}
       {fetchState.state === statesEnum.LOADING ? (
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            width: "100%",
-          }}
-        >
-          {[0, 1, 2, 3, 4, 5, 6].map((eachItem) => (
+        <div className="transactions-skeleton-container">
+          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((eachItem) => (
             <Skeleton
               variant="rectangular"
               width="95%"

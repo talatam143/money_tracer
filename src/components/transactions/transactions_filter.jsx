@@ -4,7 +4,7 @@ import { SwipeableDrawer } from "@mui/material";
 import InputField from "../elements/input_field";
 import TransactionsFilterIcon from "../../assets/transactions_filter";
 import { TbArrowsSort } from "react-icons/tb";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { resetTransactionsData } from "../../features/transactions/transactions";
 import { queryDataEnums } from "../../utils/enums";
 import {
@@ -14,6 +14,9 @@ import {
 import Text from "../elements/text";
 import TransactionFilterLayer from "./transaction_filter_layout";
 import Button from "../elements/button";
+import { userInfoService } from "../../services/user/user_info";
+import { formatUserData } from "../../utils/format_user_data";
+import { setUserData } from "../../features/user_info/user_info";
 
 const intialFilters = {
   categories: [],
@@ -39,6 +42,7 @@ const TransactionFilter = (props) => {
   const [searchfield, setSearchField] = useState("");
   const [selectedFilters, setSelectedFilters] = useState(intialFilters);
   const [selectedCategoriesList, setSelectedCategoriesList] = useState([]);
+  const userData = useSelector((state) => state.userData);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -49,6 +53,8 @@ const TransactionFilter = (props) => {
 
     if (queryParams.get("monthly") !== "true") {
       setMonthlyFilter(false);
+    } else {
+      setMonthlyFilter(true);
     }
 
     let queryKeys = Object.keys(queries);
@@ -72,6 +78,8 @@ const TransactionFilter = (props) => {
     }
     if (queryKeys.includes("monthly") && queries.monthly === "false") {
       setMonthlyFilter(false);
+    } else {
+      setMonthlyFilter(true);
     }
     if (queryKeys.includes("categories")) {
       let formattedList = queries["categories"]
@@ -97,6 +105,25 @@ const TransactionFilter = (props) => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.search]);
+
+  useEffect(() => {
+    async function fetchUserData() {
+      if (!userData.isDataFetched) {
+        const { status, data } = await userInfoService(
+          {},
+          "get",
+          "/getuserdetails"
+        );
+        if (status === 200) {
+          let formattedData = formatUserData(data);
+          dispatch(setUserData(formattedData));
+        }
+      }
+    }
+    fetchUserData();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleSortOption = (e) => {
     const urlParams = new URLSearchParams(location.search);
@@ -191,28 +218,18 @@ const TransactionFilter = (props) => {
   };
 
   const handleMonthlyFilter = (type) => {
-    const urlParams = new URLSearchParams(location.search);
+    const queryParams = new URLSearchParams(location.search);
 
     if (type === "monthly" && monthlyFilter === false) {
+      queryParams.set("monthly", true);
       setMonthlyFilter(true);
-      let oldString = urlParams.toString();
-      for (const key of urlParams.keys()) {
-        urlParams.delete(key);
-      }
-      urlParams.set("monthly", true);
-      if (
-        urlParams.toString().length > 0 &&
-        oldString !== urlParams.toString()
-      ) {
-        navigate(`?${urlParams.toString()}`);
-        dispatch(resetTransactionsData());
-        setToggleFilters(false);
-      }
     } else if (type === "all" && monthlyFilter === true) {
+      queryParams.set("monthly", false);
       setMonthlyFilter(false);
-      dispatch(resetTransactionsData());
-      navigate("/transactions?monthly=false");
     }
+    
+    dispatch(resetTransactionsData());
+    navigate(`?${queryParams.toString()}`);
   };
 
   return (
@@ -274,7 +291,7 @@ const TransactionFilter = (props) => {
         sx={{
           "& .MuiPaper-root.MuiDrawer-paper": {
             borderRadius: "18px 18px 0 0",
-            height: filterType === "sort" ? null : "80dvh",
+            height: filterType === "sort" ? null : "85dvh",
             overflowY: "hidden",
           },
         }}
