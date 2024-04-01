@@ -1,47 +1,6 @@
 .dashboard-container {
   padding-bottom: 65px;
-  background-color: #eef2f6;
-  min-height: 90vh;
-}
-
-.dashboard-navbar-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 10px 10px 5px 10px;
-  box-sizing: border-box;
-}
-
-.dashboard-navbar-user-container {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.dashboard-navbar-user-container > p {
-  font-family: "Kaushan Script", cursive;
-  font-weight: 600;
-  font-size: 32px;
-}
-
-.dashboard-transactions-skeleton-container {
-  height: calc(100dvh - 70px);
-  overflow: hidden;
-  box-sizing: border-box;
-  margin: 10px;
-  display: flex;
-  flex-wrap: wrap;
-  align-content: flex-start;
-  gap: 10px;
-}
-
-.dashboard-transactions-skeleton-container :first-child {
-  flex-grow: 0 !important;
-}
-
-.dashboard-transactions-skeleton-container * {
-  flex-grow: 1;
+  /* min-height: 90vh; */
 }
 
 .dashboard-transactions-container,
@@ -81,11 +40,6 @@
   padding: 0 10px;
   border-radius: 8px;
   box-shadow: #63636333 0px 2px 8px 0px;
-}
-
-.dashboard-sub-transactions-icons {
-  color: #ffffff;
-  font-size: 50px;
 }
 
 .dashboard-preferred-transactions-container {
@@ -132,19 +86,6 @@
   color: #4527a0;
 }
 
-.dashboard-preferred-sub-icon {
-  color: #4527a0;
-  border-radius: 8px 0 0 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 52px;
-}
-
-.sub-preferred-bank-image {
-  max-width: 150px;
-  max-height: 90px;
-}
 
 .dashboard-records-transactions-container:has(div) {
   display: flex;
