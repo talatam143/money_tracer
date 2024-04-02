@@ -25,6 +25,18 @@
 
 .analytics-skeleton-container {
   background-color: #000000;
+  padding-bottom: 20px;
+}
+
+.trends-carousel-container{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: #262626;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  box-sizing: border-box;
 }
 
 .dashboard-analytics-container {

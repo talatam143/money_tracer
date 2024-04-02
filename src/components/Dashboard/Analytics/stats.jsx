@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { motion } from "framer-motion";
 import Text from "../../elements/text";
 import {
   HiOutlineClipboardDocumentList,
@@ -66,10 +67,31 @@ const Stats = () => {
     setFormattedTotalAmount(formattedAmountString);
   }, [totalStats.totalTarnsactionsAmount]);
 
+  const statsContainer = {
+    hidden: { opacity: 1, scale: 0 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        delayChildren: 0.1,
+        staggerChildren: 0.1,
+        type: "linear",
+      },
+    },
+  };
+
+  const statsItem = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+    },
+  };
+
   return totalStats.totalTransactions ||
     totalStats.totalTarnsactionsAmount ||
     totalStats.starredTransactions ? (
-    <div className="dashboard-stats-container">
+    <div className="dashboard-stats-container" >
       <div className="dashboard-stats-card-icon-container">
         <Text
           content="Expenses Analytics"
@@ -81,9 +103,10 @@ const Stats = () => {
         <BiStats fontSize={30} color="#FFFFFF" style={{ strokeWidth: 0.1 }} />
       </div>
 
-      <div className="dashboard-stats-cards-container">
+      <motion.div className="dashboard-stats-cards-container" variants={statsContainer} initial="hidden"
+        animate="visible">
         {totalStats.totalTransactions ? (
-          <div className="dashboard-stats-each-card-container stat-card-one">
+          <motion.div className="dashboard-stats-each-card-container stat-card-one" variants={statsItem}>
             <div className="dashboard-stats-card-icon-container">
               <HiOutlineClipboardDocumentList className="dashboard-sub-transactions-icons" />
               <Text
@@ -107,10 +130,10 @@ const Stats = () => {
                 />
               </div>
             </div>
-          </div>
+          </motion.div>
         ) : null}
         {totalStats.totalTarnsactionsAmount ? (
-          <div className="dashboard-stats-each-card-container stat-card-two">
+          <motion.div className="dashboard-stats-each-card-container stat-card-two" variants={statsItem}>
             <div className="dashboard-stats-card-icon-container">
               <HiOutlineCurrencyRupee className="dashboard-sub-transactions-icons" />
               <Text
@@ -131,10 +154,10 @@ const Stats = () => {
                 size="20px"
               />
             </div>
-          </div>
+          </motion.div>
         ) : null}
         {totalStats.starredTransactions ? (
-          <div className="dashboard-stats-each-card-container stat-card-three">
+          <motion.div className="dashboard-stats-each-card-container stat-card-three" variants={statsItem}>
             <div className="dashboard-stats-card-icon-container">
               <HiOutlineClipboardDocumentList className="dashboard-sub-transactions-icons" />
               <Text
@@ -158,9 +181,9 @@ const Stats = () => {
                 />
               </div>
             </div>
-          </div>
+          </motion.div>
         ) : null}
-      </div>
+      </motion.div>
     </div>
   ) : null;
 };

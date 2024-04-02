@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import Text from "../../elements/text";
 import { FaArrowTrendUp } from "react-icons/fa6";
 import { bankIconData } from "../../../utils/raw_data";
@@ -39,6 +40,27 @@ const UsageTrends = () => {
     }
   };
 
+
+  const trendsContainer = {
+    hidden: { opacity: 1, scale: 0 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        delayChildren: 0.1,
+        staggerChildren: 0.1,
+        type: "linear",
+      },
+    },
+  };
+
+  const trendsItem = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+    },
+  };
   return preferredBank ||
     preferredCategory ||
     preferredPaymentMethod ||
@@ -54,9 +76,10 @@ const UsageTrends = () => {
         />
         <FaArrowTrendUp fontSize={22} color="#FFFFFF" />
       </div>
-      <div className="dashboard-usage-trends-cards-container">
+      <motion.div className="dashboard-usage-trends-cards-container" variants={trendsContainer} initial="hidden"
+        animate="visible">
         {preferredBank ? (
-          <div
+          <motion.div variants={trendsItem}
             className="dashboard-usage-trends-each-card-container"
             onClick={() => handleTrendNavigate("preferredBank")}
           >
@@ -97,10 +120,10 @@ const UsageTrends = () => {
               />
               <MdKeyboardArrowRight fontSize={32} color="#888888" />
             </div>
-          </div>
+          </motion.div>
         ) : null}
         {preferredCategory ? (
-          <div
+          <motion.div variants={trendsItem}
             className="dashboard-usage-trends-each-card-container"
             onClick={() => handleTrendNavigate("preferredCategory")}
           >
@@ -109,8 +132,8 @@ const UsageTrends = () => {
                 {transactionCategories[
                   preferredCategory?.name?.split?.("-")?.[0]
                 ][preferredCategory?.name?.split?.("-")?.[1]]?.icon || (
-                  <GiPerspectiveDiceSixFacesRandom />
-                )}
+                    <GiPerspectiveDiceSixFacesRandom />
+                  )}
               </div>
               <div>
                 <Text
@@ -139,10 +162,10 @@ const UsageTrends = () => {
               />
               <MdKeyboardArrowRight fontSize={32} color="#888888" />
             </div>
-          </div>
+          </motion.div>
         ) : null}
         {preferredPaymentMethod ? (
-          <div
+          <motion.div variants={trendsItem}
             className="dashboard-usage-trends-each-card-container"
             onClick={() => handleTrendNavigate("preferredPaymentMethod")}
           >
@@ -180,10 +203,10 @@ const UsageTrends = () => {
               />
               <MdKeyboardArrowRight fontSize={32} color="#888888" />
             </div>
-          </div>
+          </motion.div>
         ) : null}
         {preferredDate ? (
-          <div
+          <motion.div variants={trendsItem}
             className="dashboard-usage-trends-each-card-container"
             onClick={() => handleTrendNavigate("preferredDate")}
           >
@@ -218,9 +241,9 @@ const UsageTrends = () => {
               />
               <MdKeyboardArrowRight fontSize={32} color="#888888" />
             </div>
-          </div>
+          </motion.div>
         ) : null}
-      </div>
+      </motion.div>
     </div>
   ) : null;
 };

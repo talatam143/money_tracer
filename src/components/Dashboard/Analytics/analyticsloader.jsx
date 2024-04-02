@@ -1,12 +1,21 @@
 import { Skeleton } from "@mui/material";
 import React from "react";
 
-const skeletonProperties = [
-  { width: 35, height: 100 },
-  { width: 35, height: 100 },
-  { width: 35, height: 100 },
-  { width: 35, height: 100 },
+const analyticsSkeletonProperties = [
+  { width: 40, height: 110 },
+  { width: 40, height: 110 },
+  { width: 40, height: 110 },
+  { width: 40, height: 110 },
 ];
+
+const trendSkeletonProperties = [
+  { width: "100%", height: 50 },
+  { width: "100%", height: 50 },
+  { width: "100%", height: 50 },
+  { width: "100%", height: 50 },
+];
+
+
 
 const AnalyticsLoader = () => {
   return (
@@ -47,7 +56,20 @@ const AnalyticsLoader = () => {
         sx={{ bgcolor: "grey.900", marginLeft: "10px" }}
       />
       <div className="analytics-carousel-skeleton-container">
-        {skeletonProperties.map((eachSkeleton, index) => (
+        {analyticsSkeletonProperties.map((eachSkeleton, index) => (
+          <Skeleton
+            key={index}
+            animation="wave"
+            width={`${eachSkeleton.width}%`}
+            height={eachSkeleton.height}
+            variant="rounded"
+            m="0"
+            sx={{ bgcolor: "grey.900" }}
+          />
+        ))}
+      </div>
+      <div className="trends-carousel-container">
+        {trendSkeletonProperties.map((eachSkeleton, index) => (
           <Skeleton
             key={index}
             animation="wave"
