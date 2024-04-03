@@ -1,89 +1,74 @@
-import React from "react";
-import ReactApexChart from "react-apexcharts";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import ReactEChartsWrapper from "../../../utils/apache_chart_wrapper";
 
-const BankChart = (props) => {
-  const { bankStats } = props;
+const BankChart = () => {
+  const bankStats = useSelector((state) => state.dashboard.charts?.bankStats);
+  const [chartData, setChartData] = useState({ xAxis: [], yAxis: [] });
+  const [chartLoading, setChartLoading] = useState(true);
 
-  const bankSeries = [
-    {
-      data: bankStats?.map?.((eachMethod) => eachMethod.transactionCount) || [],
-    },
-  ];
-  const bankOptions = {
-    chart: {
-      type: "bar",
-    },
-    plotOptions: {
-      bar: {
-        distributed: true,
-        horizontal: true,
-        dataLabels: {
-          position: "bottom",
-        },
-      },
-    },
-    legend: {
-      show: false,
-    },
-    dataLabels: {
-      enabled: true,
-      textAnchor: "start",
-      style: {
-        colors: ["#fff"],
-      },
-      formatter: function (val, opt) {
-        return opt.w.globals.labels[opt.dataPointIndex] + ":  " + val;
-      },
-      offsetX: 0,
-      dropShadow: {
-        enabled: true,
-      },
-    },
-    stroke: {
-      width: 1,
-      colors: ["#fff"],
-    },
-    xaxis: {
-      categories: bankStats?.map?.((eachMethod) => eachMethod._id) || [],
-    },
-    yaxis: {
-      labels: {
-        show: false,
-      },
-    },
-    title: {
-      text: "Banks",
-      align: "center",
-      floating: true,
-      style: {
-        fontSize: "20px",
-        fontWeight: "600",
-        fontFamily: "Open Sans",
-        color: "#000000",
-      },
-    },
-    tooltip: {
-      theme: "dark",
-      x: {
-        show: true,
-      },
-      y: {
-        title: {
-          formatter: function (e) {
-            return "Count -";
-          },
-        },
-      },
-    },
-  };
+  useEffect(() => {
+    let data = { xAxis: [], yAxis: [] };
+    bankStats.forEach((eachBank) => {
+      data.xAxis.push(eachBank._id);
+      data.yAxis.push(eachBank.transactionCount);
+    });
+    setChartData(data);
+    setChartLoading(false);
+  }, [bankStats]);
 
   return (
-    <div className="dashboard-chart-pie-container">
-      <ReactApexChart
-        options={bankOptions}
-        series={bankSeries}
-        type="bar"
-        height={bankStats?.length > 4 ? bankStats?.length * 35 : 4 * 35}
+    <div className="charts-bank-container">
+      <ReactEChartsWrapper
+        option={{
+          title: [
+            {
+              text: "Bank usage analysis",
+              padding: 15,
+              textStyle: { fontSize: 20 },
+            },
+          ],
+          colorBy: "yAxis",
+          color: ["#cadc53", "#ae9eeb", "#dd6745", "#32c960", "#7b9fff"],
+          tooltip: {
+            trigger: "axis",
+            axisPointer: {
+              type: "shadow",
+            },
+            formatter: function (params) {
+              return (
+                params[0].name + "<br/>" + params[0].value + " transactions"
+              );
+            },
+          },
+          legend: {},
+          grid: {
+            left: "3%",
+            right: "4%",
+            bottom: "3%",
+            containLabel: true,
+          },
+          xAxis: {
+            type: "value",
+            boundaryGap: [0, 0.01],
+          },
+          yAxis: {
+            type: "category",
+            data: chartData.xAxis,
+          },
+          series: [
+            {
+              type: "bar",
+              data: chartData.yAxis,
+              barWidth: 35,
+            },
+          ],
+        }}
+        style={{
+          width: "100%",
+          height: `${bankStats?.length * 100}px`,
+        }}
+        loading={chartLoading}
       />
     </div>
   );

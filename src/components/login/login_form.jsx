@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import InputField from "../elements/input_field";
 import Button from "../elements/button";
 import { userAuthService } from "../../services/auth/auth";
-import { useNavigate } from "react-router-dom";
+import { statesEnum } from "../../utils/enums";
 
 const initialFormState = {
   email: "",
@@ -19,6 +21,7 @@ const LoginForm = () => {
   const [changePassword, setChangePassword] = useState(false);
   const [passwordMatch, setPasswordMatch] = useState(false);
   const navigate = useNavigate();
+  const fetchState = useSelector((state) => state.fetchState);
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
@@ -32,15 +35,11 @@ const LoginForm = () => {
         }
       }
     } else {
-      const response = await userAuthService(
+      await userAuthService(
         { email: loginForm.email, otp },
         "post",
         "/verifyUser"
       );
-
-      if (response.status === 200) {
-        navigate("/");
-      }
     }
   };
 
@@ -140,6 +139,7 @@ const LoginForm = () => {
             fontWeight="500"
             type="button"
             handleClick={() => resendOtp()}
+            disabled={fetchState.state === statesEnum.LOADING}
           />
         </>
       ) : null}
@@ -238,6 +238,7 @@ const LoginForm = () => {
             fontWeight="500"
             type="button"
             handleClick={resendOtp}
+            disabled={fetchState.state === statesEnum.LOADING}
           />
         </>
       ) : null}
@@ -265,6 +266,7 @@ const LoginForm = () => {
         fontSize="18px"
         fontWeight="600"
         type="submit"
+        disabled={fetchState.state === statesEnum.LOADING}
       />
     </form>
   );
