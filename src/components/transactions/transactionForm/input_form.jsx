@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { userDataEnums } from "../../../utils/enums";
+import { statesEnum, userDataEnums } from "../../../utils/enums";
 import InputField from "../../elements/input_field";
 import MuiSelect from "../../elements/mui_select";
 import {
@@ -27,6 +27,7 @@ const InputForm = (props) => {
     resetRadioButton,
   } = props;
   const userData = useSelector((state) => state.userData);
+  const fetchState = useSelector((state) => state.fetchState);
 
   return (
     <div className="transaction-form-scroll-container">
@@ -258,6 +259,7 @@ const InputForm = (props) => {
             fontSize="22px"
             fontWeight="500"
             icon="none"
+            disabled={fetchState.state === statesEnum.LOADING}
           />
         </div>
       </form>

@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { motion, useAnimation } from "framer-motion";
+import { useSelector } from "react-redux";
 import { MdDeleteForever } from "react-icons/md";
 import { IoClose } from "react-icons/io5";
 import { GrEdit } from "react-icons/gr";
 import { MdSaveAs } from "react-icons/md";
 import Button from "./button";
+import { statesEnum } from "../../utils/enums";
 
 const IconAnimation = (props) => {
   const { handleClickFunc, type, theme } = props;
   const [iconColor, setIconCOlor] = useState({ dark: "", light: "" });
   const animateHandlContainer = useAnimation();
   const animateHandleIcon = useAnimation();
+  const fetchState = useSelector((state) => state.fetchState);
 
   useEffect(() => {
     switch (type) {
@@ -123,6 +126,7 @@ const IconAnimation = (props) => {
           fontWeight="500"
           fontSize="15px"
           handleClick={handleClickFunc}
+          disabled={fetchState.state === statesEnum.LOADING}
         />
       </motion.div>
       <motion.div

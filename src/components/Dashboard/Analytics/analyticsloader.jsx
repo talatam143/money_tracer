@@ -13,9 +13,8 @@ const trendSkeletonProperties = [
   { width: "100%", height: 50 },
   { width: "100%", height: 50 },
   { width: "100%", height: 50 },
+  { width: "100%", height: 50 },
 ];
-
-
 
 const AnalyticsLoader = () => {
   return (
@@ -68,7 +67,7 @@ const AnalyticsLoader = () => {
           />
         ))}
       </div>
-      <div className="trends-carousel-container">
+      <div className="trends-carousel-skeleton-container">
         {trendSkeletonProperties.map((eachSkeleton, index) => (
           <Skeleton
             key={index}
@@ -80,6 +79,30 @@ const AnalyticsLoader = () => {
             sx={{ bgcolor: "grey.900" }}
           />
         ))}
+      </div>
+      <div className="stats-skeleton-container">
+        <Skeleton
+          animation="wave"
+          variant="h1"
+          width={200}
+          m="0"
+          sx={{ marginLeft: "20px" }}
+        />
+        <div
+          className="trends-carousel-skeleton-container"
+          style={{ background: "#FFFFFF" }}
+        >
+          {trendSkeletonProperties.map((eachSkeleton, index) => (
+            <Skeleton
+              key={index}
+              animation="wave"
+              width={`${eachSkeleton.width}%`}
+              height={eachSkeleton.height}
+              variant="rounded"
+              m="0"
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

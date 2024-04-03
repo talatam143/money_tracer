@@ -22,6 +22,7 @@ const Button = (props) => {
     handleClick,
     transition,
     textAlign,
+    disabled,
   } = props;
 
   const iconStyle = { fontSize: "25px" };
@@ -46,6 +47,7 @@ const Button = (props) => {
     <button
       type={type ? type : "button"}
       onClick={handleClick}
+      disabled={disabled || false}
       className={icon ? "button-icon-style" : null}
       style={{
         textAlign: textAlign || "center",

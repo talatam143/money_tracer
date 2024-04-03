@@ -2,10 +2,11 @@ import React from "react";
 import { statesEnum } from "../../../utils/enums";
 import AnalyticsLoader from "./analyticsloader";
 import Navbar from "./navbar";
-import Stats from "./stats";
+import AnalyticsStats from "./analytics_stats";
 import UsageTrends from "./usage_trends";
 
 import "./analytics_styles.css";
+import Stats from "./stats";
 
 const Analytics = (props) => {
   const { state } = props;
@@ -18,8 +19,9 @@ const Analytics = (props) => {
       return (
         <div className="dashboard-analytics-container">
           <Navbar />
-          <Stats />
+          <AnalyticsStats />
           <UsageTrends />
+          <Stats />
         </div>
       );
     default:

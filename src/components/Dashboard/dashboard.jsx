@@ -3,7 +3,7 @@ import Menu from "../home/menu";
 import NewUserDashBoard from "./new_user/dashboard";
 import { dashboardService } from "../../services/dashboard/dashboard";
 import Analytics from "./Analytics/Analytics";
-import Charts from "./charts";
+import Charts from "./Charts/charts";
 import { useSelector } from "react-redux";
 import { statesEnum } from "../../utils/enums";
 import "./dashboard_styles.css";
@@ -62,7 +62,7 @@ const Dashboard = () => {
       ) : (
         <div className="dashboard-container">
           <Analytics state={analyticsState} />
-          {/* <Charts state={chartsState} /> */}
+          <Charts state={chartsState} />
         </div>
       )}
       <TransactionButton />

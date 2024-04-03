@@ -164,7 +164,6 @@ const TransactionForm = (props) => {
   };
 
   const resetRadioButton = (name) => {
-    console.log("called reset", name);
     setTransactionFormData((prevData) => ({
       ...prevData,
       [name]: "reset",

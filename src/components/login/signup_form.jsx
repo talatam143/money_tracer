@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import dayjs from "dayjs";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { userAuthService } from "../../services/auth/auth";
 import InputField from "../elements/input_field";
 import Button from "../elements/button";
-import dayjs from "dayjs";
-import { userAuthService } from "../../services/auth/auth";
-import { useNavigate } from "react-router-dom";
+import { statesEnum } from "../../utils/enums";
 
 const initialFormState = {
   name: "",
@@ -37,6 +39,7 @@ const SignUpForm = () => {
   const [otp, setOTP] = useState();
   const [otpFetched, setOtpFetched] = useState(false);
   const navigate = useNavigate();
+  const fetchState = useSelector((state) => state.fetchState);
 
   const handleLoginSubmit = (e) => {
     e.preventDefault();
@@ -210,6 +213,7 @@ const SignUpForm = () => {
             fontWeight="500"
             type="button"
             handleClick={resendOtp}
+            disabled={fetchState.state === statesEnum.LOADING}
           />
         </>
       ) : null}
@@ -225,6 +229,7 @@ const SignUpForm = () => {
         fontWeight="500"
         margin="10px 0 0 0"
         type="submit"
+        disabled={fetchState.state === statesEnum.LOADING}
       />
     </form>
   );

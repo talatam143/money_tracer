@@ -46,8 +46,7 @@ export const dashboardService = async (method, path) => {
         })
       );
     } else {
-      // window.location.href = "/error";
-      console.log(error);
+      window.location.href = "/error";
     }
     return {
       status: error?.response?.status,

@@ -1,0 +1,12 @@
+.dashboard-charts-container {
+  background-color: #eeedf1;
+  padding-top: 10px;
+}
+
+.charts-payment-method-container {
+  margin-top: 30px;
+}
+
+.charts-bank-container {
+  margin-top: 30px;
+}

@@ -1,79 +1,104 @@
-import React from "react";
-import ReactApexChart from "react-apexcharts";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import ReactEChartsWrapper from "../../../utils/apache_chart_wrapper";
+import * as echarts from "echarts";
 
-const CategoriesChart = (props) => {
-  const { categoryStats } = props;
+const CategoriesChart = () => {
+  const categoryStats = useSelector(
+    (state) => state.dashboard.charts.categoryStats
+  );
+  const [chartData, setChartData] = useState({ dataAxis: [], data: [] });
+  const [chartLoading, setChartLoading] = useState(true);
 
-  const categoriesSeries = [
-    {
-      data: categoryStats?.map?.((eachMethod) => eachMethod.transactionCount),
-    },
-  ];
-
-  const categoriesOptions = {
-    chart: {
-      type: "bar",
-      minWidth: "100%",
-    },
-    plotOptions: {
-      bar: {
-        columnWidth: "45%",
-        distributed: true,
-      },
-    },
-    dataLabels: {
-      enabled: false,
-    },
-    legend: {
-      show: false,
-    },
-    xaxis: {
-      categories: categoryStats?.map?.(
-        (eachMethod) => eachMethod._id?.split?.("-")[1]
-      ),
-      labels: {
-        style: {
-          fontSize: "12px",
-        },
-      },
-    },
-    title: {
-      text: "Categories",
-      align: "left",
-      floating: false,
-      style: {
-        fontSize: "20px",
-        fontWeight: "600",
-        fontFamily: "Open Sans",
-        color: "#000000",
-      },
-    },
-    tooltip: {
-      theme: "dark",
-      x: {
-        show: true,
-      },
-      y: {
-        title: {
-          formatter: function (e) {
-            return "Count -";
-          },
-        },
-      },
-    },
-  };
+  useEffect(() => {
+    let data = { dataAxis: [], data: [] };
+    categoryStats.forEach((eachCategory) => {
+      data.dataAxis.push(eachCategory._id);
+      data.data.push(eachCategory.transactionCount);
+    });
+    setChartData(data);
+    setChartLoading(false);
+  }, [categoryStats]);
 
   return (
-    <div
-      className="dashboard-chart-pie-container"
-      style={{ overflowX: categoryStats?.length > 8 ? "scroll" : "none" }}
-    >
-      <ReactApexChart
-        options={categoriesOptions}
-        series={categoriesSeries}
-        type="bar"
-        height={380}
-        width={categoryStats?.length > 8 ? categoryStats?.length * 35 : "100%"}
+    <div className="charts-bank-container">
+      <ReactEChartsWrapper
+        option={{
+          title: [
+            {
+              text: "Categories analysis",
+              padding: 15,
+              textStyle: { fontSize: 20 },
+            },
+          ],
+          xAxis: {
+            data: chartData.dataAxis,
+            axisLabel: {
+              inside: true,
+              color: "#000000",
+              rotate: 90,
+            },
+            textStyle: {
+              fontWeight: "bold",
+            },
+            axisTick: {
+              show: false,
+            },
+            axisLine: {
+              show: false,
+            },
+            z: 10,
+          },
+          yAxis: {
+            axisLine: {
+              show: false,
+            },
+            axisTick: {
+              show: false,
+            },
+            axisLabel: {
+              color: "#000000",
+            },
+          },
+          dataZoom: [
+            {
+              type: "inside",
+              start: 30,
+              end: 60,
+            },
+          ],
+          series: [
+            {
+              type: "bar",
+              showBackground: true,
+              itemStyle: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                  { offset: 0, color: "#c7bcf7" },
+                  { offset: 0.5, color: "#ae9eeb" },
+                  { offset: 1, color: "#ae9eeb" },
+                ]),
+              },
+              emphasis: {
+                itemStyle: {
+                  color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                    { offset: 0, color: "#ae9eeb" },
+                    { offset: 0.7, color: "#ae9eeb" },
+                    { offset: 1, color: "#c7bcf7" },
+                  ]),
+                },
+              },
+              data: chartData.data,
+            },
+          ],
+          tooltip: {
+            trigger: "axis",
+            axisPointer: {
+              type: "shadow",
+            },
+          },
+        }}
+        style={{ height: "500px" }}
+        loading={chartLoading}
       />
     </div>
   );

@@ -25,10 +25,19 @@
 
 .analytics-skeleton-container {
   background-color: #000000;
-  padding-bottom: 20px;
+  overflow-y: hidden;
+  height: calc(100dvh - 65px);
 }
 
-.trends-carousel-container{
+.stats-skeleton-container {
+  background-color: #ffffff;
+  border-radius: 24px 24px 0 0;
+  padding: 20px 0;
+  margin-top: 20px;
+}
+
+.trends-carousel-container,
+.trends-carousel-skeleton-container {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -41,7 +50,6 @@
 
 .dashboard-analytics-container {
   background-color: #000000;
-  padding-bottom: 20px;
 }
 
 .dashboard-navbar-container {
@@ -118,7 +126,7 @@
 
 .stat-card-three,
 .preferred-icon-color-three {
-  background-color: #dc6344;
+  background-color: #dd6745;
 }
 
 .dashboard-usage-trends-container {
@@ -171,4 +179,41 @@
 
 .dashboard-usage-trends-card-navigate-icon-container > svg {
   align-self: center;
+}
+
+.dashboard-transactions-stats-container {
+  background-color: #ffffff;
+  margin-top: 25px;
+  padding: 20px;
+  border-radius: 34px 34px 0 0;
+}
+
+.dashboard-transactions-stats-cards-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  gap: 20px;
+}
+
+.dashboard-transactions-stats-each-card-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dashboard-transactions-stats-card-icon-container {
+  display: flex;
+  gap: 8px;
+}
+
+.dashboard-transactions-stats-card-title-container {
+  margin-top: 3px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dashboard-transactions-stats-card-title-container > svg {
+  color: #959595;
+  font-size: 25px;
 }

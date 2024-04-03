@@ -1,71 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import Text from "../../elements/text";
 import {
-  HiOutlineClipboardDocumentList,
-  HiMiniQueueList,
-  HiOutlineCurrencyRupee,
-} from "react-icons/hi2";
-import { BiStats } from "react-icons/bi";
+  formatAmountToRupee,
+  formatDate,
+} from "../../../utils/transctions_data_format";
+import { SiGoogleanalytics } from "react-icons/si";
+import { FaDotCircle } from "react-icons/fa";
+import { transactionCategories } from "../../../utils/transactions_form_data";
+import { GiPerspectiveDiceSixFacesRandom } from "react-icons/gi";
+import { IoMdArrowRoundForward } from "react-icons/io";
 
 const Stats = () => {
   const transactionsStats = useSelector(
     (state) => state.dashboard.transactions
   );
-  const totalStats = transactionsStats?.totalStats?.[0];
-  const [formattedTotalAmount, setFormattedTotalAmount] = useState("");
 
-  useEffect(() => {
-    let totalTarnsactionsAmount =
-      Math.round(
-        (Number(totalStats.totalTarnsactionsAmount) + Number.EPSILON) * 100
-      ) / 100;
-
-    let totalAmountString = Math.trunc(totalTarnsactionsAmount).toString();
-    let formattedAmountString = "";
-    let loopCount = 0;
-    let isValidLoop;
-    let initialLimits = { a: -3, b: totalAmountString.length };
-
-    if (totalAmountString.length > 3) {
-      isValidLoop = true;
-    } else {
-      formattedAmountString = totalAmountString;
-    }
-
-    while (isValidLoop) {
-      loopCount += 1;
-      if (
-        totalAmountString.slice(initialLimits.a, initialLimits.b).length > 0
-      ) {
-        formattedAmountString =
-          "," +
-          totalAmountString.slice(initialLimits.a, initialLimits.b) +
-          formattedAmountString;
-        if (loopCount === 1) {
-          initialLimits.a -= 2;
-          initialLimits.b = -3;
-        } else {
-          initialLimits.a -= 2;
-          initialLimits.b -= 2;
-        }
-      } else {
-        isValidLoop = false;
-        if (formattedAmountString[0] === ",") {
-          formattedAmountString = formattedAmountString.slice(
-            1,
-            formattedAmountString.length
-          );
-        }
-      }
-    }
-    formattedAmountString =
-      formattedAmountString +
-      "." +
-      totalTarnsactionsAmount.toString().split(".")[1];
-    setFormattedTotalAmount(formattedAmountString);
-  }, [totalStats.totalTarnsactionsAmount]);
+  const highestTransaction =
+    transactionsStats?.highestTransaction?.[0]?.transaction;
+  const lowestTransaction =
+    transactionsStats?.lowestTransaction?.[0]?.transaction;
+  const latestTransaction =
+    transactionsStats?.latestTransaction?.[0]?.transaction;
+  const oldTransaction = transactionsStats?.OldTransaction?.[0]?.transaction;
 
   const statsContainer = {
     hidden: { opacity: 1, scale: 0 },
@@ -88,98 +46,238 @@ const Stats = () => {
     },
   };
 
-  return totalStats.totalTransactions ||
-    totalStats.totalTarnsactionsAmount ||
-    totalStats.starredTransactions ? (
-    <div className="dashboard-stats-container" >
+  return highestTransaction ||
+    lowestTransaction ||
+    latestTransaction ||
+    oldTransaction ? (
+    <div className="dashboard-transactions-stats-container">
       <div className="dashboard-stats-card-icon-container">
-        <Text
-          content="Expenses Analytics"
-          color="#FFFFFF"
-          weight="600"
-          size="20px"
-          m="0"
+        <Text content="Stats" color="#000000" weight="600" size="22px" m="0" />
+        <SiGoogleanalytics
+          fontSize={20}
+          color="#000000"
+          style={{ strokeWidth: 0.1 }}
         />
-        <BiStats fontSize={30} color="#FFFFFF" style={{ strokeWidth: 0.1 }} />
       </div>
-
-      <motion.div className="dashboard-stats-cards-container" variants={statsContainer} initial="hidden"
-        animate="visible">
-        {totalStats.totalTransactions ? (
-          <motion.div className="dashboard-stats-each-card-container stat-card-one" variants={statsItem}>
-            <div className="dashboard-stats-card-icon-container">
-              <HiOutlineClipboardDocumentList className="dashboard-sub-transactions-icons" />
+      <motion.div
+        className="dashboard-transactions-stats-cards-container"
+        variants={statsContainer}
+        initial="hidden"
+        animate="visible"
+      >
+        {highestTransaction ? (
+          <motion.div
+            variants={statsItem}
+            className="dashboard-transactions-stats-each-card-container"
+          >
+            <div className="dashboard-transactions-stats-card-icon-container">
+              <FaDotCircle
+                style={{ marginTop: "5px" }}
+                color="#ae9eeb"
+                size={20}
+              />
+              <div>
+                <Text
+                  content="Highest Transaction"
+                  color="#000000"
+                  weight="600"
+                  size="18px"
+                  m="0"
+                />
+                <div className="dashboard-transactions-stats-card-title-container">
+                  {highestTransaction.category ? (
+                    transactionCategories[
+                      highestTransaction.category?.split?.("-")?.[0]
+                    ][highestTransaction.category?.split?.("-")?.[1]]?.icon || (
+                      <GiPerspectiveDiceSixFacesRandom />
+                    )
+                  ) : (
+                    <GiPerspectiveDiceSixFacesRandom />
+                  )}
+                  <Text
+                    content={highestTransaction.title}
+                    color="#959595"
+                    m="0"
+                    weight="500"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="dashboard-transactions-stats-card-icon-container">
               <Text
-                content="Transactions"
-                color="#000000"
+                content={`₹${formatAmountToRupee(highestTransaction.amount)}`}
                 m="0"
+                color="#000000"
                 weight="600"
                 size="18px"
               />
-            </div>
-            <div>
-              <Text content="Total" color="#000000" m="0" size="18px" />
-              <div className="dashboard-stats-card-icon-container">
-                <HiMiniQueueList fontSize={20} />
-                <Text
-                  content={totalStats.totalTransactions}
-                  color="#000000"
-                  m="0"
-                  weight="700"
-                  size="20px"
-                />
-              </div>
+              <IoMdArrowRoundForward
+                size={25}
+                style={{ alignSelf: "center" }}
+              />
             </div>
           </motion.div>
         ) : null}
-        {totalStats.totalTarnsactionsAmount ? (
-          <motion.div className="dashboard-stats-each-card-container stat-card-two" variants={statsItem}>
-            <div className="dashboard-stats-card-icon-container">
-              <HiOutlineCurrencyRupee className="dashboard-sub-transactions-icons" />
+        {lowestTransaction ? (
+          <motion.div
+            variants={statsItem}
+            className="dashboard-transactions-stats-each-card-container"
+          >
+            <div className="dashboard-transactions-stats-card-icon-container">
+              <FaDotCircle
+                style={{ marginTop: "5px" }}
+                color="#cadc53"
+                size={20}
+              />
+              <div>
+                <Text
+                  content="Lowest Transaction"
+                  color="#000000"
+                  weight="600"
+                  size="18px"
+                  m="0"
+                />
+                <div className="dashboard-transactions-stats-card-title-container">
+                  {lowestTransaction.category ? (
+                    transactionCategories[
+                      lowestTransaction.category?.split?.("-")?.[0]
+                    ][lowestTransaction.category?.split?.("-")?.[1]]?.icon || (
+                      <GiPerspectiveDiceSixFacesRandom />
+                    )
+                  ) : (
+                    <GiPerspectiveDiceSixFacesRandom />
+                  )}
+                  <Text
+                    content={lowestTransaction.title}
+                    color="#959595"
+                    m="0"
+                    weight="500"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="dashboard-transactions-stats-card-icon-container">
               <Text
-                content="Amount"
-                color="#000000"
+                content={`₹${formatAmountToRupee(lowestTransaction.amount)}`}
                 m="0"
+                color="#000000"
                 weight="600"
                 size="18px"
               />
-            </div>
-            <div>
-              <Text content="Total " color="#000000" m="0" size="18px" />
-              <Text
-                content={`₹${formattedTotalAmount}`}
-                color="#000000"
-                m="0"
-                weight="700"
-                size="20px"
+              <IoMdArrowRoundForward
+                size={25}
+                style={{ alignSelf: "center" }}
               />
             </div>
           </motion.div>
         ) : null}
-        {totalStats.starredTransactions ? (
-          <motion.div className="dashboard-stats-each-card-container stat-card-three" variants={statsItem}>
-            <div className="dashboard-stats-card-icon-container">
-              <HiOutlineClipboardDocumentList className="dashboard-sub-transactions-icons" />
-              <Text
-                content="Transactions"
-                color="#000000"
-                m="0"
-                weight="600"
-                size="18px"
+        {latestTransaction ? (
+          <motion.div
+            variants={statsItem}
+            className="dashboard-transactions-stats-each-card-container"
+          >
+            <div className="dashboard-transactions-stats-card-icon-container">
+              <FaDotCircle
+                style={{ marginTop: "5px" }}
+                color="#dd6745"
+                size={20}
+              />
+              <div>
+                <Text
+                  content="Latest Transaction"
+                  color="#000000"
+                  weight="600"
+                  size="18px"
+                  m="0"
+                />
+                <div className="dashboard-transactions-stats-card-title-container">
+                  {latestTransaction.category ? (
+                    transactionCategories[
+                      latestTransaction.category?.split?.("-")?.[0]
+                    ][latestTransaction.category?.split?.("-")?.[1]]?.icon || (
+                      <GiPerspectiveDiceSixFacesRandom />
+                    )
+                  ) : (
+                    <GiPerspectiveDiceSixFacesRandom />
+                  )}
+                  <Text
+                    content={latestTransaction.title}
+                    color="#959595"
+                    m="0"
+                    weight="500"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="dashboard-transactions-stats-card-icon-container">
+              {latestTransaction.transaction_date ? (
+                <Text
+                  content={`${formatDate(latestTransaction.transaction_date)}`}
+                  m="0"
+                  color="#000000"
+                  weight="600"
+                  size="18px"
+                />
+              ) : null}
+              <IoMdArrowRoundForward
+                size={25}
+                style={{ alignSelf: "center" }}
               />
             </div>
-            <div>
-              <Text content="Starred" color="#000000" m="0" size="18px" />
-              <div className="dashboard-stats-card-icon-container">
-                <HiMiniQueueList fontSize={20} />
+          </motion.div>
+        ) : null}
+        {oldTransaction ? (
+          <motion.div
+            variants={statsItem}
+            className="dashboard-transactions-stats-each-card-container"
+          >
+            <div className="dashboard-transactions-stats-card-icon-container">
+              <FaDotCircle
+                style={{ marginTop: "5px" }}
+                color="#888888"
+                size={20}
+              />
+              <div>
                 <Text
-                  content={totalStats.starredTransactions}
+                  content="Oldest Transaction"
                   color="#000000"
+                  weight="600"
+                  size="18px"
                   m="0"
-                  weight="700"
-                  size="20px"
                 />
+                <div className="dashboard-transactions-stats-card-title-container">
+                  {oldTransaction.category ? (
+                    transactionCategories[
+                      oldTransaction.category?.split?.("-")?.[0]
+                    ][oldTransaction.category?.split?.("-")?.[1]]?.icon || (
+                      <GiPerspectiveDiceSixFacesRandom />
+                    )
+                  ) : (
+                    <GiPerspectiveDiceSixFacesRandom />
+                  )}
+                  <Text
+                    content={oldTransaction.title}
+                    color="#959595"
+                    m="0"
+                    weight="500"
+                  />
+                </div>
               </div>
+            </div>
+            <div className="dashboard-transactions-stats-card-icon-container">
+              {oldTransaction.transaction_date ? (
+                <Text
+                  content={`${formatDate(oldTransaction.transaction_date)}`}
+                  m="0"
+                  color="#000000"
+                  weight="600"
+                  size="18px"
+                />
+              ) : null}
+              <IoMdArrowRoundForward
+                size={25}
+                style={{ alignSelf: "center" }}
+              />
             </div>
           </motion.div>
         ) : null}
