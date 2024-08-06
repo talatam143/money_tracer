@@ -1,6 +1,7 @@
 import React from "react";
 
-const DashBoardUser = () => {
+const DashBoardUser = (props) => {
+  const { width, height } = props
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -9,6 +10,7 @@ const DashBoardUser = () => {
       y="0"
       viewBox="0 -3 38 60"
       className="dashboard-user-icon-svg"
+      style={{ width: width || "40px", height: height || "40px", padding: '2px' }}
     >
       <g transform="matrix(0.750000000000001,0,0,0.750000000000001,2.508135490417448,3.0005405604838096)">
         <path

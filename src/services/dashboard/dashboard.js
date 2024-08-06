@@ -28,7 +28,7 @@ export const dashboardService = async (method, path) => {
       store.dispatch(
         setDashboardState({
           data: response.data.data,
-          type: path.slice(1),
+          type: path?.split("?")?.[0]?.slice(1),
           isChartsAvailable: response?.data?.isChartsAvailable,
         })
       );

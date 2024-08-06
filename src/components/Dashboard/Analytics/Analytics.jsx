@@ -9,7 +9,7 @@ import "./analytics_styles.css";
 import Stats from "./stats";
 
 const Analytics = (props) => {
-  const { state } = props;
+  const { state, setMonthGroup } = props;
 
   switch (state) {
     case statesEnum.INITIAL:
@@ -18,7 +18,7 @@ const Analytics = (props) => {
     case statesEnum.SUCCESS:
       return (
         <div className="dashboard-analytics-container">
-          <Navbar />
+          <Navbar setMonthGroup={setMonthGroup} />
           <AnalyticsStats />
           <UsageTrends />
           <Stats />

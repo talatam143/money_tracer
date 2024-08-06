@@ -26,6 +26,7 @@ export const dashboardState = createSlice({
       state.charts = [];
       state.isAnalyticsFetched = false;
       state.isChartsFetched = false;
+      state.isChartsAvailable = false;
     },
   },
 });

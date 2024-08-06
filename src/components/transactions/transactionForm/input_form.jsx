@@ -46,17 +46,31 @@ const InputForm = (props) => {
           errorText="Transaction title needs at least 3 letters."
           autoFocus={true}
         />
-        <InputField
-          type="number"
-          placeholder="Transaction amount"
-          label="Amount *"
-          name="amount"
-          height="43px"
-          value={transactionFormData.amount}
-          onChange={handleFormChange}
-          icon="amount"
-          required={true}
-        />
+        <div className="transaction-form-amount-date-container">
+          <InputField
+            type="number"
+            placeholder="Transaction amount"
+            label="Amount *"
+            name="amount"
+            height="43px"
+            value={transactionFormData.amount}
+            onChange={handleFormChange}
+            icon="amount"
+            required={true}
+            containerWidth="50%"
+          />
+          <InputField
+            type="date"
+            name="transactionDate"
+            placeholder="Transaction date"
+            label="Transaction Date"
+            icon="date"
+            onChange={handleFormChange}
+            required={true}
+            value={transactionFormData.transactionDate}
+            containerWidth="50%"
+          />
+        </div>
         <div>
           <label style={{ fontWeight: 600 }} htmlFor="paymentInfo">
             Select Category
@@ -85,16 +99,6 @@ const InputForm = (props) => {
             value={transactionFormData.description}
           ></textarea>
         </div>
-        <InputField
-          type="date"
-          name="transactionDate"
-          placeholder="Transaction date"
-          label="Transaction Date"
-          icon="date"
-          onChange={handleFormChange}
-          required={true}
-          value={transactionFormData.transactionDate}
-        />
         <div className="transaction-form-payment-parent-container">
           <RadioInput
             data={transactionPaymentMethods}
@@ -134,7 +138,7 @@ const InputForm = (props) => {
             </>
           )}
           {transactionFormData.paymentMethod === "UPI" ||
-          transactionFormData.paymentMethod === "Credit Card" ? (
+            transactionFormData.paymentMethod === "Credit Card" ? (
             userData.userData[paymentInfoVar].length > 0 ? (
               <RadioInput
                 data={userData.userData[paymentInfoVar]}
@@ -147,20 +151,18 @@ const InputForm = (props) => {
             ) : (
               <>
                 <Text
-                  content={`No ${
-                    userDataEnums.filter(
-                      (eachData) => eachData.reduxStoreVar === paymentInfoVar
-                    )[0]?.name
-                  } details found.`}
+                  content={`No ${userDataEnums.filter(
+                    (eachData) => eachData.reduxStoreVar === paymentInfoVar
+                  )[0]?.name
+                    } details found.`}
                   m="10px 0 3px 0"
                   weight="600"
                 />
                 <Button
-                  content={`Add ${
-                    userDataEnums.filter(
-                      (eachData) => eachData.reduxStoreVar === paymentInfoVar
-                    )[0]?.name
-                  }`}
+                  content={`Add ${userDataEnums.filter(
+                    (eachData) => eachData.reduxStoreVar === paymentInfoVar
+                  )[0]?.name
+                    }`}
                   handleClick={() =>
                     handleAccountNavigate(
                       ...userDataEnums.filter(
@@ -180,13 +182,13 @@ const InputForm = (props) => {
             )
           ) : null}
         </div>
-        <div>
+        <div className="transaction-form-favourite-contaier">
           <Text
-            content="Star Transaction"
+            content="Mark as favourite"
             m="0 0 2px 0"
             p="0"
-            weight="600"
-            size="16px"
+            weight="500"
+            size="14px"
           />
           <label className="switch">
             <input

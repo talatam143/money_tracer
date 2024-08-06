@@ -38,7 +38,7 @@ const AnalyticsStats = () => {
   };
 
   return totalStats.totalTransactions ||
-    totalStats.totalTarnsactionsAmount ||
+    totalStats.totalTransactionsAmount ||
     totalStats.starredTransactions ? (
     <div className="dashboard-stats-container">
       <div className="dashboard-stats-card-icon-container">
@@ -88,7 +88,7 @@ const AnalyticsStats = () => {
             </div>
           </motion.div>
         ) : null}
-        {totalStats.totalTarnsactionsAmount ? (
+        {totalStats.totalTransactionsAmount ? (
           <motion.div
             className="dashboard-stats-each-card-container stat-card-two"
             variants={statsItem}
@@ -107,7 +107,7 @@ const AnalyticsStats = () => {
               <Text content="Total " color="#000000" m="0" size="18px" />
               <Text
                 content={`₹${formatAmountToRupee(
-                  totalStats.totalTarnsactionsAmount
+                  totalStats.totalTransactionsAmount
                 )}`}
                 color="#000000"
                 m="0"
