@@ -4,17 +4,20 @@ import NewUserDashBoard from "./new_user/dashboard";
 import { dashboardService } from "../../services/dashboard/dashboard";
 import Analytics from "./Analytics/Analytics";
 import Charts from "./Charts/charts";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { statesEnum } from "../../utils/enums";
 import "./dashboard_styles.css";
 import TransactionButton from "../elements/transaction_button";
+import { resetDashboardState } from "../../features/dashboard/dashboard";
 
 const Dashboard = () => {
+  const dispatch = useDispatch()
   const { isAnalyticsFetched, isChartsFetched, isChartsAvailable } =
     useSelector((state) => state.dashboard);
   const isUserLoggedIn = useSelector((state) => state.auth.isUserLoggedIn);
   const [analyticsState, setAnalyticsState] = useState(statesEnum.INITIAL);
   const [chartsState, setChartsState] = useState(statesEnum.INITIAL);
+  const [monthId, setMonthId] = useState("");
 
   useEffect(() => {
     if (isUserLoggedIn) {
@@ -31,11 +34,16 @@ const Dashboard = () => {
         fetchAnalyticsData();
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAnalyticsFetched, isChartsAvailable, isChartsFetched, isUserLoggedIn]);
 
   async function fetchAnalyticsData() {
     setAnalyticsState(statesEnum.LOADING);
-    let { status } = await dashboardService("get", "/transactions");
+    let path = "/transactions"
+    if (monthId.length > 1) {
+      path = `/transactions?month=${monthId}`
+    }
+    let { status } = await dashboardService("get", path);
     if (status === 200) {
       setAnalyticsState(statesEnum.SUCCESS);
     } else {
@@ -46,7 +54,11 @@ const Dashboard = () => {
 
   async function fetchChartsData() {
     setChartsState(statesEnum.LOADING);
-    let { status } = await dashboardService("get", "/charts");
+    let path = "/charts"
+    if (monthId.length > 1) {
+      path = `/charts?month=${monthId}`
+    }
+    let { status } = await dashboardService("get", path);
     if (status === 200) {
       setChartsState(statesEnum.SUCCESS);
     } else {
@@ -54,14 +66,21 @@ const Dashboard = () => {
     }
   }
 
+  function setMonthGroup(group) {
+    setMonthId(group)
+    dispatch(resetDashboardState())
+    setAnalyticsState(statesEnum.INITIAL)
+    setChartsState(statesEnum.INITIAL)
+  }
+
   return (
     <>
       {analyticsState === statesEnum.ERROR &&
-      chartsState === statesEnum.ERROR ? (
+        chartsState === statesEnum.ERROR ? (
         <NewUserDashBoard />
       ) : (
         <div className="dashboard-container">
-          <Analytics state={analyticsState} />
+          <Analytics state={analyticsState} setMonthGroup={setMonthGroup} />
           <Charts state={chartsState} />
         </div>
       )}

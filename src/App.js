@@ -2,9 +2,10 @@ import React, { lazy, useEffect, Suspense } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { statesEnum } from "./utils/enums";
-import { LinearProgress, Snackbar } from "@mui/material";
+import { IconButton, LinearProgress, Slide, Snackbar } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
 import { resetSnackBar } from "./features/snackbar/snackbar";
+import { IoClose } from "react-icons/io5";
 
 const Login = lazy(() => import("./components/login/login"));
 const Dashboard = lazy(() => import("./components/Dashboard/dashboard"));
@@ -65,10 +66,11 @@ const App = () => {
     );
   }
 
+
   return (
     <Suspense fallback={<Loader />}>
       {fetchState.state === statesEnum.LOADING &&
-      window.location.pathname !== "/transactions" ? (
+        window.location.pathname !== "/transactions" ? (
         <LinearProgress
           color="inherit"
           sx={{ position: "sticky", width: "100%", top: 0 }}
@@ -79,13 +81,31 @@ const App = () => {
         autoHideDuration={3000}
         onClose={handleClose}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        TransitionComponent={Slide}
       >
         <MuiAlert
           elevation={6}
           variant="filled"
           severity={snackBar.snackBarSeverity}
           onClose={handleClose}
-          sx={{ width: "100%" }}
+          sx={{
+            width: "100%", padding: "10px", border: "solid 0px", borderRadius: "14px", "&:button": {
+              background: "red"
+            }
+          }}
+          action={
+            <IconButton
+              aria-label="close"
+              color="inherit"
+              onClick={handleClose}
+              sx={{
+                padding: "0",
+                marginRight: 1,
+              }}
+            >
+              <IoClose />
+            </IconButton>
+          }
         >
           {snackBar.snackBarText}
         </MuiAlert>

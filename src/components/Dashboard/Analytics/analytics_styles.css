@@ -1,11 +1,30 @@
 .analytics-navbar-skeleton-container,
-.analytics-navbar-skeleton-container > div {
+.analytics-navbar-skeleton-container>div {
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: nowrap;
   gap: 5px;
 }
+
+.dashboard-navbar-timeline-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: solid 2px #808080;
+  border-radius: 50px;
+  padding: 6px 15px;
+  cursor: pointer;
+}
+
+.dashboard-navbar-timeline-container.opened {
+  position: fixed;
+  background-color: #ffffff;
+  border-radius: 14px;
+  z-index: 10000;
+  border: none;
+}
+
 
 .analytics-navbar-skeleton-container {
   padding: 20px 10px 10px 10px;
@@ -19,7 +38,7 @@
   overflow-x: hidden;
 }
 
-.analytics-carousel-skeleton-container > span {
+.analytics-carousel-skeleton-container>span {
   flex-shrink: 0;
 }
 
@@ -60,20 +79,82 @@
   box-sizing: border-box;
 }
 
+.dashboard-navbar-container>button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 12px;
+  background: transparent;
+  border: solid 2px #cadc53;
+  color: #FFFFFF;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+}
+
+.dashboard-navbar-container>button:hover {
+  background-color: #cadc53;
+  color: #000000;
+  transition: all 0.3s ease;
+}
+
 .dashboard-navbar-user-container {
   display: flex;
   align-items: center;
-  gap: 25px;
+  gap: 5px;
+  background-color: #ae9eeb;
+  border-radius: 50px;
+  padding: 5px;
 }
 
-.dashboard-navbar-user-container > p {
+.dashboard-navbar-user-container>p {
   font-family: "Kaushan Script", cursive;
   font-weight: 600;
   font-size: 32px;
 }
 
+.dashboard-timeline-dialod-title-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.dashboard-timeline-dialod-title-container>button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.dashboard-timeline-dialod-button-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 10px 10px 10px 20px;
+}
+
+.dashboard-timeline-dialod-button-container>button {
+  background: transparent;
+  border: solid 2px #4527A0;
+  min-width: 80px;
+  height: 30px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #000000;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.dashboard-timeline-dialod-button-container>button:hover {
+  background: #ae9eeb;
+  border-color: #000000;
+  transition: all 0.3s ease;
+}
+
 .dashboard-stats-container {
-  padding: 15px 10px 10px 10px;
+  padding: 10px;
 }
 
 .dashboard-sub-transactions-icons {
@@ -112,6 +193,18 @@
   display: flex;
   align-items: center;
   gap: 5px;
+}
+
+.dashboard-stats-timeline-select {
+  margin-left: auto;
+  border-radius: 4px;
+  width: 90px;
+  height: 25px;
+  text-align: center;
+}
+
+.dashboard-stats-timeline-select option {
+  width: 100px;
 }
 
 .stat-card-one,
@@ -177,7 +270,7 @@
   gap: 5px;
 }
 
-.dashboard-usage-trends-card-navigate-icon-container > svg {
+.dashboard-usage-trends-card-navigate-icon-container>svg {
   align-self: center;
 }
 
@@ -213,7 +306,7 @@
   gap: 10px;
 }
 
-.dashboard-transactions-stats-card-title-container > svg {
+.dashboard-transactions-stats-card-title-container>svg {
   color: #959595;
   font-size: 25px;
 }
