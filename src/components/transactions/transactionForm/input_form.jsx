@@ -32,6 +32,19 @@ const InputForm = (props) => {
   return (
     <div className="transaction-form-scroll-container">
       <form onSubmit={handleTransactionSubmit} className="transaction-form">
+        <div className="transaction-form-favourite-contaier">
+          <label htmlFor="starred" className="transaction-form-starred-label">Mark as favourite</label>
+          <label className="switch">
+            <input
+              type="checkbox"
+              onChange={handleFormChange}
+              name="starred"
+              checked={transactionFormData.starred}
+              id="starred"
+            />
+            <span className="slider"></span>
+          </label>
+        </div>
         <InputField
           type="text"
           placeholder="Transaction title"
@@ -181,24 +194,6 @@ const InputForm = (props) => {
               </>
             )
           ) : null}
-        </div>
-        <div className="transaction-form-favourite-contaier">
-          <Text
-            content="Mark as favourite"
-            m="0 0 2px 0"
-            p="0"
-            weight="500"
-            size="14px"
-          />
-          <label className="switch">
-            <input
-              type="checkbox"
-              onChange={handleFormChange}
-              name="starred"
-              checked={transactionFormData.starred}
-            />
-            <span className="slider"></span>
-          </label>
         </div>
         <div className="transaction-form-tags-users-contaier">
           <InputField
